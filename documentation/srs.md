@@ -38,6 +38,8 @@ Out there are many shisha-smokers and almost everyone had had problems to schedu
 
 The following picture shows the overall use case diagram of our software:
 
+![OUCD](/documentation/SheeshAppOUCD.svg)
+
 ## 0.3 **3. Specific Requirements**
 
 ### 0.3.1 **3.1 Functionality - Android App**
