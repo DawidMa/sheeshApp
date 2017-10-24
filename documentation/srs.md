@@ -74,6 +74,7 @@ Today almost every person has a smartphone and know how to use an android applic
 #### 0.3.2.2 **3.3.2 Using a browser**
 
 #### 0.3.2.3 **3.3.3 Honest person**
+We expect the user to be an honest person, who just upload profile images which won´t offend other people. Our users should obey the law. 
 
 ### 0.3.3 **3.4 Reliability**
 
