@@ -67,6 +67,7 @@ The user has the possibility to use a navigation which shows him the next shisha
 
 
 ### 0.3.2 **3.2 Usability**
+Today almost every person has a smartphone and know how to use an android application. Our target is to designing the interface for the user as simple and intuitive as possible. Our blog serve as a guide. 
 
 #### 0.3.2.1 **3.3.1 Smartphone user**
 
