@@ -73,6 +73,8 @@ Today almost every person has a smartphone and know how to use an android applic
 
 #### 0.3.2.2 **3.3.2 Using a browser**
 
+We will not provide an online website and the possibility to use our network in browsers.
+
 #### 0.3.2.3 **3.3.3 Honest person**
 
 ### 0.3.3 **3.4 Reliability**
