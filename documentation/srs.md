@@ -2,11 +2,11 @@
 
 ### 0.1.1 **1.1 Purpose**
 
-This SRS describes all specifications for &quot;Unveiled&quot;. It&#39;s an Android-App with an customized graphical user interface for the user. &quot;Unveiled&quot; allows users to solve the problems which are coming up when you smoke shisha together with your friends. In this document the usage of the &quot;Unveiled&quot;-Android-App will be explained. Furthermore reliability, reaction speed and other important characteristics of this project will be specified. This includes design and architectural decisions regarding optimization of these criteria as well.
+This SRS describes all specifications for &quot;SheeshApp&quot;. Our project is an android application with a customized graphical user interface. &quot;SheeshApp&quot; allows users to solve the problems, which are coming up, when you smoke shisha together with your friends. In this document the usage of the &quot;SheeshApp&quot;-Android-App will be explained. Furthermore reliability, the shisha tracker and other important characteristics of this project will be specified. This includes design and architectural decisions.
 
 ### 0.1.2 **1.2 Scope**
 
-This software specification applies to the whole &quot;Unveiled&quot; application. The application consists of two parts: The first part is an Android-App, which allows users to log-In with their own account, add friends/create groups, use the shisha rookie guide, take a look of their own shisha behavior history and use the main part of the app which is represented by the shisha timer. The second part is a company sided couponing where they can insert specific benefits for the customers.
+This software specification applies to the whole &quot;SheeshApp&quot; application. The application consists of two parts: The first part is an Android-App, which allows users to log-In with their own account, add friends/create groups, use the shisha rookie guide, take a look at their own shisha behavior history and use the main part of the app which is represented by the shisha timer. The second part is a company sided couponing, where they can insert specific benefits for the customers and also add their advertisement.
 
 ### 0.1.3 **1.3 Definitions, Acronyms and Abbreviations**
 
@@ -15,6 +15,10 @@ In this section definitions and explanations of acronyms and abbreviations are l
 **Android**  This is a mobile operating system developed by Google for primarily use on smartphones and tablets.
 
 **UC**  Use Case
+
+**MTTR** Mean time to repair
+
+**App** Application
 
 **UCD**  Use Case Diagram
 
@@ -26,19 +30,25 @@ In this section definitions and explanations of acronyms and abbreviations are l
 
 **POPS** People respect other people seriously
 
-### 0.1.4 **1.5 Overview**
+**MVC** Model-View-Controller
 
-The following chapters are about our vision and perspective, the software requirements, the demands we have, licensing and the technical realisation of this project.
+
+
+
+
+### 0.1.4 **1.4 Overview**
+
+The following chapters are about our vision and perspective, the software requirements, the demands we have, licensing and the technical realization of this project.
 
 ## 0.2 **2. Overall Description**
 
 ### 0.2.1 **2.1 Vision**
 
-Out there are many shisha-smokers and almost everyone had had problems to schedule the order or also the time which everyone have less for smoking. Our app will be the solution for this problem and also for even more. Problems like how to start smoking shisha for beginners, Tipps &amp; Tricks if you smoke in the private, how u can save some money and analyze your shisha behavior to be reasonable with shisha dealings.
+Out there are many shisha-smokers and almost everyone have had problems to schedule the order or also the time which everyone has left for smoking. Our app will be the solution for this problem and also for even more. Problems like how to start smoking shisha for beginners, tips &amp; tricks if you smoke in the private, how u can save some money and analyze your shisha behavior to be reasonable with shisha dealings.
+
+### 0.2.2 **2.2 OUCD**
 
 The following picture shows the overall use case diagram of our software:
-
-![OUCD](/documentation/SheeshAppOUCD.svg)
 
 ## 0.3 **3. Specific Requirements**
 
@@ -46,37 +56,56 @@ The following picture shows the overall use case diagram of our software:
 
 #### 0.3.1.1 **3.1.1 Create an account**
 
-An account includes all the personal information of the user and gives him the possibility to use the social functions and the coupon feature.
+An account includes all the personal information of the user and gives him the possibility to use for example the social functions and the coupon feature.
+Users without an account have only the possibility to use a lite version of our App.
 
 #### 0.3.1.2 **3.1.2 Add friends/groups**
 
-On this tab the user is able to add friends and create groups. Also he can define which groups and friend will get a notification when the user starts a shisha tracker.
+On this tab the user is able to add friends and create groups. He can also define which groups and friend will get a notification, when the user starts a shisha tracker.
 
 #### 0.3.1.3 **3.1.3 Coupon**
 
-Under the coupon tab the user is able to use coupons. The coupons themselves and their benefits be incumbent upon to the shisha bar owner.
+Under the coupon tab the user is able to use coupons. The coupons themselves and their benefits are incumbent upon to the shisha bar owner. With the coupons, the user can save some money if he meets all the requirements.
 
 #### 0.3.1.4 **3.1.4 Shisha tracker**
 
-The user is able to use a timer which schedule the amount of time which every subscriber has. There is also a function which set the person who has to turn/refresh the coal.
+The user is able to use a timer which schedules the amount of time which every smoker has left to smoke. There is also a function which selects the person, who has to turn/refresh the coal.
 
-#### 0.3.1.5 **3.1.5 Navigation**
+#### 0.3.1.5 **3.1.5 Notifications**
 
-The user has the possibility to use a navigation which shows him the next shisha bars, provides a little description. If the user starts a shisha tracker, the defined person will get a notification and invitation to join to their shisha session.
+The user has the possibility to use notifications, which alerts his chosen friends where and when he will be smoking, so that they can join him. Notifications are triggered by starting the shisha tracker.
 
+#### 0.3.1.6 **3.1.6 Tutorials**
 
+#### 0.3.1.7In the tutorial section new users will fell themselves in good hands, because there will be all the information for beginners and also tips for smoking your own shisha in private.
+
+#### 0.3.1.8 **3.1.6 Achievement**
+
+The achievements are for smokers for whom just smoking is to boring. They get the possibility to pose in front of their friends and show who the greatest smoker is.
 
 ### 0.3.2 **3.2 Usability**
-Today almost every person has a smartphone and know how to use an android application. Our target is to designing the interface for the user as simple and intuitive as possible. Our blog serve as a guide. 
 
 #### 0.3.2.1 **3.3.1 Smartphone user**
 
-#### 0.3.2.2 **3.3.2 Using a browser**
+#### 0.3.2.2Today almost every person has a smartphone and know how to use an android application. Our target is to designing the interface for the user as simple and intuitive as possible. Our blog serve as a guide.
 
-#### 0.3.2.3 **3.3.3 Honest person**
-We expect the user to be an honest person, who just upload profile images which won´t offend other people. Our users should obey the law. 
+#### 0.3.2.3 **3.3.2 Using a browser**
+
+#### 0.3.2.4We will not provide an online website and the possibility to use our android application in a browser.
+
+#### 0.3.2.5 **3.3.3 Honest person**
+
+#### 0.3.2.6We expect the user to be an honest person, who just upload profile images which won´t offend other people. Our users should obey the law.
 
 ### 0.3.3 **3.4 Reliability**
+
+#### 0.3.3.1 **3.4.1 MTTR**
+
+#### 0.3.3.2Due to this being a student&#39;s project the time from failure to fix might strongly vary. Downtimes of more than a day will be possible.
+
+#### 0.3.3.3 **3.4.2 Server availability**
+
+#### 0.3.3.4**(No Commento)**
 
 ### 0.3.4 **3.5 Performance**
 
@@ -98,6 +127,6 @@ We expect the user to be an honest person, who just upload profile images which 
 
 **4. Supporting Information**
 
-## 0.4 **4.1**  **Appendices**
+## 0.4 **4.1 Appendices**
 
-You can find any internal linked sources in the chapter References (go to the top of this document). If you would like to know what the current status of this project is please visit the  [Unveiled Blog](http://unveiled.systemgrid.de/wp/blog/).
+You can find any internal linked sources in the chapter References (go to the top of this document). If you would like to know what the current status of this project is please visit the SheeshApp Blog.
