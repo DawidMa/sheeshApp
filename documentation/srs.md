@@ -83,7 +83,7 @@ The achievements are for smokers for whom just smoking is to boring. They get th
 
 #### **3.2.1 Smartphone user**
 
-#### 0.3.2.2Today almost every person has a smartphone and knows how to use an android application. Our target is to designing the interface for the user as simple and intuitive as possible. Our blog serves as a guide.
+Today almost every person has a smartphone and knows how to use an android application. Our target is to designing the interface for the user as simple and intuitive as possible. Our blog serves as a guide.
 
 #### **3.3.2 Using a browser**
 
@@ -113,8 +113,8 @@ Every data traffic which goes to the server must not guarantee real-time data tr
 
 We will use the following languages, which will also be well supported in the future:
 
-- Java 7/8 for Android
-- Android 5.0 (Lollipop) until 7.1 (Nougat) (API-Level 21-25) and future release versions
+- Java 7/8 for Android
+- Android 5.0 (Lollipop) until 7.1 (Nougat) (API-Level 21-25) and future release versions
 
 ### **3.7 Design Constraints**
 
@@ -134,28 +134,26 @@ The whole application will be built with an intuitive design, so there shouldn&#
 
 Is their enough time left, we will maybe implement some in-app purchases
 
-1.
-  1. 3.10 ** Interfaces**
+### 3.10 ** Interfaces**
 
 Below you can see the interfaces which will be implemented in the final stage of the app. Currently, there is only the interface shisha tracker und Shisha behavior history
 
 Currently:
 
-- shisha tracker
-- Shisha behavior history
+- shisha tracker
+- shisha behavior history
 
 Coming soon:
 
-- Log in
-- Coupon tab
-- Add friends
+- Log in
+- Coupon tab
+- Add friends
 
 ###  **3.11 Licensing Requirement**
 
 **(n/a)**
 
-1.
-  1. 3.11 **Legal, Copyright and other Notices**
+### 3.11 **Legal, Copyright and other Notices**
 
 **(n/a)**
 
