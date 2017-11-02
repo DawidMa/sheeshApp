@@ -27,7 +27,7 @@ If an account already exists with the given email address, a message will tell h
 
 ### 2.4 The passwords do not match
 
-If the entered password does not match, the user has to enter it again.
+If the entered passwords do not match, the user has to enter them again.
 
 ### 2.5 Missing activation
 
