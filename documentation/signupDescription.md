@@ -11,7 +11,7 @@ Users will be able to create an account to save their profile online. Therefore,
 
 ## 2. Flow of Events
 
-<img src="/documentation/SheeshAppOUCD.svg" alt="OUCD" width="500" />
+<img src="/documentation/signupDiagram.svg" alt="signup" width="700" />
 
 ### 2.1 Basic flow
 
