@@ -142,13 +142,7 @@ Below you can see the interfaces which will be implemented in the final stage of
 Currently:
 
 - shisha tracker
-
-<img src="/screenshots/tracker_start.jpeg" alt="tracker started" height="500" />
-<img src="/screenshots/tracker_running.jpeg" alt="tracker running" height="500" />
-
 - shisha behavior history
-
-<img src="/screenshots/shisha_history.jpeg" alt="shisha history" height="500" />
 
 Coming soon:
 
