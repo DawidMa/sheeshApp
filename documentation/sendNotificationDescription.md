@@ -19,6 +19,8 @@ Users will be able to adjust the shisha tracker and specify such things like: su
 ### 2.1 Basic flow
 
 In the best case, the user inserts only valid data. He sets the time for the timer, enters the subscribers (if he´s not going to smoke alone), enters his friends for invitations and adds his smoking location.
+<img src="/screenshots/setTracker.jpeg" alt="friendlist" width="400" />
+
 
 ### 2.2 No subcsriber choosen
 
@@ -45,6 +47,7 @@ If all inserted data are valid, the workflow can go on and the notifications for
 ### 3.1 Existing friends 
 
 In order to invite somebody, the user has to have friends in his friendslist.
+<img src="/screenshots/chooseFriends.jpeg" alt="friendlist" width="400" />
 
 ## 4. Preconditions
 
