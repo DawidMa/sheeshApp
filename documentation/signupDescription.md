@@ -17,6 +17,8 @@ Users will be able to create an account to save their profile online. Therefore,
 
 Like in a typical Sign-Up process, the user has to enter his name, email and a password. This data will be validated and if okey, the user will get an email, which he has to read. By clicking on the activation-link, the user will be later able to log in.
 
+<img src="/screenshots/signupMockup.png" alt="signup" width="250" />
+
 ### 2.2 Email address invalid
 
 The value entered into email has to have a correct syntax, otherwise a message will tell him, that he has to reenter his address.
