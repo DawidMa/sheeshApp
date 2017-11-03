@@ -12,7 +12,7 @@ Users will be able to adjust the shisha tracker and specify such things like: su
 
 ## 2. Flow of Events
 
-<img src="/documentation/sendNotificationDiagram.svg" alt="sendNotification" width="700" />
+<img src="/documentation/sendNotificationDiagram.png" alt="sendNotification" width="700" />
 
 ### 2.1 Basic flow
 
