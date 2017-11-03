@@ -7,7 +7,7 @@
 
 ### 1.1 Brief Description
 
-Users will be able to adjust the shisha tracker and specify such things like: subcsriber, invitations and add optional the smoking location. After that, if the user starts the tracker, all subcsribers and choosen friends will get a notification. 
+Users will be able to adjust the shisha tracker and specify such things like: subcsriber, invitations and add optional the smoking location. After that, if the user starts the tracker, all subcsribers and chosen friends will get a notification. 
 *Subscriber gets a participation confirmation 
 *Invited gets an invitation
 
@@ -22,7 +22,7 @@ In the best case, the user inserts only valid data. He sets the time for the tim
 <img src="/screenshots/setTracker.jpeg" alt="friendlist" width="400" />
 
 
-### 2.2 No subcsriber choosen
+### 2.2 No subcsriber chosen
 
 If the user chooses no subcsriber he will get a message, if he really wants to smoke alone. In this case the timer will be deactivated, but nevertheless his activities will be saved in his history.
 
