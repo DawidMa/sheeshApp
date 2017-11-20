@@ -1,15 +1,11 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -30,9 +26,11 @@ public class WelcomeActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         image = findViewById(R.id.imgWelLogo);
-        if (image != null)
+        if (image != null) {
             imageViewTarget = new GlideDrawableImageViewTarget(image);
-            Glide.with(this).load(R.drawable.giphy).into(imageViewTarget);
+            Glide.with(this).load(R.drawable.smokers).into(imageViewTarget);
+            sendViewToBack(image);
+        }
     }
 
     public void openTestMode(View view) {
@@ -42,7 +40,14 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     public void openSignUp(View view) {
-        Intent intent = new Intent(this, SignUpActivity.class);
+        Intent intent = new Intent(this,SignUpActivity.class);
         startActivity(intent);
+    }
+    public static void sendViewToBack(final View child) {
+        final ViewGroup parent = (ViewGroup)child.getParent();
+        if (null != parent) {
+            parent.removeView(child);
+            parent.addView(child, 0);
+        }
     }
 }

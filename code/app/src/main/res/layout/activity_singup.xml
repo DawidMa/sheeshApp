@@ -13,8 +13,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="@string/sign_up"
-        android:textColor="@color/colorPrimaryDark"
+        android:text="SignUp"
+        android:textColor="#fff"
         android:textSize="45dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,42 +26,44 @@
         android:id="@+id/btnSigWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="128dp"
-        android:layout_marginStart="84dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="92dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/btn_roundrect_states"
-        android:text="@string/cancel"
+        android:text="cancel"
         android:textColor="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edTPasswordRepeat" />
+        app:layout_constraintTop_toBottomOf="@+id/edTPasswordRepeat"
+        app:layout_constraintVertical_bias="0.507" />
 
     <Button
         android:id="@+id/btnSigHomescreen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="128dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/btn_roundrect_states"
-        android:text="@string/submit"
+        android:text="submit"
         android:textColor="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.296"
         app:layout_constraintStart_toEndOf="@+id/btnSigWelcome"
         app:layout_constraintTop_toBottomOf="@+id/edTPasswordRepeat"
-        app:layout_constraintVertical_bias="0.512" />
+        app:layout_constraintVertical_bias="0.507" />
 
     <EditText
         android:id="@+id/edTFirstname"
-        style="@style/editText_style"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="152dp"
-        android:hint="@string/firstname"
+        android:hint="  firstname"
         android:inputType="textPersonName"
+        android:layout_height="50dp"
+        android:layout_width="200dp"
+        android:background="@drawable/et_background"
         android:textColorHint="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
@@ -70,13 +72,16 @@
 
     <EditText
         android:id="@+id/edTEmail"
-        style="@style/editText_style"
+        android:background="@drawable/et_background"
+
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:hint="@string/e_mail_address"
+        android:layout_height="50dp"
+        android:layout_width="200dp"
+        android:hint="  email"
         android:textColorHint="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
@@ -85,12 +90,15 @@
 
     <EditText
         android:id="@+id/edTPassword"
-        style="@style/editText_style"
         android:layout_marginEnd="8dp"
+        android:background="@drawable/et_background"
+
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="@string/password"
+        android:layout_height="50dp"
+        android:layout_width="200dp"
+        android:hint="  password"
         android:inputType="textPassword"
         android:textColorHint="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
@@ -100,35 +108,38 @@
 
     <EditText
         android:id="@+id/edTPasswordRepeat"
-        style="@style/editText_style"
-        android:layout_marginBottom="8dp"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="@string/repeat_it"
-        android:textColorHint="@color/colorPrimaryDark"
+        android:background="@drawable/et_background"
+
+        android:hint="  again"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColorHint="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edTPassword"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/edTPassword" />
 
     <EditText
         android:id="@+id/edTLastname"
-        style="@style/editText_style"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
+        android:background="@drawable/et_background"
+
         android:inputType="textPersonName"
         android:textColorHint="@color/colorPrimaryDark"
-        android:hint="@string/lastname"
+        android:hint="  lastname"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edTFirstname" />
+        app:layout_constraintTop_toBottomOf="@+id/edTFirstname"
+        android:layout_height="50dp"
+        android:layout_width="200dp"/>
 
     <ImageView
         android:id="@+id/imageView2"
@@ -143,7 +154,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.016"
-        app:srcCompat="@drawable/logo_splash" />
+        app:srcCompat="@drawable/logo_menus" />
 
     <ImageButton
         android:id="@+id/imageButton"
@@ -152,7 +163,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="152dp"
-        android:background="@drawable/information_icon_1"
+        android:background="@drawable/ic_info"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.236"
         app:layout_constraintStart_toEndOf="@+id/edTFirstname"
