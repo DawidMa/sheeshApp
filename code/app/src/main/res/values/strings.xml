@@ -5,4 +5,12 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="lastname">lastname</string>
+    <string name="repeat_it">repeat it..</string>
+    <string name="password">password</string>
+    <string name="e_mail_address">e-mail address</string>
+    <string name="firstname"> firstname</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    <string name="sign_up">Sign Up!</string>
 </resources>

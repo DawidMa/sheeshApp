@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi\\ic_launcher.png",
+        "source": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi\\ic_launcher_round.png",
+        "source": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png"
+    }
+]

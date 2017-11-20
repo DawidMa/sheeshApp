@@ -42,7 +42,7 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     public void openSignUp(View view) {
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
     }
 }

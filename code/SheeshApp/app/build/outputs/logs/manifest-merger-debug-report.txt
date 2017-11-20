@@ -1,0 +1,99 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:2:1-24:12
+	package
+		ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:3:5-34
+		INJECTED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml
+		INJECTED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml
+		INJECTED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:2:11-69
+	android:versionCode
+		INJECTED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml
+		INJECTED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml
+application
+ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:5:5-22:19
+MERGED from [com.android.support:design:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\a1bf75e7f2467abaa8536200d7f20db1ac692d31\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\c4617a14eba0036cf538a5b6d8ed4696e062d0bd\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\9a4db2589267c0ce5245f75e24ea07f90b84df8d\output\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\765fd0472cd13ec0ff7c4272c8d6dc477479a425\output\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:transition:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\3f17c77a3e0e8c6490830708603ee7b535b2754d\output\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\b9399a8a4ba63a68aff1d5364ca0221f8745937f\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\517764b2f143976e77e0605372e8a4d84f43abd8\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\da4e958228cbb73626ba2a25625d48f2f14b0942\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\84f8f4a04ec9f5b513f93604ef0d4146d21d0f27\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\9c4970298aa7a76a904249bd889719c1102bd834\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\4b59ec46cbc836a8987ac39df5693cd8068e55b6\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Informatik\.android\build-cache\3e4721b55fa2339d643b632e5281b1564ff8ddcc\output\AndroidManifest.xml:9:5-20
+	android:label
+		ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:8:9-41
+	android:supportsRtl
+		ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:10:9-35
+	android:roundIcon
+		ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:9:9-54
+	android:allowBackup
+		ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:6:9-35
+	android:icon
+		ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:7:9-43
+	android:theme
+		ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:11:9-40
+activity#com.manda.sheeshapp.MainActivity
+ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:12:9-21:20
+	android:label
+		ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:14:13-45
+	android:theme
+		ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:15:13-56
+	android:name
+		ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:13:13-41
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:16:13-20:29
+action#android.intent.action.MAIN
+ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:17:17-69
+	android:name
+		ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:17:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:19:17-77
+	android:name
+		ADDED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml:19:27-74
+uses-sdk
+INJECTED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+MERGED from [com.android.support:design:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\a1bf75e7f2467abaa8536200d7f20db1ac692d31\output\AndroidManifest.xml:21:5-23:62
+MERGED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\c4617a14eba0036cf538a5b6d8ed4696e062d0bd\output\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\9a4db2589267c0ce5245f75e24ea07f90b84df8d\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\765fd0472cd13ec0ff7c4272c8d6dc477479a425\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:recyclerview-v7:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\31425f0af4368de1f869cbb1fc0c565c5deb418f\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\3f17c77a3e0e8c6490830708603ee7b535b2754d\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\b9399a8a4ba63a68aff1d5364ca0221f8745937f\output\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\517764b2f143976e77e0605372e8a4d84f43abd8\output\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\da4e958228cbb73626ba2a25625d48f2f14b0942\output\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\84f8f4a04ec9f5b513f93604ef0d4146d21d0f27\output\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\9c4970298aa7a76a904249bd889719c1102bd834\output\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\4b59ec46cbc836a8987ac39df5693cd8068e55b6\output\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Informatik\.android\build-cache\3e4721b55fa2339d643b632e5281b1564ff8ddcc\output\AndroidManifest.xml:5:5-7:41
+	tools:overrideLibrary
+		ADDED from [com.android.support:design:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\a1bf75e7f2467abaa8536200d7f20db1ac692d31\output\AndroidManifest.xml:23:9-59
+	android:targetSdkVersion
+		INJECTED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml
+		INJECTED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml
+		INJECTED from C:\GitRepo\sheeshApp\code\SheeshApp\app\src\main\AndroidManifest.xml
+meta-data#android.support.VERSION
+ADDED from [com.android.support:design:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\a1bf75e7f2467abaa8536200d7f20db1ac692d31\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\c4617a14eba0036cf538a5b6d8ed4696e062d0bd\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\9a4db2589267c0ce5245f75e24ea07f90b84df8d\output\AndroidManifest.xml:22:5-24:41
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\765fd0472cd13ec0ff7c4272c8d6dc477479a425\output\AndroidManifest.xml:22:5-24:41
+MERGED from [com.android.support:recyclerview-v7:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\31425f0af4368de1f869cbb1fc0c565c5deb418f\output\AndroidManifest.xml:22:5-24:41
+MERGED from [com.android.support:transition:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\3f17c77a3e0e8c6490830708603ee7b535b2754d\output\AndroidManifest.xml:22:5-24:41
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\b9399a8a4ba63a68aff1d5364ca0221f8745937f\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\517764b2f143976e77e0605372e8a4d84f43abd8\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\da4e958228cbb73626ba2a25625d48f2f14b0942\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\84f8f4a04ec9f5b513f93604ef0d4146d21d0f27\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\9c4970298aa7a76a904249bd889719c1102bd834\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\4b59ec46cbc836a8987ac39df5693cd8068e55b6\output\AndroidManifest.xml:25:5-27:41
+	android:value
+		ADDED from [com.android.support:design:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\a1bf75e7f2467abaa8536200d7f20db1ac692d31\output\AndroidManifest.xml:27:9-38
+	android:name
+		ADDED from [com.android.support:design:26.0.0-alpha1] C:\Users\Informatik\.android\build-cache\a1bf75e7f2467abaa8536200d7f20db1ac692d31\output\AndroidManifest.xml:26:9-47
