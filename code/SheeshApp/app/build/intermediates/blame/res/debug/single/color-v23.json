@@ -1,6 +1,7 @@
 [
     {
         "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_seek_thumb.xml",
+<<<<<<< HEAD
         "source": "C:\\Users\\Informatik\\.android\\build-cache\\c4617a14eba0036cf538a5b6d8ed4696e062d0bd\\output\\res\\color-v23\\abc_tint_seek_thumb.xml"
     },
     {
@@ -42,5 +43,48 @@
     {
         "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_btn_colored_borderless_text_material.xml",
         "source": "C:\\Users\\Informatik\\.android\\build-cache\\c4617a14eba0036cf538a5b6d8ed4696e062d0bd\\output\\res\\color-v23\\abc_btn_colored_borderless_text_material.xml"
+=======
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color-v23\\abc_tint_seek_thumb.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_switch_thumb.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color-v23\\abc_tint_switch_thumb.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_color_highlight_material.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color-v23\\abc_color_highlight_material.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\design_tint_password_toggle.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\4c1e60902cd2b2154a951afd1ec436800b8d4192\\output\\res\\color-v23\\design_tint_password_toggle.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_btn_colored_text_material.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color-v23\\abc_btn_colored_text_material.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_default.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color-v23\\abc_tint_default.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_spinner.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color-v23\\abc_tint_spinner.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_btn_checkable.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color-v23\\abc_tint_btn_checkable.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_edittext.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color-v23\\abc_tint_edittext.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_switch_track.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color-v23\\abc_tint_switch_track.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_btn_colored_borderless_text_material.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color-v23\\abc_btn_colored_borderless_text_material.xml"
+>>>>>>> 87295560fec26936cfc3a3df03de8abb5b3591c3
     }
 ]

@@ -11,7 +11,11 @@
                     "endOffset": 96
                 },
                 "from": {
+<<<<<<< HEAD
                     "file": "C:\\Users\\Informatik\\.android\\build-cache\\d6619be1d93e455a19ee2c61633013d37f46cccb\\output\\res\\values\\values.xml",
+=======
+                    "file": "C:\\Users\\User\\.android\\build-cache\\53db0888ed1d788c53add8c30611cf2b87d49592\\output\\res\\values\\values.xml",
+>>>>>>> 87295560fec26936cfc3a3df03de8abb5b3591c3
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,

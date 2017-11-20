@@ -1,6 +1,10 @@
 [
     {
         "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\design_layout_snackbar.xml",
+<<<<<<< HEAD
         "source": "C:\\Users\\Informatik\\.android\\build-cache\\a1bf75e7f2467abaa8536200d7f20db1ac692d31\\output\\res\\layout-sw600dp-v13\\design_layout_snackbar.xml"
+=======
+        "source": "C:\\Users\\User\\.android\\build-cache\\4c1e60902cd2b2154a951afd1ec436800b8d4192\\output\\res\\layout-sw600dp-v13\\design_layout_snackbar.xml"
+>>>>>>> 87295560fec26936cfc3a3df03de8abb5b3591c3
     }
 ]

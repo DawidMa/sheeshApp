@@ -1,6 +1,7 @@
 [
     {
         "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_hint_foreground_material_dark.xml",
+<<<<<<< HEAD
         "source": "C:\\Users\\Informatik\\.android\\build-cache\\c4617a14eba0036cf538a5b6d8ed4696e062d0bd\\output\\res\\color\\abc_hint_foreground_material_dark.xml"
     },
     {
@@ -86,5 +87,92 @@
     {
         "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_hint_foreground_material_light.xml",
         "source": "C:\\Users\\Informatik\\.android\\build-cache\\c4617a14eba0036cf538a5b6d8ed4696e062d0bd\\output\\res\\color\\abc_hint_foreground_material_light.xml"
+=======
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\abc_hint_foreground_material_dark.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\switch_thumb_material_light.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\switch_thumb_material_light.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_tint_spinner.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\abc_tint_spinner.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_primary_text_material_dark.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\abc_primary_text_material_dark.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\design_tint_password_toggle.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\4c1e60902cd2b2154a951afd1ec436800b8d4192\\output\\res\\color\\design_tint_password_toggle.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_primary_text_disable_only_material_dark.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\abc_primary_text_disable_only_material_dark.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_btn_colored_borderless_text_material.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\abc_btn_colored_borderless_text_material.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_secondary_text_material_light.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\abc_secondary_text_material_light.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_tint_switch_track.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\abc_tint_switch_track.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_primary_text_material_light.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\abc_primary_text_material_light.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_primary_text_disable_only_material_light.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\abc_primary_text_disable_only_material_light.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\switch_thumb_material_dark.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\switch_thumb_material_dark.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_tint_switch_thumb.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\abc_tint_switch_thumb.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_secondary_text_material_dark.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\abc_secondary_text_material_dark.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_tint_default.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\abc_tint_default.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\design_error.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\4c1e60902cd2b2154a951afd1ec436800b8d4192\\output\\res\\color\\design_error.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_search_url_text.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\abc_search_url_text.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_tint_edittext.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\abc_tint_edittext.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_tint_btn_checkable.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\abc_tint_btn_checkable.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_tint_seek_thumb.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\abc_tint_seek_thumb.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_btn_colored_text_material.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\abc_btn_colored_text_material.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\color\\abc_hint_foreground_material_light.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\color\\abc_hint_foreground_material_light.xml"
+>>>>>>> 87295560fec26936cfc3a3df03de8abb5b3591c3
     }
 ]

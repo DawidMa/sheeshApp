@@ -1,7 +1,11 @@
 [
     {
         "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\design_password_eye.xml",
+<<<<<<< HEAD
         "source": "C:\\Users\\Informatik\\.android\\build-cache\\a1bf75e7f2467abaa8536200d7f20db1ac692d31\\output\\res\\drawable-v21\\design_password_eye.xml"
+=======
+        "source": "C:\\Users\\User\\.android\\build-cache\\4c1e60902cd2b2154a951afd1ec436800b8d4192\\output\\res\\drawable-v21\\design_password_eye.xml"
+>>>>>>> 87295560fec26936cfc3a3df03de8abb5b3591c3
     },
     {
         "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\ic_menu_slideshow.xml",
@@ -13,7 +17,11 @@
     },
     {
         "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\avd_hide_password.xml",
+<<<<<<< HEAD
         "source": "C:\\Users\\Informatik\\.android\\build-cache\\a1bf75e7f2467abaa8536200d7f20db1ac692d31\\output\\res\\drawable-v21\\avd_hide_password.xml"
+=======
+        "source": "C:\\Users\\User\\.android\\build-cache\\4c1e60902cd2b2154a951afd1ec436800b8d4192\\output\\res\\drawable-v21\\avd_hide_password.xml"
+>>>>>>> 87295560fec26936cfc3a3df03de8abb5b3591c3
     },
     {
         "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\ic_menu_manage.xml",
@@ -21,11 +29,19 @@
     },
     {
         "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\notification_action_background.xml",
+<<<<<<< HEAD
         "source": "C:\\Users\\Informatik\\.android\\build-cache\\c4617a14eba0036cf538a5b6d8ed4696e062d0bd\\output\\res\\drawable-v21\\notification_action_background.xml"
     },
     {
         "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\abc_action_bar_item_background_material.xml",
         "source": "C:\\Users\\Informatik\\.android\\build-cache\\c4617a14eba0036cf538a5b6d8ed4696e062d0bd\\output\\res\\drawable-v21\\abc_action_bar_item_background_material.xml"
+=======
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\drawable-v21\\notification_action_background.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\abc_action_bar_item_background_material.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\drawable-v21\\abc_action_bar_item_background_material.xml"
+>>>>>>> 87295560fec26936cfc3a3df03de8abb5b3591c3
     },
     {
         "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\ic_menu_camera.xml",
@@ -33,6 +49,7 @@
     },
     {
         "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\design_bottom_navigation_item_background.xml",
+<<<<<<< HEAD
         "source": "C:\\Users\\Informatik\\.android\\build-cache\\a1bf75e7f2467abaa8536200d7f20db1ac692d31\\output\\res\\drawable-v21\\design_bottom_navigation_item_background.xml"
     },
     {
@@ -42,6 +59,17 @@
     {
         "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\abc_edit_text_material.xml",
         "source": "C:\\Users\\Informatik\\.android\\build-cache\\c4617a14eba0036cf538a5b6d8ed4696e062d0bd\\output\\res\\drawable-v21\\abc_edit_text_material.xml"
+=======
+        "source": "C:\\Users\\User\\.android\\build-cache\\4c1e60902cd2b2154a951afd1ec436800b8d4192\\output\\res\\drawable-v21\\design_bottom_navigation_item_background.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\abc_btn_colored_material.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\drawable-v21\\abc_btn_colored_material.xml"
+    },
+    {
+        "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\abc_edit_text_material.xml",
+        "source": "C:\\Users\\User\\.android\\build-cache\\e58e57d0aae924c0c606d221cf965704339603f8\\output\\res\\drawable-v21\\abc_edit_text_material.xml"
+>>>>>>> 87295560fec26936cfc3a3df03de8abb5b3591c3
     },
     {
         "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\ic_menu_gallery.xml",
@@ -49,7 +77,11 @@
     },
     {
         "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\avd_show_password.xml",
+<<<<<<< HEAD
         "source": "C:\\Users\\Informatik\\.android\\build-cache\\a1bf75e7f2467abaa8536200d7f20db1ac692d31\\output\\res\\drawable-v21\\avd_show_password.xml"
+=======
+        "source": "C:\\Users\\User\\.android\\build-cache\\4c1e60902cd2b2154a951afd1ec436800b8d4192\\output\\res\\drawable-v21\\avd_show_password.xml"
+>>>>>>> 87295560fec26936cfc3a3df03de8abb5b3591c3
     },
     {
         "merged": "C:\\GitRepo\\sheeshApp\\code\\SheeshApp\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\ic_menu_share.xml",
