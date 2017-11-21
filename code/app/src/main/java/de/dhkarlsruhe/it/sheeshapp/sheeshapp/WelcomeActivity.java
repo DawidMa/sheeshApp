@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
@@ -37,11 +38,14 @@ public class WelcomeActivity extends AppCompatActivity {
         this.finish();
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
+        Toast.makeText(this,"TestMode",Toast.LENGTH_SHORT).show();
     }
 
     public void openSignUp(View view) {
         Intent intent = new Intent(this,SignUpActivity.class);
         startActivity(intent);
+        Toast.makeText(this,"SignUp",Toast.LENGTH_SHORT).show();
+
     }
     public static void sendViewToBack(final View child) {
         final ViewGroup parent = (ViewGroup)child.getParent();
