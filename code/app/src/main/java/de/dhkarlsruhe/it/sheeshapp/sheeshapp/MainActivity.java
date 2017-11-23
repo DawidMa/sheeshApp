@@ -1,6 +1,9 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +14,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,23 +25,75 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private SharedPreferences pref;
     private TextView tvUsername, tvEmail;
+    private Toolbar toolbar;
+    private ViewPager viewPager;
+    private PagerAdapter pagerAdapter;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle toggle;
+    private NavigationView navigationView;
+    private View header;
+    private TabLayout tabLayout;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        initStart();
+
+    }
+
+    private void initStart() {
         pref = getSharedPreferences("com.preferences.sheeshapp", Context.MODE_PRIVATE);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        viewPager= (ViewPager) findViewById(R.id.pager);
+        pagerAdapter=new FragmentAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        header=navigationView.getHeaderView(0);
+        tabLayout= (TabLayout) findViewById(R.id.tbl_pages);
+        tabLayout.setupWithViewPager(viewPager);
+        toolbar.setTitle("Friends");
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch(tab.getPosition()){
+                    case 0:
+                        changeFabToAddFriend();
+                        toolbar.setTitle("Friends");
+                        break;
+                    case 1:
+                        changeFabToSetup();
+                        toolbar.setTitle("Let's Sheesh");
+                        break;
+                    case 2:
+                        changeFabToStatistics();
+                        toolbar.setTitle("History");
+                        break;
+                }
+                super.onTabSelected(tab);
+            }
+        });
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,29 +101,44 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
-        ViewPager vp_pages= (ViewPager) findViewById(R.id.pager);
-        PagerAdapter pagerAdapter=new FragmentAdapter(getSupportFragmentManager());
-        vp_pages.setAdapter(pagerAdapter);
 
-        TabLayout tbl_pages= (TabLayout) findViewById(R.id.tbl_pages);
-        tbl_pages.setupWithViewPager(vp_pages);
+        int[] icons = {
+                R.drawable.tab_friends_selector,
+                R.drawable.tab_setup_selector,
+                R.drawable.tab_statistic_selector
+        };
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        View header=navigationView.getHeaderView(0);
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            tabLayout.getTabAt(i).setIcon(icons[i]);
+        }
 
         tvUsername = header.findViewById(R.id.tvMaiUsername);
         tvEmail = header.findViewById(R.id.tvMaiEmail);
         tvUsername.setText(pref.getString("savedUsername","ErrorName"));
         tvEmail.setText(pref.getString("savedEmail","ErrorEmail"));
+    }
 
+    public void changeFabToAddFriend() {
+        fab.setVisibility(View.VISIBLE);
+        fab.setImageResource(R.mipmap.icon_plus_white);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddFriendActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    public void changeFabToSetup() {
+        fab.setVisibility(View.VISIBLE);
+        fab.setImageResource(R.mipmap.button_shisha);
+
+    }
+
+    public void changeFabToStatistics() {
+        fab.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -107,11 +179,13 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_friends) {
+            viewPager.setCurrentItem(0);
+        } else if (id == R.id.nav_tracker) {
+            viewPager.setCurrentItem(1);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_history) {
+            viewPager.setCurrentItem(2);
 
         } else if (id == R.id.nav_manage) {
 
@@ -126,6 +200,8 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+
+    //Tabs adapter
     class FragmentAdapter extends FragmentPagerAdapter {
 
         public FragmentAdapter(FragmentManager fm) {
@@ -138,9 +214,9 @@ public class MainActivity extends AppCompatActivity
                 case 0:
                     return new FriendsFragment();
                 case 1:
-                    return new FriendsFragment();
+                    return new Fragment();
                 case 2:
-                    return new FriendsFragment();
+                    return new Fragment();
             }
             return null;
         }
@@ -153,15 +229,51 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position){
+           /* switch (position){
                 //
                 //Your tab titles
                 //
                 case 0:return "Profile";
                 case 1:return "Search";
                 case 2: return "Contacts";
-                default:return null;
-            }
+                default:
+                */return null;
+
         }
+
+    }
+
+    //Dialog when pressed back
+    @Override
+    public Dialog onCreateDialog(int id) {
+        switch(id) {
+            case 1:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Willst du gehen?");
+                builder.setCancelable(true);
+                builder.setPositiveButton("Ja!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        MainActivity.this.finish();
+                    }
+                });
+                builder.setNegativeButton("Nein!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(),"Weiter gehts!",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                break;
+        }
+        return super.onCreateDialog(id);
+    }
+    public boolean onKeyDown(int KeyCode, KeyEvent event) {
+        if(KeyCode==KeyEvent.KEYCODE_BACK) {
+            showDialog(1);
+            return true;
+        }
+        return super.onKeyDown(KeyCode,event);
     }
 }
