@@ -13,7 +13,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Welcome"
+        android:text="@string/welcome"
         android:textColor="#fff"
         android:textSize="45dp"
         android:textStyle="bold"
@@ -32,13 +32,14 @@
         android:onClick="openSignUp"
         android:text="SignUp"
         android:textColor="#fff"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/btnWelLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnWelLogin"
         android:layout_width="250dp"
+        android:onClick="openLogIn"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
