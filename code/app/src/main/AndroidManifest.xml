@@ -33,6 +33,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".LogInActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
 
     </application>
 

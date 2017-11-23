@@ -29,7 +29,7 @@ public class WelcomeActivity extends AppCompatActivity {
         image = findViewById(R.id.imgWelLogo);
         if (image != null) {
             imageViewTarget = new GlideDrawableImageViewTarget(image);
-            Glide.with(this).load(R.drawable.smokers).into(imageViewTarget);
+            Glide.with(this).load(R.drawable.sheeshsmoke).into(imageViewTarget);
             sendViewToBack(image);
         }
     }
@@ -45,6 +45,13 @@ public class WelcomeActivity extends AppCompatActivity {
         Intent intent = new Intent(this,SignUpActivity.class);
         startActivity(intent);
         Toast.makeText(this,"SignUp",Toast.LENGTH_SHORT).show();
+
+    }
+
+    public void openLogIn(View view) {
+        Intent intent = new Intent(this,LogInActivity.class);
+        startActivity(intent);
+        Toast.makeText(this,"Login",Toast.LENGTH_SHORT).show();
 
     }
     public static void sendViewToBack(final View child) {
