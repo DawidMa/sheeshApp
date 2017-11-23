@@ -53,11 +53,11 @@ public class LogInActivity extends AppCompatActivity {
         if (username.equals(sharedUsername) && password.equals(sharedPassword)) {
             Toast.makeText(this,"Login successful", Toast.LENGTH_LONG).show();
             this.finish();
+            
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
         } else {
             Toast.makeText(this,"Wrong login", Toast.LENGTH_LONG).show();
-
         }
 
     }
