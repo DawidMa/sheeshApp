@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <TextView
+        android:id="@+id/liChooseFriendName"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="liFriendName"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:textColor="#000"
+        android:textSize="20dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/liFriendNumOfShishas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="liFriendNumOfShishas"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/liChooseFriendName"
+        android:layout_marginLeft="20dp"
+        android:textColor="#000"
+        android:paddingBottom="10dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <Button
+        android:id="@+id/liDeleteFriend"
+        android:layout_width="52dp"
+        android:layout_height="47dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/cstmbt_friend_delete"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="25dp"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteY="22dp"
+        tools:layout_editor_absoluteX="307dp" />
+
+</android.support.constraint.ConstraintLayout>
