@@ -134,7 +134,12 @@ public class MainActivity extends AppCompatActivity
     public void changeFabToSetup() {
         fab.setVisibility(View.VISIBLE);
         fab.setImageResource(R.mipmap.button_shisha);
-
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view,"Yoo",20);
+            }
+        });
     }
 
     public void changeFabToStatistics() {
@@ -214,7 +219,7 @@ public class MainActivity extends AppCompatActivity
                 case 0:
                     return new FriendsFragment();
                 case 1:
-                    return new Fragment();
+                    return new TrackerSetupFragment();
                 case 2:
                     return new Fragment();
             }
