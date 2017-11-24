@@ -43,6 +43,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".ChooseFriendActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
 
     </application>
 
