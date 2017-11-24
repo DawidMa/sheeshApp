@@ -124,10 +124,6 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    public void showInfoSignup(View view) {
-        //TODO Popup Dialog Android Allert
-    }
-
     private void saveData() {
         editor.putString("savedUsername", userName);
         editor.putString("savedEmail", userEmail);
@@ -146,7 +142,6 @@ public class SignUpActivity extends AppCompatActivity {
         At least Min Characters 8 and Maximum Characters 15
         At least One Number and 1 special characters from (! @#$%^&*-=+?.);
         At least One lower case letter
-
         */
         Pattern pattern;
         Matcher matcher;
@@ -169,5 +164,11 @@ public class SignUpActivity extends AppCompatActivity {
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(userEmail);
         return matcher.matches();
+    }
+
+    public void showInfoUsername(View view) {
+        MyAlert alert = new MyAlert(this, "Password", "Password Message" , "Yes","No");
+
+        alert.show();
     }
 }
