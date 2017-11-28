@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/tiLayoutMain"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#000138"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tiTvTopTitle"
+        android:textColor="#fff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zeit für Shisha mit"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="10dp"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/tiTvTotal"
+        android:textColor="#fff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time Total: "
+        android:textSize="15dp"
+        android:layout_marginBottom="36dp"
+        app:layout_constraintBottom_toTopOf="@+id/tiBtPause"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.501" />
+
+    <TextView
+        android:id="@+id/tiTvSingle"
+        android:textColor="#fff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time per Friend: "
+        android:textSize="20dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="11dp"
+        app:layout_constraintTop_toBottomOf="@+id/tiTvInfo"
+        app:layout_constraintHorizontal_bias="0.502" />
+
+
+
+    <TextView
+        android:id="@+id/tiTvInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zum beginnen Play drücken!"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:padding="5dp"
+        android:textSize="25dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="148dp"
+        app:layout_constraintTop_toBottomOf="@+id/tiTvTopTitle" />
+
+    <TextView
+        android:id="@+id/tiTvChoosenFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textColor="#fff"
+        android:text=""
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/tiTvTopTitle"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/tiBtStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="45dp"
+        android:layout_marginLeft="50dp"
+        android:clickable="true"
+        android:onClick="pressedStart"
+        app:backgroundTint="@android:color/holo_green_dark"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:srcCompat="@android:drawable/ic_media_play" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/tiBtPause"
+        android:onClick="pressedPause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="normal"
+        app:srcCompat="@android:drawable/ic_media_pause"
+        app:layout_constraintLeft_toRightOf="@+id/tiBtStart"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintRight_toLeftOf="@+id/tiBtEnd"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="46dp"
+        app:layout_constraintHorizontal_bias="0.496" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/tiBtEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="45dp"
+        android:layout_marginRight="50dp"
+        android:clickable="true"
+        android:onClick="pressedEnd"
+        app:backgroundTint="@android:color/holo_red_dark"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+</android.support.constraint.ConstraintLayout>

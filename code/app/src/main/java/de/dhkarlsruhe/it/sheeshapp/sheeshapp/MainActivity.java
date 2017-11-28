@@ -137,7 +137,10 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view,"Yoo",20);
+                if(TrackerSetupFragment.runShisha(getApplicationContext())) {
+                    Intent intent = new Intent(MainActivity.this, TimeTrackerActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
