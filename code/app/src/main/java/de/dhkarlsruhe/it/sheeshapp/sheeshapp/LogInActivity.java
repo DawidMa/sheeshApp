@@ -41,8 +41,8 @@ public class LogInActivity extends AppCompatActivity {
         sharedUsername = pref.getString("savedUsername","nouser");
 
         if (!sharedUsername.equals("#####") && !sharedUsername.equals("nouser")) {
-            //etUsername.setText(sharedUsername);
-            //etPassword.setText(sharedPassword);
+            etUsername.setText(sharedUsername);
+            etPassword.setText(sharedPassword);
         }
     }
 
