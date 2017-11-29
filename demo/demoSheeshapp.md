@@ -9,7 +9,7 @@ In this screen you can put in your information to signup.
 <img src="https://raw.githubusercontent.com/FamilyLocke/sheeshApp/master/demo/signupNoError.jpeg" />
 
 We also check, if the syntax of your email is correct and if you repeated password is the same as the first, as well as the strength of your password.
-<img src"https://raw.githubusercontent.com/FamilyLocke/sheeshApp/master/demo/signupWithError.jpeg" />
+<img src="https://raw.githubusercontent.com/FamilyLocke/sheeshApp/master/demo/signupWithError.jpeg" />
 
 ## 3. Login
 Here you can login with your username and password.
