@@ -32,15 +32,15 @@ n/a
 ### 1.5 Overview
 n/a
 ## 2. Architectural Representation
-
+Since we use Android Studio, our MVC is self-descriptive and you should already know, that MVC is inherent to android projects
 
 ## 3. Architectural Goals and Constraints
-
+We couldn’t generate the Class Diagram in our IDE, so we put the classes to IntelliJ and made it there. Here we can create the diagram with a right-click on the project
 
 ## 4. Use-Case View
 n/a
 ## 5. Logical View
-
+<img src="https://raw.githubusercontent.com/FamilyLocke/sheeshApp/master/documentation/Classes.png" height="600"/>
 
 ### 5.2 Architecturally Significant Design Packages
 n/a
