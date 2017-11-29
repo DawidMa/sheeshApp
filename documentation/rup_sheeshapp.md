@@ -40,7 +40,7 @@ We couldn’t generate the Class Diagram in our IDE, so we put the classes to In
 ## 4. Use-Case View
 n/a
 ## 5. Logical View
-<img src="https://raw.githubusercontent.com/FamilyLocke/sheeshApp/master/documentation/Classes.png" height="600"/>
+<img src="https://raw.githubusercontent.com/FamilyLocke/sheeshApp/master/documentation/Classes.png" />
 
 ### 5.2 Architecturally Significant Design Packages
 n/a
