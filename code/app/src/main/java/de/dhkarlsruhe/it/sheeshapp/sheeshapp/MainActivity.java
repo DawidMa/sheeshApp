@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity
                 case 1:
                     return new TrackerSetupFragment();
                 case 2:
-                    return new Fragment();
+                    return new HistoryFragment();
             }
             return null;
         }
@@ -249,6 +249,12 @@ public class MainActivity extends AppCompatActivity
 
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
     }
 
     //Dialog when pressed back

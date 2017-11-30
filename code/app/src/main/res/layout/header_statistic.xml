@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="@drawable/background_menus">
+
+
+    <TextView
+        android:id="@+id/stTvHeader"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Header"
+        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="#fff" />
+
+</LinearLayout>

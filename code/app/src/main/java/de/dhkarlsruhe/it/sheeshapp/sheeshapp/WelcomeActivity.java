@@ -29,7 +29,7 @@ public class WelcomeActivity extends AppCompatActivity {
         image = findViewById(R.id.imgWelLogo);
         if (image != null) {
             imageViewTarget = new GlideDrawableImageViewTarget(image);
-            Glide.with(this).load(R.drawable.sheeshsmoke).into(imageViewTarget);
+            Glide.with(this).load(R.drawable.sheeshopa).into(imageViewTarget);
             sendViewToBack(image);
         }
     }
