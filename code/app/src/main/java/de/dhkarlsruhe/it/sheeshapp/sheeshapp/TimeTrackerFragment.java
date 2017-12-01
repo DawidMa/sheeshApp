@@ -155,6 +155,13 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         }
     }
 
+    @Override
+    public void onDetach() {
+        threadTotal.interrupt();
+        threadSingle.interrupt();
+        super.onDetach();
+    }
+
     private String[] getChoosenFriends() {
         int numberFriends = pref.getInt("NUMBER_OF_FRIENDS",0);
         int numberChoosenFriends=0;
@@ -296,8 +303,8 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         saveToStatistics();
         showNotification=false;
         threadsRunning = false;
-        threadSingle.interrupt();
-        threadTotal.interrupt();
+//        threadSingle.interrupt();
+       // threadTotal.interrupt();
         //threadNotification.interrupt();
         getActivity().finish();
     }
@@ -423,8 +430,10 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
     public void myResume() {
         notification.setOngoing(false);
+        if(notificationIsActive) {
+            manager.cancelAll();
+        }
         notificationIsActive=false;
-       // manager.cancelAll();
     }
 
     public void myStop() {
