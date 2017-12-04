@@ -34,25 +34,18 @@ public class WelcomeActivity extends AppCompatActivity {
         }
     }
 
-    public void openTestMode(View view) {
+    public void closeWelcome(View view) {
         this.finish();
-        Intent intent = new Intent(this,MainActivity.class);
-        startActivity(intent);
-        Toast.makeText(this,"TestMode",Toast.LENGTH_SHORT).show();
     }
 
     public void openSignUp(View view) {
         Intent intent = new Intent(this,SignUpActivity.class);
         startActivity(intent);
-        Toast.makeText(this,"SignUp",Toast.LENGTH_SHORT).show();
-
     }
 
     public void openLogIn(View view) {
         Intent intent = new Intent(this,LogInActivity.class);
         startActivity(intent);
-        Toast.makeText(this,"Login",Toast.LENGTH_SHORT).show();
-
     }
     public static void sendViewToBack(final View child) {
         final ViewGroup parent = (ViewGroup)child.getParent();

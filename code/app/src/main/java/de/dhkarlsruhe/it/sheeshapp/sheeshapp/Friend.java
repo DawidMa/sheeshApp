@@ -31,6 +31,9 @@ public class Friend  {
                 }
             }
         }
+        if (pref.getString("savedUsername","errorUser").equals(newFriend)) {
+            return false;
+        }
         return accepted;
     }
 
@@ -38,7 +41,6 @@ public class Friend  {
         int numOfFriends = pref.getInt("NUMBER_OF_FRIENDS",0);
         numOfFriends++;
         editor.putInt("NUMBER_OF_FRIENDS",numOfFriends);
-        editor.commit();
         editor.putString("FRIEND_"+numOfFriends,newFriend);
         editor.putInt("FRIENDS_NUM_SHISHAS_"+numOfFriends,0);
         editor.commit();
