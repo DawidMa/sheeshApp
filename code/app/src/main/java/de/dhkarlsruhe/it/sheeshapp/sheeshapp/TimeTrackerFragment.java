@@ -157,8 +157,13 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onDetach() {
-        threadTotal.interrupt();
-        threadSingle.interrupt();
+        try {
+            threadTotal.interrupt();
+            threadSingle.interrupt();
+        } catch (Exception e) {
+
+        }
+
         super.onDetach();
     }
 

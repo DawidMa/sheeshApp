@@ -23,19 +23,17 @@ public class ChooseFriendActivity extends AppCompatActivity {
 
     private ListView list;
     String names[];
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
     FloatingActionButton chFabAccept;
+    Friend friend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_friend);
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Freunde wählen");
+        friend = new Friend(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Choose Friends");
 
-        pref = getSharedPreferences("com.preferences.sheeshapp",0);
-        editor = pref.edit();
         chFabAccept = (FloatingActionButton)findViewById(R.id.chFabAccept);
         chFabAccept.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,19 +41,12 @@ public class ChooseFriendActivity extends AppCompatActivity {
                 finish();
             }
         });
-        names = getFriends();
+        names = friend.getFriends();
         list = (ListView)findViewById(R.id.liChooseList);
         MyAdapter2 adapter = new MyAdapter2(ChooseFriendActivity.this,names);
         list.setAdapter(adapter);
     }
 
-    private String[] getFriends() {
-        String[] friends = new String[pref.getInt("NUMBER_OF_FRIENDS",0)];
-        for(int i=1; i<=friends.length; i++) {
-            friends[i-1] = pref.getString("FRIEND_"+i,"Fehler");
-        }
-        return friends;
-    }
     class MyAdapter2 extends ArrayAdapter<String> {
 
         Context context;
@@ -79,18 +70,18 @@ public class ChooseFriendActivity extends AppCompatActivity {
             CheckBox cb = (CheckBox)row.findViewById(R.id.liChooseCb);
             cb.setTag(tag);
 
-            final boolean checked = pref.getBoolean("FRIEND_CHOOSEN_"+tag,false);
+            boolean checked = friend.getChecked(tag);
             cb.setChecked(checked);
             cb.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String tag = (String)v.getTag();
+                    boolean checked = friend.getChecked(tag);
                     if(!checked) {
-                        editor.putBoolean("FRIEND_CHOOSEN_"+tag,true);
+                       friend.setChecked(tag,true);
                     } else {
-                        editor.putBoolean("FRIEND_CHOOSEN_"+tag,false);
+                        friend.setChecked(tag,false);
                     }
-                    editor.commit();
                 }
             });
             return row;

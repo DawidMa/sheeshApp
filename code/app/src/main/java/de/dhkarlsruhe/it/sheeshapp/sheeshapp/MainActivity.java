@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity
         tabLayout= (TabLayout) findViewById(R.id.tbl_pages);
         tabLayout.setupWithViewPager(viewPager);
         toolbar.setTitle("Friends");
-
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -94,14 +93,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, pref.getString("savedUsername", "Error"), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
+        changeFabToAddFriend();
         int[] icons = {
                 R.drawable.tab_friends_selector,
                 R.drawable.tab_setup_selector,

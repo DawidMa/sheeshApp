@@ -17,17 +17,15 @@ public class AddFriendActivity extends AppCompatActivity {
     TextView tvTitle;
     EditText etName;
     FloatingActionButton fabAdd;
-    private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
+    private Friend friend;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friend);
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        pref = getSharedPreferences("com.preferences.sheeshapp",0);
-        editor = pref.edit();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        friend = new Friend(this);
         setTitle("Add Friend");
         init();
     }
@@ -41,8 +39,9 @@ public class AddFriendActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (checkSymbol('#')) {
-                    if (checkFriend()) {
-                        addFriend();
+                    if (friend.checkFriend(etName.getText().toString())) {
+                        friend.addFriend(etName.getText().toString());
+                        finish();
                     } else {
                         etName.setText("");
                         Toast.makeText(getApplicationContext(), "Name bereits vorhanden!", Toast.LENGTH_SHORT).show();
@@ -54,36 +53,10 @@ public class AddFriendActivity extends AppCompatActivity {
             }
         });
     }
-
     private boolean checkSymbol(char c) {
         if(etName.getText().toString().indexOf(c)>=0) {
             return false;
         }
         return true;
-    }
-
-    private boolean checkFriend() {
-        int numOfFriends = pref.getInt("NUMBER_OF_FRIENDS",0);
-        boolean accepted = true;
-        if(numOfFriends>0) {
-            for(int i=1; i<=numOfFriends; i++) {
-                String name = pref.getString("FRIEND_"+i,"FEHLER");
-                if(name.equals(etName.getText().toString())) {
-                    return false;
-                }
-            }
-        }
-        return accepted;
-    }
-
-    private void addFriend() {
-        int numOfFriends = pref.getInt("NUMBER_OF_FRIENDS",0);
-        numOfFriends++;
-        editor.putInt("NUMBER_OF_FRIENDS",numOfFriends);
-        editor.commit();
-        editor.putString("FRIEND_"+numOfFriends,etName.getText().toString());
-        editor.putInt("FRIENDS_NUM_SHISHAS_"+numOfFriends,0);
-        editor.commit();
-        this.finish();
     }
 }
