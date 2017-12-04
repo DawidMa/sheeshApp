@@ -23,7 +23,6 @@ public class HistoryFragment extends Fragment {
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
-
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     int numOfSavedEntries;
@@ -46,7 +45,7 @@ public class HistoryFragment extends Fragment {
             // setting list adapter
             expListView.setAdapter(listAdapter);
         }
-        listAdapter.notifyDataSetChanged();
+       //listAdapter.notifyDataSetChanged();
         return rootView;
     }
 
@@ -135,13 +134,13 @@ public class HistoryFragment extends Fragment {
     public void onResume() {
         createAllData();
         prepareListData();
-        listAdapter.notifyDataSetChanged();
+       // listAdapter.notifyDataSetChanged();
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        listAdapter.notifyDataSetChanged();
+        //listAdapter.notifyDataSetChanged();
         super.onPause();
     }
 }
