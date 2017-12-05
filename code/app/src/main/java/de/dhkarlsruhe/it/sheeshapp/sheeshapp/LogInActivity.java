@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -22,17 +24,21 @@ public class LogInActivity extends AppCompatActivity {
     private Button btnLogin;
     private String username, password, sharedUsername, sharedPassword;
     private SharedPreferences pref;
+    private Animation anim;
    // private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        anim = AnimationUtils.loadAnimation(this,R.anim.anim_move_from_left);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         etUsername = findViewById(R.id.etLogUsername);
         etPassword = findViewById(R.id.etLogPassword);
         btnLogin = findViewById(R.id.btnLogLogin);
+
+
 
         pref = getSharedPreferences("com.preferences.sheeshapp", Context.MODE_PRIVATE);
         //editor = pref.edit();
@@ -44,6 +50,9 @@ public class LogInActivity extends AppCompatActivity {
             etUsername.setText(sharedUsername);
             etPassword.setText(sharedPassword);
         }
+        etUsername.setAnimation(anim);
+        etPassword.setAnimation(anim);
+        btnLogin.setAnimation(anim);
     }
 
     public void login(View view) {

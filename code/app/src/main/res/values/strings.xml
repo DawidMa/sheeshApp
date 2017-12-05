@@ -8,4 +8,9 @@
     <string name="welcome">Welcome</string>
     <string name="title_activity_time_tracker">TimeTrackerActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="welcome_signup_question">Are you new?</string>
+    <string name="welcome_signup_button">SignUp</string>
+    <string name="welcome_login_button">LogIn</string>
+    <string name="welcome_close_button">Close</string>
+    <string name="welcome_login_question">Already have an account?</string>
 </resources>
