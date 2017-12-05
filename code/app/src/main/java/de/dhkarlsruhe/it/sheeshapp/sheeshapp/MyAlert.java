@@ -10,45 +10,36 @@ import android.content.DialogInterface;
 
 public class MyAlert extends AlertDialog.Builder {
     private Context context;
-    private String title, message, positiv, negativ;
+    private String title, message;
+    private boolean withTheme = false;
+    private int anzBtn, themeResId;
 
-    public MyAlert(Context context,  String title, String message, String positiv, String negativ) {
+    public MyAlert(Context context, String title, String message) {
         super(context);
         this.context = context;
         this.title = title;
         this.message = message;
-        this.positiv = positiv;
-        this.negativ = negativ;
+        this.anzBtn = anzBtn;
         buildAlert();
+
     }
 
-    public MyAlert(Context context, int themeResId, String title, String message, String positiv, String negativ) {
+    public MyAlert(Context context, int themeResId, String title, String message) {
         super(context, themeResId);
         this.context = context;
         this.title = title;
+        this.themeResId = themeResId;
         this.message = message;
-        this.positiv = positiv;
-        this.negativ = negativ;
+        withTheme = true;
         buildAlert();
     }
 
-    private void  buildAlert(){
-        this.setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(positiv, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .setNegativeButton(negativ, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+    private void buildAlert() {
+            this.setTitle(title)
+                    .setMessage(message);
+            if (withTheme){
+                this.setView(R.layout.fragment_friends);
+            }
 
-
-    }
-
+        }
 }
