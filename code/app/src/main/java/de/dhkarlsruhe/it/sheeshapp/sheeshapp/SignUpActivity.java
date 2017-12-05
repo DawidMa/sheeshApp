@@ -1,6 +1,7 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -56,7 +57,6 @@ public class SignUpActivity extends AppCompatActivity {
     public void closeSignUp(View view) {
         this.finish();
     }
-
     public void submitSignUp(View view) {
 
         userName = etUsername.getText().toString();
@@ -124,10 +124,6 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    public void showInfoSignup(View view) {
-        //TODO Popup Dialog Android Allert
-    }
-
     private void saveData() {
         editor.putString("savedUsername", userName);
         editor.putString("savedEmail", userEmail);
@@ -146,7 +142,6 @@ public class SignUpActivity extends AppCompatActivity {
         At least Min Characters 8 and Maximum Characters 15
         At least One Number and 1 special characters from (! @#$%^&*-=+?.);
         At least One lower case letter
-
         */
         Pattern pattern;
         Matcher matcher;
@@ -154,8 +149,6 @@ public class SignUpActivity extends AppCompatActivity {
         pattern = Pattern.compile(PASSWORD_PATTERN);
         matcher = pattern.matcher(userPassword);
         return matcher.matches();
-
-
     }
     public static boolean isValidRepeat(final String userPasswordRepeat, final String userPassword){
         if (!(userPassword.equals(userPasswordRepeat))){
@@ -170,4 +163,49 @@ public class SignUpActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(userEmail);
         return matcher.matches();
     }
+
+    public void showInfoUsername(View view) {
+        MyAlert alert = new MyAlert(this,"Username","Number of letters between 3-15" );
+        alert.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            dialog.cancel();
+            }
+        });alert.show();
+    }
+    public void showInfoEmail(View view) {
+        MyAlert alert = new MyAlert(this,"Email","Your email provider isn´t supported\n" +
+                "Or there is no @ " );
+        alert.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            dialog.cancel();
+            }
+        });alert.show();
+    }
+    public void showInfoPassword(View view) {
+        MyAlert alert = new MyAlert(this,"Password","Your password needs:\n" +
+                "number of letters between 8-15\n" +
+                "at least one number 0-9\n" +
+                "at least one lower case letter" );
+        alert.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            dialog.cancel();
+            }
+        });alert.show();
+    }
+    public void showInfoPasswordRepeat(View view) {
+        MyAlert alert = new MyAlert(this,"Password","Your passwords are not equal");
+        alert.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            dialog.cancel();
+            }
+        });alert.show();
+    }
+
+
+
+
 }
