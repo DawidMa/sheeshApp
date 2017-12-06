@@ -30,7 +30,7 @@ public class SignUpActivity extends AppCompatActivity {
     private CheckBox cbSaveLogin;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-    private Animation animEtShake;
+    private Animation animEtShake, fadeInanim;
     private boolean allDataValid[] = new boolean[4], checked = false;
 
 
@@ -38,6 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_singup);
+        fadeInanim = AnimationUtils.loadAnimation(this,R.anim.anim_move_from_left);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
