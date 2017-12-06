@@ -1,9 +1,10 @@
-package de.dhkarlsruhe.it.sheeshapp.test;
+package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
-import android.app.Activity;
-import android.content.Context;
+
 import android.support.test.espresso.ViewInteraction;
-import android.test.ActivityInstrumentationTestCase2;
+import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
+import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -11,18 +12,12 @@ import android.view.ViewParent;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import de.dhkarlsruhe.it.sheeshapp.sheeshapp.AddFriendActivity;
-import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
-
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
@@ -33,27 +28,36 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
-public class AddFriendActivitySteps extends ActivityInstrumentationTestCase2<AddFriendActivity> {
+@LargeTest
+@RunWith(AndroidJUnit4.class)
+public class GeneratedAddFriendNegative {
 
-    private Activity activity;
-    private Context instrumentationContext;
-    private Context appContext;
+    @Rule
+    public ActivityTestRule<FirstActivity> mActivityTestRule = new ActivityTestRule<>(FirstActivity.class);
 
-    public AddFriendActivitySteps() {
-        super(AddFriendActivity.class);
-    }
+    @Test
+    public void generatedAddFriendNegative() {
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-        instrumentationContext = getInstrumentation().getContext();
-        appContext = getInstrumentation().getTargetContext();
-        activity = getActivity();
-        assertNotNull(activity);
-    }
+        ViewInteraction appCompatButton = onView(
+                allOf(withId(R.id.btnWelLogin), withText("LogIn"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                3),
+                        isDisplayed()));
+        appCompatButton.perform(click());
 
-    @Given("I am on the Add Friend Tab")
-    public void i_am_on_friend_screen() {
+        pressBack();
+
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.btnWelSignUp), withText("SignUp"),
                         childAtPosition(
@@ -92,7 +96,7 @@ public class AddFriendActivitySteps extends ActivityInstrumentationTestCase2<Add
                                         0),
                                 4),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("t@t.de"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("d@d.de"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.edTPassword),
@@ -112,29 +116,9 @@ public class AddFriendActivitySteps extends ActivityInstrumentationTestCase2<Add
                                         0),
                                 6),
                         isDisplayed()));
-        appCompatEditText5.perform(replaceText("a.@"), closeSoftKeyboard());
+        appCompatEditText5.perform(replaceText("a.@1"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.edTPasswordRepeat), withText("a.@"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                6),
-                        isDisplayed()));
-        appCompatEditText6.perform(pressImeActionButton());
-
-        ViewInteraction appCompatEditText7 = onView(
-                allOf(withId(R.id.edTPasswordRepeat), withText("a.@"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                6),
-                        isDisplayed()));
-        appCompatEditText7.perform(replaceText("a.@1"));
-
-        ViewInteraction appCompatEditText8 = onView(
                 allOf(withId(R.id.edTPasswordRepeat), withText("a.@1"),
                         childAtPosition(
                                 childAtPosition(
@@ -142,7 +126,7 @@ public class AddFriendActivitySteps extends ActivityInstrumentationTestCase2<Add
                                         0),
                                 6),
                         isDisplayed()));
-        appCompatEditText8.perform(closeSoftKeyboard());
+        appCompatEditText6.perform(pressImeActionButton());
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.btnSigHomescreen), withText("submit"),
@@ -183,12 +167,8 @@ public class AddFriendActivitySteps extends ActivityInstrumentationTestCase2<Add
                                 2),
                         isDisplayed()));
         floatingActionButton.perform(click());
-        assertEquals(getActivity().getLocalClassName(), (AddFriendActivity.class.getCanonicalName()));
-    }
 
-    @And("I insert a name into text field")
-    public void i_insert_name() {
-        ViewInteraction appCompatEditText9 = onView(
+        ViewInteraction appCompatEditText7 = onView(
                 allOf(withId(R.id.addEtName),
                         childAtPosition(
                                 childAtPosition(
@@ -196,8 +176,9 @@ public class AddFriendActivitySteps extends ActivityInstrumentationTestCase2<Add
                                         0),
                                 1),
                         isDisplayed()));
-        appCompatEditText9.perform(click());
-        ViewInteraction appCompatEditText10 = onView(
+        appCompatEditText7.perform(click());
+
+        ViewInteraction appCompatEditText8 = onView(
                 allOf(withId(R.id.addEtName),
                         childAtPosition(
                                 childAtPosition(
@@ -205,11 +186,8 @@ public class AddFriendActivitySteps extends ActivityInstrumentationTestCase2<Add
                                         0),
                                 1),
                         isDisplayed()));
-        appCompatEditText10.perform(replaceText("manu"), closeSoftKeyboard());
-    }
+        appCompatEditText8.perform(replaceText("m"), closeSoftKeyboard());
 
-    @And("I click the FAB")
-    public void i_clicked_fab() {
         ViewInteraction floatingActionButton2 = onView(
                 allOf(withId(R.id.addFabAdd),
                         childAtPosition(
@@ -219,22 +197,47 @@ public class AddFriendActivitySteps extends ActivityInstrumentationTestCase2<Add
                                 2),
                         isDisplayed()));
         floatingActionButton2.perform(click());
-    }
 
-    @Then("Tab closes and I see MainActivity overview")
-    public void i_see_mainactivity()  {
-        ViewInteraction actionBar$Tab = onView(
-                allOf(childAtPosition(
+        ViewInteraction floatingActionButton3 = onView(
+                allOf(withId(R.id.fab),
                         childAtPosition(
-                                withId(R.id.tbl_pages),
-                                0),
-                        0),
+                                childAtPosition(
+                                        withId(R.id.drawer_layout),
+                                        0),
+                                2),
                         isDisplayed()));
-        actionBar$Tab.check(matches(isDisplayed()));
-    }
+        floatingActionButton3.perform(click());
 
-    @Then("text field is empty")
-    public void text_field_is_empty() {
+        ViewInteraction appCompatEditText9 = onView(
+                allOf(withId(R.id.addEtName),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                1),
+                        isDisplayed()));
+        appCompatEditText9.perform(click());
+
+        ViewInteraction appCompatEditText10 = onView(
+                allOf(withId(R.id.addEtName),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                1),
+                        isDisplayed()));
+        appCompatEditText10.perform(replaceText("m"), closeSoftKeyboard());
+
+        ViewInteraction floatingActionButton4 = onView(
+                allOf(withId(R.id.addFabAdd),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                2),
+                        isDisplayed()));
+        floatingActionButton4.perform(click());
+
         ViewInteraction editText = onView(
                 allOf(withId(R.id.addEtName), withText("Name"),
                         childAtPosition(
@@ -244,10 +247,7 @@ public class AddFriendActivitySteps extends ActivityInstrumentationTestCase2<Add
                                 1),
                         isDisplayed()));
         editText.check(matches(withText("Name")));
-    }
 
-    @And("I stay in the AddFriendActivity")
-        public void stay_in_addfriend() {
         ViewInteraction textView = onView(
                 allOf(withId(R.id.addTvTitle), withText("Wie heißt dein Kumpel?"),
                         childAtPosition(

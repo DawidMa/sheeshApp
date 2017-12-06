@@ -145,7 +145,7 @@ public class SignUpActivity extends AppCompatActivity {
         */
         Pattern pattern;
         Matcher matcher;
-        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[!@#$%^&*+=?-]).{2,5}$";
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[!@#$%^&*+=?-]).{8,15}$";
         pattern = Pattern.compile(PASSWORD_PATTERN);
         matcher = pattern.matcher(userPassword);
         return matcher.matches();
@@ -174,8 +174,8 @@ public class SignUpActivity extends AppCompatActivity {
         });alert.show();
     }
     public void showInfoEmail(View view) {
-        MyAlert alert = new MyAlert(this,"Email","Your email provider isn´t supported\n" +
-                "Or there is no @ " );
+        MyAlert alert = new MyAlert(this,"Email","Your mail should have a pattern like this:\n" +
+                "example@mail.com" );
         alert.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -187,7 +187,8 @@ public class SignUpActivity extends AppCompatActivity {
         MyAlert alert = new MyAlert(this,"Password","Your password needs:\n" +
                 "number of letters between 8-15\n" +
                 "at least one number 0-9\n" +
-                "at least one lower case letter" );
+                "at least one lower case letter\n" +
+                "at least one of this: !@#$%^&*+=?-");
         alert.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

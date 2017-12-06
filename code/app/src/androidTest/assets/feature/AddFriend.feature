@@ -1,8 +1,15 @@
 Feature: Add Friend
 
-  Scenario: add friend to friend
+  Scenario: add friend to list
     Given I am on the Add Friend Tab
     And I insert a name into text field
-    And I click the "GAME_HISTORY" menu
-    When I click on an Game History entry
-    Then I see the Game History screen
+    And I click the FAB
+    Then Tab closes and I see MainActivity overview
+
+
+  Scenario: friend not added beacause already exists
+    Given I am on the Add Friend Tab
+    And I insert a name into text field
+    And I click the FAB
+    Then text field is empty
+    And I stay in the AddFriendActivity
