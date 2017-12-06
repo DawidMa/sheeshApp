@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -26,10 +27,12 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText etEmail, etPassword, etPasswordRepeat, etUsername;
     private String userName, userPassword, userPasswordRepeat, userEmail;
     private ImageButton imgBtnUsername, imgBtnEmail, imgBtnPassword, imgBtnRepeat;
+    private CheckBox cbSaveLogin;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private Animation animEtShake;
-    private boolean allDataValid[] = new boolean[4];
+    private boolean allDataValid[] = new boolean[4], checked = false;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +50,7 @@ public class SignUpActivity extends AppCompatActivity {
         imgBtnEmail = findViewById(R.id.imgBtnSigInfoEmail);
         imgBtnPassword = findViewById(R.id.imgBtnSigInfoPassword);
         imgBtnRepeat = findViewById(R.id.imgBtnSigInfoPasswordRepeat);
+        cbSaveLogin = findViewById(R.id.cbSaveLogin);
 
         pref = getSharedPreferences("com.preferences.sheeshapp", Context.MODE_PRIVATE);
         editor = pref.edit();
@@ -129,7 +133,18 @@ public class SignUpActivity extends AppCompatActivity {
         editor.putString("savedEmail", userEmail);
         editor.putString("savedPassword", userPassword);
         editor.putString("savedPasswordRepeat", userPasswordRepeat);
+
+        if (isCbAutoLoginChecked()){
+            editor.putBoolean("saveLogin",true);
+        } else
+            editor.putBoolean("saveLogin",false);
         editor.commit();
+    }
+    private boolean isCbAutoLoginChecked(){
+        if (cbSaveLogin.isChecked())
+                return true;
+        else
+            return false;
     }
     public static boolean isValidUsername(String userName) {
         if (userName.length() < 3 || userName.length() > 15) {
@@ -164,7 +179,7 @@ public class SignUpActivity extends AppCompatActivity {
         return matcher.matches();
     }
 
-    public void showInfoUsername(View view) {
+    public void  showInfoUsername(View view) {
         MyAlert alert = new MyAlert(this,"Username","Number of letters between 3-15" );
         alert.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
             @Override
@@ -205,6 +220,8 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });alert.show();
     }
+
+
 
 
 
