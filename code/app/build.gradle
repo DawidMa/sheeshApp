@@ -11,8 +11,8 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         //pfade anpassen....
-        testInstrumentationRunner "io.sheeshapp.test.Instrumentation"
-        testApplicationId "io.sheeshapp.test"
+        testInstrumentationRunner "de.dhkarlsruhe.it.sheeshapp.test.Instrumentation"
+        testApplicationId "de.dhkarlsruhe.it.sheeshapp.test"
 
 
     }
