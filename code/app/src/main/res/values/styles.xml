@@ -35,5 +35,37 @@
 
     <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="etStyle">
+        <item name="android:layout_width">250dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@drawable/et_background</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+    </style>
+    <style name="btnStyleLongGray">
+        <item name="android:layout_width">250dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@drawable/btn_roundrect_states</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+    <style name="btnStyleShortGray">
+        <item name="android:layout_width">110dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@drawable/btn_roundrect_states</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+    <style name="btnStyleLongRed">
+        <item name="android:layout_width">250dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@drawable/btn_roundrect_states_red</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+    <style name="tvTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">45dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
 </resources>

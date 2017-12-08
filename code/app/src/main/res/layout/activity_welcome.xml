@@ -8,57 +8,44 @@
 
     <TextView
         android:id="@+id/tvWelTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="@string/welcome"
-        android:textColor="#fff"
-        android:textSize="45dp"
-        android:textStyle="bold"
+        style="@style/tvTitle"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnWelSignUp"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        style="@style/btnStyleLongGray"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/btn_roundrect_states"
         android:onClick="openSignUp"
         android:text="@string/welcome_signup_button"
-        android:textColor="#fff"
         app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnWelLogin"
-        android:layout_width="250dp"
+        style="@style/btnStyleLongGray"
         android:onClick="openLogIn"
-        android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:background="@drawable/btn_roundrect_states"
         android:text="@string/welcome_login_button"
-        android:textColor="#fff"
         app:layout_constraintBottom_toTopOf="@+id/btnWelClose"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnWelClose"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        style="@style/btnStyleLongRed"
         android:layout_marginBottom="20dp"
         android:layout_marginStart="8dp"
-        android:background="@drawable/btn_roundrect_states_red"
         android:onClick="closeWelcome"
         android:text="@string/welcome_close_button"
-        android:textColor="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
