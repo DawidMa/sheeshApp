@@ -16,7 +16,7 @@ Information like:
 
 ## 2. Flow of Events
 
-<img src="documentation/UC_popupNotification.png" alt="PopUp Notification" width="700" />
+<img src="/documentation/UC_popupNotification.png" alt="PopUp Notification" width="700" />
 
 ### 2.1 Basic flow
 
@@ -27,7 +27,7 @@ Lockscreen:
 <img src="/screenshots/UC_popupNotificationLock.jpeg" alt="Pop Up Notification Lockscreen" width="400" />
 
 Scroll down menu:
-<img src="/screenshots/UC_popupNotificationScrolldwon.jpeg" alt="Pop Up Notification scrolldown menu" width="400" />
+<img src="/screenshots/UC_popUpNotificationScrolldown.jpeg" alt="Pop Up Notification scrolldown menu" width="400" />
 
 
 ### 2.1 Open an other app
