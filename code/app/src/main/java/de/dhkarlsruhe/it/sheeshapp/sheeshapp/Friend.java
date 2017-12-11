@@ -12,10 +12,8 @@ public class Friend  {
     private int totalFriends;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-    private Context context;
 
     public Friend(Context context) {
-        this.context = context;
         pref = context.getSharedPreferences("com.preferences.sheeshapp",0);
         editor = pref.edit();
     }

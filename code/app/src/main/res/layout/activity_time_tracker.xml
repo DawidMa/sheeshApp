@@ -7,12 +7,13 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="de.dhkarlsruhe.it.sheeshapp.sheeshapp.TimeTrackerActivity">
-
+<!--
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
+        android:id="@+id/abTracker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/appbar_padding_top"
+        android:visibility="gone"
         android:theme="@style/AppTheme.NoActionBar.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
@@ -20,15 +21,14 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_weight="1"
+            android:visibility="gone"
             android:background="@color/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay"
             app:title="@string/app_name">
 
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
-
+-->
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
         android:layout_width="match_parent"

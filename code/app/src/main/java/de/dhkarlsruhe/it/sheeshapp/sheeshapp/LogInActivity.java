@@ -24,14 +24,14 @@ public class LogInActivity extends AppCompatActivity {
     private Button btnLogin;
     private String username, password, sharedUsername, sharedPassword;
     private SharedPreferences pref;
-    private Animation anim;
+   // private Animation anim;
    // private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        anim = AnimationUtils.loadAnimation(this,R.anim.anim_move_from_left);
+       // anim = AnimationUtils.loadAnimation(this,R.anim.anim_move_from_left);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         etUsername = findViewById(R.id.etLogUsername);
@@ -43,16 +43,21 @@ public class LogInActivity extends AppCompatActivity {
         pref = getSharedPreferences("com.preferences.sheeshapp", Context.MODE_PRIVATE);
         //editor = pref.edit();
 
+        boolean savedSettings = pref.getBoolean("saveLogin",false);
         sharedPassword = pref.getString("savedPassword","#####");
         sharedUsername = pref.getString("savedUsername","nouser");
 
-        if (!sharedUsername.equals("#####") && !sharedUsername.equals("nouser")) {
-            etUsername.setText(sharedUsername);
-            etPassword.setText(sharedPassword);
-        }
+            if (savedSettings && !sharedUsername.equals("#####") && !sharedUsername.equals("nouser")) {
+                etUsername.setText(sharedUsername);
+                etPassword.setText(sharedPassword);
+            }
+
+
+        /*
         etUsername.setAnimation(anim);
         etPassword.setAnimation(anim);
         btnLogin.setAnimation(anim);
+        */
     }
 
     public void login(View view) {
