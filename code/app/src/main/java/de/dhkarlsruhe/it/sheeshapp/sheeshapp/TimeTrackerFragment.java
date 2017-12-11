@@ -35,6 +35,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     MyTimer timerTotal, timerSingle;
     TextView tiTvChoosenFriends,tiTvTotal,tiTvSingle, tiTvInfo, tiTvTopTitle;
     String[] friends, sequence;
+    static String firstFriend;
     FloatingActionButton btStart, btPause, btEnd;
     Thread threadTotal, threadSingle, threadTimeToChange, threadVibrator;
     boolean threadsRunning=false;
@@ -70,6 +71,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         printFriends(friends, tiTvChoosenFriends);
         rnd = new Random();
         sequence = setNewSequence();
+        firstFriend = sequence[0];
         return rootView;
     }
 
@@ -122,6 +124,9 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         tiTvInfo.setText("Momentan ist " + sequence[actualFriend] + " dran.");
     }
 
+    public static String getFirstFriend() {
+        return firstFriend;
+    }
 
     public void fragmentPressedPause(View view) {
         btPause.setEnabled(false);
@@ -315,10 +320,12 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     }
 
     public void endNegative() {
-        btPause.setEnabled(true);
-        btStart.setEnabled(false);
-        threadsRunning=true;
-        runTimeSingle();
+        if(!firstStart) {
+            btPause.setEnabled(true);
+            btStart.setEnabled(false);
+            threadsRunning=true;
+            runTimeSingle();
+        }
     }
     /*@Override
     protected Dialog onCreateDialog(int id) {

@@ -1,5 +1,7 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -27,10 +30,12 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText etEmail, etPassword, etPasswordRepeat, etUsername;
     private String userName, userPassword, userPasswordRepeat, userEmail;
     private ImageButton imgBtnUsername, imgBtnEmail, imgBtnPassword, imgBtnRepeat;
+    private Button btnCancel, btnSubmit;
     private CheckBox cbSaveLogin;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-    private Animation animEtShake, fadeInanim;
+    //private AnimatorSet set;
+    private Animation animEtShake;
     private boolean allDataValid[] = new boolean[4], checked = false;
 
 
@@ -38,7 +43,9 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_singup);
-        fadeInanim = AnimationUtils.loadAnimation(this,R.anim.anim_move_from_left);
+
+      //  set = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.anim_move_from_left);
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -47,16 +54,32 @@ public class SignUpActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.edTPassword);
         etPasswordRepeat = findViewById(R.id.edTPasswordRepeat);
 
+        btnCancel = findViewById(R.id.btnSigWelcome);
+        btnSubmit = findViewById(R.id.btnSigHomescreen);
+        cbSaveLogin = findViewById(R.id.cbSaveLogin);
+        /*
+        set.setTarget(etUsername);
+        set.setTarget(etEmail);
+        set.setTarget(etPassword);
+        set.setTarget(etPasswordRepeat);
+        set.setTarget(cbSaveLogin);
+        set.setTarget(btnCancel);
+        set.setTarget(btnSubmit);
+        set.start();
+*/
+
         imgBtnUsername = findViewById(R.id.imgBtnSigInfoUsername);
         imgBtnEmail = findViewById(R.id.imgBtnSigInfoEmail);
         imgBtnPassword = findViewById(R.id.imgBtnSigInfoPassword);
         imgBtnRepeat = findViewById(R.id.imgBtnSigInfoPasswordRepeat);
-        cbSaveLogin = findViewById(R.id.cbSaveLogin);
+
 
         pref = getSharedPreferences("com.preferences.sheeshapp", Context.MODE_PRIVATE);
         editor = pref.edit();
 
         animEtShake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.anim_shake_et);
+
+
     }
 
     public void closeSignUp(View view) {

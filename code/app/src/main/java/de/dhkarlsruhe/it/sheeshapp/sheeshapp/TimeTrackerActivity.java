@@ -7,8 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.PowerManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -24,13 +24,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.TextView;
-
 public class TimeTrackerActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private ViewPager mViewPager;
+    //private Toolbar toolbar;
     TimeTrackerFragment timeTrackerFragment;
 
     protected PowerManager.WakeLock mWakeLock;
@@ -40,8 +39,8 @@ public class TimeTrackerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_tracker);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tbTracker);
-        setSupportActionBar(toolbar);
+       // toolbar = (Toolbar) findViewById(R.id.tbTracker);
+        //setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -159,7 +158,7 @@ public class TimeTrackerActivity extends AppCompatActivity {
         switch(id) {
             case 1:
                 final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Heute beginnt "  + "!");
+                builder.setMessage("Heute beginnt " + TimeTrackerFragment.firstFriend + "!");
                 builder.setCancelable(false);
                 builder.setPositiveButton("OK!", new DialogInterface.OnClickListener() {
                     @Override
