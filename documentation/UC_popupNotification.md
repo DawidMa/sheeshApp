@@ -32,7 +32,7 @@ Scroll down menu:
 <img src="/screenshots/UC_popUpNotificationScrolldown.jpeg" alt="Pop Up Notification scrolldown menu" width="400" />
 
 
-### 2.1 Open an other app
+### 2.2 Open an other app
 
 If the user start´s an other app also the basic flow will occur. 
 
