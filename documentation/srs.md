@@ -10,27 +10,40 @@ This software specification applies to the whole &quot;SheeshApp&quot; applicati
 
 ### **1.3 Definitions, Acronyms and Abbreviations**
 
-In this section definitions and explanations of acronyms and abbreviations are listed to help the reader to understand these.
 
-**Android**  This is a mobile operating system developed by Google for primarily use on smartphones and tablets.
+### 1.3 Definitions, Acronyms and Abbreviations
 
-**UC**  Use Case
+| Abbrevation |                                        |
+| ----------- | -------------------------------------- |
+| SRS         | Software Requirements Specification    |
+| UC          | Use Case                               |
+| n/a         | not applicable                         |
+| tbd         | to be determined                       |
+| MTTR        | Mean Time To Repair                    |
+| App         | Application                            |
+| SAD         | Software Architecture Document         |
+| RFC         |  Request for Comments                  |
+| Android     | mobile operating system                |
+| OUCD        | FOverall Use Case Diagram              |
+| UCD         | Use Case Diagram                       |
+| OUCD        | FOverall Use Case Diagram              |
+| MVC         | Model-View-Controlle                   |
+| POPS        | People respect other people seriously  |
 
-**MTTR** Mean time to repair
 
-**App** Application
 
-**UCD**  Use Case Diagram
+### 1.4 References
 
-**OUCD**  Overall Use Case Diagram
+| Title                                                              | Date       | Publishing organization   |
+| ------------------------------------------------------------------ |:----------:| ------------------------- |
+| [UC Registration](../UC/UC_Registration.md)                        | 2017-11-02 | WGPlaner Team             |
+| [UC Pinboard](../UC/UC_Pinboard.md)                                | 2017-11-02 | WGPlaner Team             |
+| [UC Shopping List](../UC/UC_Shopping_List.md)                      | 2017-11-02 | WGPlaner Team             |
+| [UC Add Item](../UC/UC_Add_Item.md)                                | 2017-12-06 | WGPlaner Team             |
+| [UC Buy Item](../UC/UC_Buy_Item.md)                                | 2017-12-06 | WGPlaner Team             |
+| [UC Profile Settings](../UC/UC_Profile_Settings.md)                | 2017-12-06 | WGPlaner Team             |
+| [UC Invite New Group Member](../UC/UC_Invite_New_Group_Member.md)  | 2017-12-06 | WGPlaner Team             |
 
-**SAD**  Software Architecture Document
-
-**RFC**  Request for Comments
-
-**POPS** People respect other people seriously
-
-**MVC** Model-View-Controlle
 
 ### **1.4 Overview**
 
