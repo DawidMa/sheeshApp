@@ -25,7 +25,7 @@ This thread collects all his needed information and displays it as an popup at t
 
 Lockscreen:
 
-*<img src="/screenshots/UC_popupNotificationLock.jpeg" alt="Pop Up Notification Lockscreen" width="400" />
+<img src="/screenshots/UC_popupNotificationLock.jpeg" alt="Pop Up Notification Lockscreen" width="400" />
 
 Scroll down menu:
 
