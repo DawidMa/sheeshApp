@@ -44,4 +44,10 @@ If the user closes the shisha tracker, the notification pop up wont be triggered
 
 The user must have started the tracker, to trigger the notification pop up.
 
-## 5. Extension Points
+## 5. Postconditions
+
+The user is able to see the time which is left to smoke and also who is at the turn.
+
+## 6. Extension Points
+
+**n / a**
