@@ -24,9 +24,11 @@ In the best case, the shisha tracker runs without problems. If the user looks hi
 This thread collects all his needed information and displays it as an popup at the lookscreen. Same works if the user starts a other app. After the user returns to the shisha tracker, the notification popup will be disabeld and the thread stops. 
 
 Lockscreen:
-<img src="/screenshots/UC_popupNotificationLock.jpeg" alt="Pop Up Notification Lockscreen" width="400" />
+
+*<img src="/screenshots/UC_popupNotificationLock.jpeg" alt="Pop Up Notification Lockscreen" width="400" />
 
 Scroll down menu:
+
 <img src="/screenshots/UC_popUpNotificationScrolldown.jpeg" alt="Pop Up Notification scrolldown menu" width="400" />
 
 
