@@ -10,9 +10,6 @@ This software specification applies to the whole &quot;SheeshApp&quot; applicati
 
 ### **1.3 Definitions, Acronyms and Abbreviations**
 
-
-### 1.3 Definitions, Acronyms and Abbreviations
-
 | Abbrevation |                                        |
 | ----------- | -------------------------------------- |
 | SRS         | Software Requirements Specification    |
@@ -36,13 +33,11 @@ This software specification applies to the whole &quot;SheeshApp&quot; applicati
 
 | Title                                                              | Date       | Publishing organization   |
 | ------------------------------------------------------------------ |:----------:| ------------------------- |
-| [UC Registration](../UC/UC_Registration.md)                        | 2017-11-02 | WGPlaner Team             |
-| [UC Pinboard](../UC/UC_Pinboard.md)                                | 2017-11-02 | WGPlaner Team             |
-| [UC Shopping List](../UC/UC_Shopping_List.md)                      | 2017-11-02 | WGPlaner Team             |
-| [UC Add Item](../UC/UC_Add_Item.md)                                | 2017-12-06 | WGPlaner Team             |
-| [UC Buy Item](../UC/UC_Buy_Item.md)                                | 2017-12-06 | WGPlaner Team             |
-| [UC Profile Settings](../UC/UC_Profile_Settings.md)                | 2017-12-06 | WGPlaner Team             |
-| [UC Invite New Group Member](../UC/UC_Invite_New_Group_Member.md)  | 2017-12-06 | WGPlaner Team             |
+| [UC PopUp Notification](../documentation/UC_popupNotification.md)  | 2017-10-30 | Sheeshapp Team            |
+| [UC Tracker Setup](../documentation/UC_setupTracker.md)            | 2017-10-30 | Sheeshapp Team            |
+| [UC Tracker](../documentation/UC_Tracker.png)                      | 2017-11-01 | Sheeshapp Team            |
+| [UC Add Friend](../documentation/UC_addFriend.png)                 | 2017-11-05 | Sheeshapp Team            |
+| [UC History](../documentation/UC_History.png)                      | 2017-11-17 | Sheeshapp Team            |
 
 
 ### **1.4 Overview**
@@ -150,18 +145,15 @@ Is their enough time left, we will maybe implement some in-app purchases
 
 ### 3.10 ** Interfaces**
 
-Below you can see the interfaces which will be implemented in the final stage of the app. Currently, there is only the interface shisha tracker und Shisha behavior history
-
-Currently:
+Below you can see the interfaces which will be implemented in the final stage of the app.
 
 - shisha tracker
 - shisha behavior history
-
-Coming soon:
-
 - Log in
+- SignUp
 - Coupon tab
 - Add friends
+- History
 
 ###  **3.11 Licensing Requirement**
 
