@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/textView"
-        android:text="Wähle deine Freunde aus"
+        android:text="@string/choose_friend_title"
         style="@style/tvTitle"
         android:gravity="center"
         android:layout_marginLeft="8dp"

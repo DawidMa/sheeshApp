@@ -13,4 +13,14 @@
     <string name="welcome_login_button">LogIn</string>
     <string name="welcome_close_button">Close</string>
     <string name="welcome_login_question">Already have an account?</string>
+    <string name="add_Friend_Title">What\'s the name of your friend?</string>
+    <string name="choose_friend_title">Choose your friends</string>
+    <string name="username_text">username</string>
+    <string name="password_text">password</string>
+    <string name="email_text">email</string>
+    <string name="repeat_password_text">repeat password</string>
+    <string name="save_login_text">Save login</string>
+    <string name="cancel_text">cancel</string>
+    <string name="submit_text">submit</string>
+    <string name="press_play_text">Press play to start!</string>
 </resources>
