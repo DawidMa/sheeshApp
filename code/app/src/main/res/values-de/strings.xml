@@ -6,4 +6,11 @@
 
     <string name="action_settings">Einstellungen</string>
     <string name="welcome">Willkommen</string>
+    <string name="title_activity_time_tracker">TimeTrackerActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="welcome_signup_question">Neu hier?</string>
+    <string name="welcome_signup_button">SignUp</string>
+    <string name="welcome_login_button">LogIn</string>
+    <string name="welcome_close_button">Beenden</string>
+    <string name="welcome_login_question">Besitzt du bereits ein Konto?</string>
 </resources>

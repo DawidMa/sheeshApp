@@ -30,7 +30,6 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
-    //Working?
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     MyTimer timerTotal, timerSingle;
