@@ -60,7 +60,7 @@
         android:id="@+id/tiTvInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Zum beginnen Play drücken!"
+        android:text="@string/press_play_text"
         android:gravity="center"
         android:textStyle="bold"
         android:textColor="#fff"

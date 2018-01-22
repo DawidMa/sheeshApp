@@ -6,4 +6,21 @@
 
     <string name="action_settings">Einstellungen</string>
     <string name="welcome">Willkommen</string>
+    <string name="title_activity_time_tracker">TimeTrackerActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="welcome_signup_question">Neu hier?</string>
+    <string name="welcome_signup_button">SignUp</string>
+    <string name="welcome_login_button">LogIn</string>
+    <string name="welcome_close_button">Beenden</string>
+    <string name="welcome_login_question">Besitzt du bereits ein Konto?</string>
+    <string name="add_Friend_Title">Wie heißt dein Kumpel?</string>
+    <string name="choose_friend_title">Wähle deine Freunde</string>
+    <string name="username_text">Benutzername</string>
+    <string name="password_text">Passwort</string>
+    <string name="email_text">email</string>
+    <string name="repeat_password_text">Passwort wdh.</string>
+    <string name="save_login_text">Login speichern</string>
+    <string name="cancel_text">Abbrechen</string>
+    <string name="submit_text">Bestätigen</string>
+    <string name="press_play_text">Zum beginnen Play drücken!</string>
 </resources>

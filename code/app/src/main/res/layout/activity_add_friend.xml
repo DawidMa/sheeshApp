@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/addTvTitle"
-        android:text="Wie heißt dein Kumpel?"
+        android:text="@string/add_Friend_Title"
         style="@style/tvTitle"
         android:gravity="center"
         android:layout_marginLeft="8dp"
