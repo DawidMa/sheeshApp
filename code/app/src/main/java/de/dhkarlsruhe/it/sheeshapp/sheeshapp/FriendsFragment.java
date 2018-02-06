@@ -1,9 +1,11 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.LayoutInflater;
@@ -69,6 +71,8 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         String myNames[];
         String myValueShishas[];
         ImageView roundImage;
+        private int LOAD_IMAGE_RESULTS =1;
+
 
         MyAdapter(Context c, String[] titles, String[] descriptions, ImageView image) {
             super(c, R.layout.row_friends,R.id.liChooseFriendName,titles);
@@ -77,6 +81,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             this.myValueShishas = descriptions;
             this.roundImage = image;
         }
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater)getContext().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -97,9 +102,20 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
                 }
             });
            // Glide.with(context).load(R.drawable.user_avatar).apply(RequestOptions.circleCropTransform()).into(roundImage);
-
             String tag;
             tag = ""+(position+1);
+            myImage.setTag(tag);
+            myImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String tag = (String)v.getTag();
+                    value = Integer.parseInt(tag);
+                    Toast.makeText(getContext(),tag,Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent,LOAD_IMAGE_RESULTS);
+                }
+            });
+
             Button button = (Button)row.findViewById(R.id.liDeleteFriend);
             button.setTag(tag);
 
@@ -137,6 +153,8 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         }
         return numOfShishas;
     }
+
+
 
     @Override
     public void onResume() {
