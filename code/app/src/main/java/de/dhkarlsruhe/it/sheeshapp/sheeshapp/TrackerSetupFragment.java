@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.ListViewAutoScrollHelper;
@@ -33,13 +34,17 @@ public class TrackerSetupFragment extends Fragment{
     private static NumberPicker pickSeconds, pickMinutes;
     private Button btStartMeeting;
     static SharedPreferences pref;
+    private SharedPreferences settingsPref;
     static SharedPreferences.Editor editor;
+    private boolean prefCheckbox;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        // slabo = Typeface.createFromAsset(getContext().getAssets(),  "fonts/Slabo.ttf");
         pref = this.getActivity().getSharedPreferences("com.preferences.sheeshapp",0);
+        settingsPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefCheckbox = settingsPref.getBoolean("pref_ownProfilePicture",false);
         editor = pref.edit();
     }
 
@@ -70,6 +75,12 @@ public class TrackerSetupFragment extends Fragment{
         pickSeconds.setMinValue(0);
         pickMinutes.setMaxValue(5);
         pickMinutes.setMinValue(0);
+
+        if (prefCheckbox) {
+            Toast.makeText(getActivity(),"TRUE",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(),"FALSE",Toast.LENGTH_SHORT).show();
+        }
     }
     private void initTextViews(View v) {
        // tvTitle = (TextView)v.findViewById(R.id.seTvTitle);

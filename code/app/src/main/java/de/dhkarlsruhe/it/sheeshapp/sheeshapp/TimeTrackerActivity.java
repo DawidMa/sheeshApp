@@ -23,16 +23,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 public class TimeTrackerActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
     private ViewPager mViewPager;
     //private Toolbar toolbar;
-    TimeTrackerFragment timeTrackerFragment;
-
-    protected PowerManager.WakeLock mWakeLock;
+    private TimeTrackerFragment timeTrackerFragment;
+    //protected PowerManager.WakeLock mWakeLock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +48,11 @@ public class TimeTrackerActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        final PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-        mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
-        mWakeLock.acquire();
+        //final PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+        //mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
+        //mWakeLock.acquire();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         timeTrackerFragment = new TimeTrackerFragment();
 
     }
@@ -194,7 +195,7 @@ public class TimeTrackerActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy() {
-        this.mWakeLock.release();
+       // this.mWakeLock.release();
         super.onDestroy();
     }
     @Override
