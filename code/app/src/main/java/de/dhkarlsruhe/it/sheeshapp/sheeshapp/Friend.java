@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 
 public class Friend  {
 
-    private int totalFriends;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
@@ -83,5 +82,12 @@ public class Friend  {
     public void setChecked(String tag, boolean b) {
         editor.putBoolean("FRIEND_CHOOSEN_"+tag,b);
         editor.commit();
+    }
+
+    public int getNumberOfFriends() {
+        return pref.getInt("NUMBER_OF_FRIENDS", 0);
+    }
+    public int getNumberOfShishasWithFriend(int i) {
+        return pref.getInt("FRIENDS_NUM_SHISHAS_"+i,2);
     }
 }
