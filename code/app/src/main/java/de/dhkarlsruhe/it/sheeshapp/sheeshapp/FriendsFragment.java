@@ -26,7 +26,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
  */
 
 public class FriendsFragment extends android.support.v4.app.Fragment {
-
+//new branch. Working on ListView
     private ListView list;
     String names[];
     String valueShishas[];
