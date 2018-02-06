@@ -15,10 +15,12 @@ public class Friend  {
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private Random rnd = new Random();
+    private boolean sorted;
 
     public Friend(Context context) {
         pref = context.getSharedPreferences("com.preferences.sheeshapp",0);
         editor = pref.edit();
+        sorted = pref.getBoolean("SORTED_FRIEND_LIST",false);
     }
 
     public boolean checkFriend(String newFriend) {
@@ -51,6 +53,9 @@ public class Friend  {
         String[] friends = new String[pref.getInt("NUMBER_OF_FRIENDS",0)];
         for(int i=1; i<=friends.length; i++) {
             friends[i-1] = pref.getString("FRIEND_"+i,"Fehler");
+        }
+        if (sorted) {
+            Arrays.sort(friends);
         }
         return friends;
     }
@@ -113,5 +118,15 @@ public class Friend  {
         String[] sorted = getFriends();
         Arrays.sort(sorted);
         return sorted;
+    }
+
+    public void switchSorted() {
+        if (!sorted) {
+            sorted = true;
+        } else {
+            sorted = false;
+        }
+        editor.putBoolean("SORTED_FRIEND_LIST",sorted);
+        editor.commit();
     }
 }

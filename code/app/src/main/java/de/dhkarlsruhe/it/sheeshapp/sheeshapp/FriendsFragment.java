@@ -126,7 +126,8 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
                     String tag = (String)v.getTag();
                     value = Integer.parseInt(tag);
                     Toast.makeText(getContext(),tag,Toast.LENGTH_SHORT).show();
-                    sortList();
+                    friend.switchSorted();
+                    reloadListView();
                     /** Open Gallery */
                     /*
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
