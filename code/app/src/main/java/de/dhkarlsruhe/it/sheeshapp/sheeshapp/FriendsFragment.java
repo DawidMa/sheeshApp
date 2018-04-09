@@ -1,13 +1,9 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.LayoutInflater;
@@ -22,10 +18,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
 import java.util.Random;
+
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 
 /**
  * Created by Informatik on 23.11.2017.
@@ -50,31 +46,22 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         friend = new Friend(this.getActivity());
         frTvNoFriends = (TextView) rootView.findViewById(R.id.tvFragFriInfo);
         friendImage = rootView.findViewById(R.id.liFriendImage);
+        list = (ListView) rootView.findViewById(R.id.lvFragFriList);
 
         /** Show text if no friends available */
         int numberOfFriends = friend.getNumberOfFriends();
         if (numberOfFriends > 0) {
             frTvNoFriends.setVisibility(View.GONE);
         }
+        reloadListView();
 
-        names = friend.getFriends();
-        valueShishas = getNumOfShishas();
-
-        list = (ListView) rootView.findViewById(R.id.lvFragFriList);
-
-        /** set adapter of Listview*/
-        adapter = new MyAdapter(getContext(), names, valueShishas, friendImage);
-        list.setAdapter(adapter);
         return rootView;
     }
     public void reloadListView() {
-
         names = friend.getFriends();
         valueShishas = getNumOfShishas();
         adapter = new MyAdapter(getContext(), names, valueShishas,friendImage);
         list.setAdapter(adapter);
-
-        //adapter.notifyDataSetChanged();
     }
 
     private String[] getNumOfShishas() {
@@ -174,14 +161,6 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
 
         }
     }
-
-    private void sortList() {
-        names = friend.getAlphabeticalFriends();
-        valueShishas = getNumOfShishas();
-        adapter = new MyAdapter(getContext(), names, valueShishas,friendImage);
-        list.setAdapter(adapter);
-    }
-
     /** END OF ADAPTER */
 
 

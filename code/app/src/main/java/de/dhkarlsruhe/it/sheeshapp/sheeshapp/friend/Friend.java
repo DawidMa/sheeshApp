@@ -1,4 +1,4 @@
-package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
+package de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -112,12 +112,6 @@ public class Friend  {
             imageName = "ic_info";
         }
         return imageName;
-    }
-
-    public String[] getAlphabeticalFriends() {
-        String[] sorted = getFriends();
-        Arrays.sort(sorted);
-        return sorted;
     }
 
     public void switchSorted() {
