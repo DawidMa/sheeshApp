@@ -1,9 +1,7 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,7 +9,6 @@ import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -247,7 +244,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         int numberFriends = pref.getInt("NUMBER_OF_FRIENDS",0);
         System.out.println("Friends:"+numberFriends);
         List<String> choosenFriends = new ArrayList<>();
-        for (int i=0 ;i<numberFriends; i++) {
+        for (int i=1 ;i<=numberFriends; i++) {
             boolean choosen = pref.getBoolean("FRIEND_CHOOSEN_"+i,false);
             if(choosen) {
                 choosenFriends.add(pref.getString("FRIEND_"+i,"FEHLER"));

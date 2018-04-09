@@ -7,5 +7,13 @@
         android:title="Title"
         android:summary="Summary of this Checkbox"
         android:defaultValue="false" />
+    <PreferenceCategory
+        android:title="Something else"></PreferenceCategory>
+    <EditTextPreference
+        android:key="pref_editText"
+        android:title="Versteckte Nachricht"
+        android:summary="Klicken um einzugeben"
+        android:hint="Trag was ein"
+        android:defaultValue="OPFER"></EditTextPreference>
 
 </PreferenceScreen>

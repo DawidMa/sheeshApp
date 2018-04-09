@@ -1,6 +1,5 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +7,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 
 /**
  * Created by User on 23.11.2017.
