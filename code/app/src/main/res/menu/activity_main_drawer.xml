@@ -21,6 +21,10 @@
             android:id="@+id/nav_manage"
             android:icon="@android:drawable/sym_contact_card"
             android:title="MyGroups" />
+        <item
+            android:id="@+id/nav_discord"
+            android:icon="@drawable/ic_discord"
+            android:title="Join Discord" />
     </group>
 
     <item android:title="Menu">
