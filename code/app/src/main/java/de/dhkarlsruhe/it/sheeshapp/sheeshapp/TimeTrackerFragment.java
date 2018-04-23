@@ -152,7 +152,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         btPause.setEnabled(false);
         btStart.setEnabled(true);
         threadsRunning=false;
-        deleteOneFriend();
+       // deleteOneFriend();
         randomColeChanger();
         numOfSwitchedCoal++;
     }
@@ -250,6 +250,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
                 choosenFriends.add(pref.getString("FRIEND_"+i,"FEHLER"));
             }
         }
+        choosenFriends.add(pref.getString("savedUsername","noUser"));
         return choosenFriends;
     }
 
@@ -348,13 +349,15 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
                 try {
                     while (times>1) {
                         Thread.sleep(400);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                vibrate(setTtime);
-                                times--;
-                            }
-                        });
+                        if (getActivity()!=null) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    vibrate(setTtime);
+                                    times--;
+                                }
+                            });
+                        }
                     }
                 } catch (InterruptedException e) {
                 }
