@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -188,6 +189,9 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_manage) {
 
+        } else if (id == R.id.nav_discord) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/GqX6SzK"));
+            startActivity(browserIntent);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
