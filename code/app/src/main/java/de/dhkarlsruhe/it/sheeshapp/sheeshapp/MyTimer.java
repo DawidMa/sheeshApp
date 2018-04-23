@@ -11,10 +11,10 @@ public class MyTimer {
     public MyTimer(int time, boolean forward) {
         this.time = time;
         this.forward = forward;
-        if(!forward) {
-            seconds=time%60;
-            minutes=time/60;
-            hours=minutes/60;
+        if (!forward) {
+            seconds = time % 60;
+            minutes = time / 60;
+            hours = minutes / 60;
         }
     }
 
