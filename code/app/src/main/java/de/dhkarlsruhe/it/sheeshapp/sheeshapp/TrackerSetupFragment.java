@@ -36,15 +36,12 @@ public class TrackerSetupFragment extends Fragment{
     static SharedPreferences pref;
     private SharedPreferences settingsPref;
     static SharedPreferences.Editor editor;
-    private boolean prefCheckbox;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        // slabo = Typeface.createFromAsset(getContext().getAssets(),  "fonts/Slabo.ttf");
         pref = this.getActivity().getSharedPreferences("com.preferences.sheeshapp",0);
-        settingsPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        prefCheckbox = settingsPref.getBoolean("pref_ownProfilePicture",false);
         editor = pref.edit();
     }
 
@@ -75,12 +72,6 @@ public class TrackerSetupFragment extends Fragment{
         pickSeconds.setMinValue(0);
         pickMinutes.setMaxValue(5);
         pickMinutes.setMinValue(0);
-
-        if (prefCheckbox) {
-            Toast.makeText(getActivity(),"TRUE",Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getActivity(),"FALSE",Toast.LENGTH_SHORT).show();
-        }
     }
     private void initTextViews(View v) {
        // tvTitle = (TextView)v.findViewById(R.id.seTvTitle);
