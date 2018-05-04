@@ -17,7 +17,7 @@
     <string name="choose_friend_title">Wähle deine Freunde</string>
     <string name="username_text">Benutzername</string>
     <string name="password_text">Passwort</string>
-    <string name="email_text">email</string>
+    <string name="email_text">Email</string>
     <string name="repeat_password_text">Passwort wdh.</string>
     <string name="save_login_text">Login speichern</string>
     <string name="cancel_text">Abbrechen</string>
