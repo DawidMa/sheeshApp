@@ -1,18 +1,22 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.Login;
 
 /**
  * Created by Informatik on 23.11.2017.
@@ -20,10 +24,10 @@ import android.widget.Toast;
 
 public class LogInActivity extends AppCompatActivity {
 
-    private EditText etUsername, etPassword;
-    private Button btnLogin;
-    private String username, password, sharedUsername, sharedPassword;
+    private EditText etEmail, etPassword;
+    private String email, password;
     private SharedPreferences pref;
+    private ProgressDialog dialog;
    // private Animation anim;
    // private SharedPreferences.Editor editor;
 
@@ -34,45 +38,67 @@ public class LogInActivity extends AppCompatActivity {
        // anim = AnimationUtils.loadAnimation(this,R.anim.anim_move_from_left);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        etUsername = findViewById(R.id.etLogUsername);
+        etEmail = findViewById(R.id.etLogEmail);
         etPassword = findViewById(R.id.etLogPassword);
-        btnLogin = findViewById(R.id.btnLogLogin);
-
-
-
-        pref = getSharedPreferences("com.preferences.sheeshapp", Context.MODE_PRIVATE);
-        //editor = pref.edit();
-
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Loading....");
+        /*
         boolean savedSettings = pref.getBoolean("saveLogin",false);
         sharedPassword = pref.getString("savedPassword","#####");
         sharedUsername = pref.getString("savedUsername","nouser");
 
             if (savedSettings && !sharedUsername.equals("#####") && !sharedUsername.equals("nouser")) {
-                etUsername.setText(sharedUsername);
+                etEmail.setText(sharedUsername);
                 etPassword.setText(sharedPassword);
-            }
+            }*/
 
-
-        /*
-        etUsername.setAnimation(anim);
-        etPassword.setAnimation(anim);
-        btnLogin.setAnimation(anim);
-        */
     }
 
     public void login(View view) {
-        username = etUsername.getText().toString();
+        email = etEmail.getText().toString();
         password = etPassword.getText().toString();
+        if (checkInput(email, password)) {
+            handleLogin();
+        } else {
+            Toast.makeText(this,"Check input", Toast.LENGTH_SHORT).show();
+        }
+    }
 
-        if (username.equals(sharedUsername) && password.equals(sharedPassword)) {
-            Toast.makeText(this,"Login successful", Toast.LENGTH_LONG).show();
+    private boolean checkInput(String email, String password) {
+        if (email.equals(""))
+            return false;
+        if (password.equals(""))
+            return false;
+        return true;
+    }
+
+    private void handleLogin() {
+        Login login = new Login(email, password,this);
+        StringRequest request =  new StringRequest(login.getUrl(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String string) {
+                handleResponse(string);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                handleResponse(volleyError.getMessage());
+            }
+        });
+        login.startLogin(request);
+
+    }
+
+    private void handleResponse(String string) {
+        Toast.makeText(this, string,Toast.LENGTH_LONG).show();
+        dialog.dismiss();
+        if (string.equals("OK")) {
             this.finish();
-            
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
         } else {
-            Toast.makeText(this,"Wrong login", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, string, Toast.LENGTH_LONG).show();
         }
-
     }
+
 }
