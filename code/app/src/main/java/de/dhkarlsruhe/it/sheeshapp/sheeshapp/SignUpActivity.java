@@ -21,6 +21,8 @@ import android.widget.Toast;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.SignUp;
+
 /**
  * Created by Informatik on 20.11.2017.
  */
@@ -146,13 +148,14 @@ public class SignUpActivity extends AppCompatActivity {
         }
         if (succses == allDataValid.length){
             saveData();
-            this.finish();
+           // this.finish();
         } else {
             Toast.makeText(this,"Error",Toast.LENGTH_SHORT).show();
         }
     }
 
     private void saveData() {
+        /*
         editor.putString("savedUsername", userName);
         editor.putString("savedEmail", userEmail);
         editor.putString("savedPassword", userPassword);
@@ -163,6 +166,12 @@ public class SignUpActivity extends AppCompatActivity {
         } else
             editor.putBoolean("saveLogin",false);
         editor.commit();
+        */
+
+        SignUp signUp = new SignUp(userName,userEmail,userPassword,this);
+        if (signUp.startSignup()) {
+            this.finish();
+        }
     }
     private boolean isCbAutoLoginChecked(){
         if (cbSaveLogin.isChecked())
