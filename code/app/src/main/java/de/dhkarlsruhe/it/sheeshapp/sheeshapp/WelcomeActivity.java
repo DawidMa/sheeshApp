@@ -35,8 +35,8 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     public void closeWelcome(View view) {
-        this.finish();
-    }
+        Intent intent = new Intent(this,ServerActivity.class);
+        startActivity(intent);    }
 
     public void openSignUp(View view) {
         Intent intent = new Intent(this,SignUpActivity.class);
