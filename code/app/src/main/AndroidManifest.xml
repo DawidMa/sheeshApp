@@ -3,6 +3,7 @@
     package="de.dhkarlsruhe.it.sheeshapp.sheeshapp">
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -59,6 +60,10 @@
             android:label="@string/title_activity_time_tracker"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ServerActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"></activity>
     </application>
-
 </manifest>
