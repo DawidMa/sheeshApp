@@ -1,23 +1,27 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.Login;
-import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.Session;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 
 /**
  * Created by Informatik on 23.11.2017.
@@ -27,47 +31,54 @@ public class LogInActivity extends AppCompatActivity {
 
     private EditText etEmail, etPassword;
     private String email, password;
-    private SharedPreferences pref;
     private ProgressDialog dialog;
-   // private Animation anim;
-   // private SharedPreferences.Editor editor;
+    private Login login;
+    private CheckBox cbSaveLogin;
+    private Gson json = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-       // anim = AnimationUtils.loadAnimation(this,R.anim.anim_move_from_left);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         etEmail = findViewById(R.id.etLogEmail);
         etPassword = findViewById(R.id.etLogPassword);
+        cbSaveLogin = findViewById(R.id.cbLogSaveLogin);
+        login = new Login(this);
+
         dialog = new ProgressDialog(this);
         dialog.setMessage("Loading....");
-        /*
-        boolean savedSettings = pref.getBoolean("saveLogin",false);
-        sharedPassword = pref.getString("savedPassword","#####");
-        sharedUsername = pref.getString("savedUsername","nouser");
+        cbSaveLogin.setChecked(login.isSaved());
 
-            if (savedSettings && !sharedUsername.equals("#####") && !sharedUsername.equals("nouser")) {
-                etEmail.setText(sharedUsername);
-                etPassword.setText(sharedPassword);
-            }*/
+        checkAutomaticLogin();
+    }
 
+    private void checkAutomaticLogin() {
+        if(login.isSaved()) {
+            email = login.getSavedEmail();
+            password = login.getSavedPassword();
+            if (!email.equals("email") && !password.equals("password")) {
+                etEmail.setText(email);
+                etPassword.setText(password);
+            }
+        }
     }
 
     public void login(View view) {
         email = etEmail.getText().toString();
         password = etPassword.getText().toString();
+        login.setEmail(email);
+        login.setPassword(password);
         dialog.show();
-        if (checkInput(email, password)) {
-            handleLogin();
+        if (checkInput()) {
+            acceptLogin();
         } else {
             Toast.makeText(this,"Check input", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
         }
     }
 
-    private boolean checkInput(String email, String password) {
+    private boolean checkInput() {
         if (email.equals(""))
             return false;
         if (password.equals(""))
@@ -75,8 +86,7 @@ public class LogInActivity extends AppCompatActivity {
         return true;
     }
 
-    private void handleLogin() {
-        Login login = new Login(email, password,this);
+    private void acceptLogin() {
         StringRequest request =  new StringRequest(login.getUrl(), new Response.Listener<String>() {
             @Override
             public void onResponse(String string) {
@@ -89,15 +99,20 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
         login.startLogin(request);
-
     }
 
     private void handleResponse(String string) {
-        Toast.makeText(this, string,Toast.LENGTH_LONG).show();
         dialog.dismiss();
-        if (string.equals("OK")) {
+        if (string.substring(0,3).equals("OK:")) {
+            String response = string.substring(3,string.length());
+            UserSessionObject sessionObject;
+            Type type = new TypeToken<UserSessionObject>(){}.getType();
+            sessionObject = json.fromJson(response,type);
+            sessionObject.setContex(this);
+            sessionObject.save();
+            login.setSaved(cbSaveLogin.isChecked());
             this.finish();
-            Intent intent = new Intent(this,MainActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         } else {
             Toast.makeText(this, string, Toast.LENGTH_LONG).show();
