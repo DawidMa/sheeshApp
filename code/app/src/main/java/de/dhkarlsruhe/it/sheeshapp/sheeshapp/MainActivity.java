@@ -1,6 +1,7 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,8 +14,10 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.View;
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity
     private View header;
     private TabLayout tabLayout;
     private FloatingActionButton fab;
+    private MenuItem refreshFriendItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +61,6 @@ public class MainActivity extends AppCompatActivity
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         viewPager= (ViewPager) findViewById(R.id.pager);
         pagerAdapter=new FragmentAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
@@ -79,14 +82,17 @@ public class MainActivity extends AppCompatActivity
                     case 0:
                         changeFabToAddFriend();
                         toolbar.setTitle("Friends");
+                        refreshFriendItem.setVisible(true);
                         break;
                     case 1:
                         changeFabToSetup();
                         toolbar.setTitle("Let's Sheesh");
+                        refreshFriendItem.setVisible(false);
                         break;
                     case 2:
                         changeFabToStatistics();
                         toolbar.setTitle("History");
+                        refreshFriendItem.setVisible(false);
                         break;
                 }
                 super.onTabSelected(tab);
@@ -156,6 +162,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        refreshFriendItem = menu.findItem(R.id.menuRefreshFriends);
         return true;
     }
 
@@ -169,7 +176,10 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);        }
+            startActivity(intent);
+        } else if (id == R.id.menuRefreshFriends) {
+
+        }
         return super.onOptionsItemSelected(item);
     }
 

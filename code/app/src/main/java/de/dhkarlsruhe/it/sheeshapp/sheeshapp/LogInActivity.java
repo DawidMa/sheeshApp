@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.Login;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.Session;
 
 /**
  * Created by Informatik on 23.11.2017.
