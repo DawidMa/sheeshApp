@@ -41,7 +41,7 @@ public class AddFriendActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (checkSymbol('#')) {
                     if (friend.checkFriend(etName.getText().toString())) {
-                        friend.addFriend(etName.getText().toString());
+                        friend.addFriend(Integer.parseInt(etName.getText().toString()));
                         finish();
                     } else {
                         etName.setText("");
