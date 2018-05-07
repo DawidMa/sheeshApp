@@ -32,6 +32,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -47,13 +49,14 @@ public class MainActivity extends AppCompatActivity
     private TabLayout tabLayout;
     private FloatingActionButton fab;
     private MenuItem refreshFriendItem;
+    private UserSessionObject session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        session = new UserSessionObject(this);
         initStart();
-
     }
 
     private void initStart() {
@@ -113,8 +116,9 @@ public class MainActivity extends AppCompatActivity
 
         tvUsername = header.findViewById(R.id.tvMaiUsername);
         tvEmail = header.findViewById(R.id.tvMaiEmail);
-        tvUsername.setText(pref.getString("savedUsername","ErrorName"));
-        tvEmail.setText(pref.getString("savedEmail","ErrorEmail"));
+
+        tvUsername.setText(session.getName());
+        tvEmail.setText(session.getEmail());
     }
 
     public void changeFabToAddFriend() {
@@ -196,8 +200,6 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_history) {
             viewPager.setCurrentItem(2);
-
-        } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_discord) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/GqX6SzK"));

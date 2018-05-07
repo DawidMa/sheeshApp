@@ -36,7 +36,6 @@ public class SignUpActivity extends AppCompatActivity {
     private CheckBox cbSaveLogin;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-    //private AnimatorSet set;
     private Animation animEtShake;
     private boolean allDataValid[] = new boolean[4], checked = false;
 
@@ -45,9 +44,6 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_singup);
-
-      //  set = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.anim_move_from_left);
-
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -59,28 +55,16 @@ public class SignUpActivity extends AppCompatActivity {
         btnCancel = findViewById(R.id.btnSigWelcome);
         btnSubmit = findViewById(R.id.btnSigHomescreen);
         cbSaveLogin = findViewById(R.id.cbSaveLogin);
-        /*
-        set.setTarget(etUsername);
-        set.setTarget(etEmail);
-        set.setTarget(etPassword);
-        set.setTarget(etPasswordRepeat);
-        set.setTarget(cbSaveLogin);
-        set.setTarget(btnCancel);
-        set.setTarget(btnSubmit);
-        set.start();
-*/
 
         imgBtnUsername = findViewById(R.id.imgBtnSigInfoUsername);
         imgBtnEmail = findViewById(R.id.imgBtnSigInfoEmail);
         imgBtnPassword = findViewById(R.id.imgBtnSigInfoPassword);
         imgBtnRepeat = findViewById(R.id.imgBtnSigInfoPasswordRepeat);
 
-
-        pref = getSharedPreferences("com.preferences.sheeshapp", Context.MODE_PRIVATE);
+        pref = getSharedPreferences(SharedPrefConstants.NAME, Context.MODE_PRIVATE);
         editor = pref.edit();
 
         animEtShake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.anim_shake_et);
-
 
     }
 
@@ -94,24 +78,20 @@ public class SignUpActivity extends AppCompatActivity {
         userPassword = etPassword.getText().toString();
         userPasswordRepeat = etPasswordRepeat.getText().toString();
 
-
         if (isValidUsername(userName)){
             etUsername.setBackgroundResource(R.drawable.et_background);
             allDataValid[0] = true;
-
-        }else{
+        } else {
             imgBtnUsername.setVisibility(View.VISIBLE);
             etUsername.setBackgroundResource(R.drawable.et_background_invalidinput);
             etUsername.startAnimation(animEtShake);
             allDataValid[0]=false;
-
         }
 
         if (isValidEmail(userEmail)){
             allDataValid[1]=true;
             etEmail.setBackgroundResource(R.drawable.et_background);
-
-        }else {
+        } else {
             imgBtnEmail.setVisibility(View.VISIBLE);
             etEmail.setBackgroundResource(R.drawable.et_background_invalidinput);
             etEmail.startAnimation(animEtShake);
@@ -121,7 +101,6 @@ public class SignUpActivity extends AppCompatActivity {
         if (isValidPassword(userPassword)){
             allDataValid[2]=true;
             etPassword.setBackgroundResource(R.drawable.et_background);
-
         }else {
             imgBtnPassword.setVisibility(View.VISIBLE);
             etPassword.setBackgroundResource(R.drawable.et_background_invalidinput);
@@ -132,13 +111,13 @@ public class SignUpActivity extends AppCompatActivity {
         if (isValidRepeat(userPasswordRepeat,userPassword)){
             allDataValid[3]=true;
             etPasswordRepeat.setBackgroundResource(R.drawable.et_background);
-
-        }else {
+        } else {
             imgBtnRepeat.setVisibility(View.VISIBLE);
             etPasswordRepeat.setBackgroundResource(R.drawable.et_background_invalidinput);
             etPasswordRepeat.startAnimation(animEtShake);
             allDataValid[3]=false;
         }
+
         int succses = 0;
         for (int i = 0; i < allDataValid.length ; i++) {
 
@@ -146,27 +125,20 @@ public class SignUpActivity extends AppCompatActivity {
                 succses++;
             }
         }
+
         if (succses == allDataValid.length){
             saveData();
-           // this.finish();
         } else {
             Toast.makeText(this,"Error",Toast.LENGTH_SHORT).show();
         }
     }
 
     private void saveData() {
-        /*
-        editor.putString("savedUsername", userName);
-        editor.putString("savedEmail", userEmail);
-        editor.putString("savedPassword", userPassword);
-        editor.putString("savedPasswordRepeat", userPasswordRepeat);
 
-        if (isCbAutoLoginChecked()){
-            editor.putBoolean("saveLogin",true);
-        } else
-            editor.putBoolean("saveLogin",false);
+        editor.putString(SharedPrefConstants.EMAIL, userEmail);
+        editor.putString(SharedPrefConstants.PASSWORD, userPassword);
+        editor.putBoolean(SharedPrefConstants.AUTOMATIC_LOGIN,isCbAutoLoginChecked());
         editor.commit();
-        */
 
         SignUp signUp = new SignUp(userName,userEmail,userPassword,this);
         if (signUp.startSignup()) {
@@ -175,17 +147,19 @@ public class SignUpActivity extends AppCompatActivity {
     }
     private boolean isCbAutoLoginChecked(){
         if (cbSaveLogin.isChecked())
-                return true;
+            return true;
         else
             return false;
     }
-    public static boolean isValidUsername(String userName) {
+
+    private static boolean isValidUsername(String userName) {
         if (userName.length() < 3 || userName.length() > 15) {
             return false;
         }
         return true;
     }
-    public static boolean isValidPassword(final String userPassword) {
+
+    private boolean isValidPassword(final String userPassword) {
         /*
         At least Min Characters 8 and Maximum Characters 15
         At least One Number and 1 special characters from (! @#$%^&*-=+?.);
@@ -198,11 +172,11 @@ public class SignUpActivity extends AppCompatActivity {
         matcher = pattern.matcher(userPassword);
         return matcher.matches();
     }
-    public static boolean isValidRepeat(final String userPasswordRepeat, final String userPassword){
+
+    private static boolean isValidRepeat(final String userPasswordRepeat, final String userPassword){
         if (!(userPassword.equals(userPasswordRepeat))){
             return false;
         }
-
         return true;
     }
     public static boolean isValidEmail(String userEmail) {
@@ -221,6 +195,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });alert.show();
     }
+
     public void showInfoEmail(View view) {
         MyAlert alert = new MyAlert(this,"Email","Your mail should have a pattern like this:\n" +
                 "example@mail.com" );
@@ -253,10 +228,4 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });alert.show();
     }
-
-
-
-
-
-
 }
