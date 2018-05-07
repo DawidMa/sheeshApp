@@ -3,9 +3,11 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +39,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     private Friend friend;
     ImageView friendImage;
     MyAdapter adapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +50,14 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         frTvNoFriends = (TextView) rootView.findViewById(R.id.tvFragFriInfo);
         friendImage = rootView.findViewById(R.id.liFriendImage);
         list = (ListView) rootView.findViewById(R.id.lvFragFriList);
+        swipeRefreshLayout = rootView.findViewById(R.id.swipeFragFri);
+        swipeRefreshLayout.setColorSchemeColors(Color.CYAN);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateFriendlist();
+            }
+        });
 
         /** Show text if no friends available */
         int numberOfFriends = friend.getNumberOfFriends();
@@ -70,6 +81,12 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             numOfShishas[i-1] = "Bisherige Treffen: "+friend.getNumberOfShishasWithFriend(i);
         }
         return numOfShishas;
+    }
+
+    public void updateFriendlist() {
+
+        System.out.println("Update Triggered");
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     /** START OF MyAdapter */
