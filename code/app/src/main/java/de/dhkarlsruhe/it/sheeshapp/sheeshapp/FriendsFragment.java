@@ -18,12 +18,24 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
 
 /**
  * Created by Informatik on 23.11.2017.
@@ -32,14 +44,16 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 public class FriendsFragment extends android.support.v4.app.Fragment {
 //new branch. Working on ListView
     private ListView list;
-    private String names[];
-    private String valueShishas[];
+    private List<String> names = new ArrayList<>();
+    private List<String> valueShishas = new ArrayList<>();
     int value;
     private TextView frTvNoFriends;
     private Friend friend;
     ImageView friendImage;
     MyAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private List<FriendlistObject> friendlistObject;
+    private Gson json = new Gson();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,19 +72,23 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
                 updateFriendlist();
             }
         });
+        getResponseOnline();
 
         /** Show text if no friends available */
-        int numberOfFriends = friend.getNumberOfFriends();
+        int numberOfFriends = 3;
         if (numberOfFriends > 0) {
             frTvNoFriends.setVisibility(View.GONE);
         }
-        reloadListView();
 
         return rootView;
     }
     public void reloadListView() {
-        names = friend.getFriends();
-        valueShishas = getNumOfShishas();
+        names.clear();
+        valueShishas.clear();
+        for (FriendlistObject rels: friendlistObject) {
+            names.add(rels.getName()+"");
+            valueShishas.add(rels.getRelation_id()+"");
+        }
         adapter = new MyAdapter(getContext(), names, valueShishas,friendImage);
         list.setAdapter(adapter);
     }
@@ -86,20 +104,53 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     public void updateFriendlist() {
 
         System.out.println("Update Triggered");
+        getResponseOnline();
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void getResponseOnline() {
+         swipeRefreshLayout.setRefreshing(true);
+        StringRequest request =  new StringRequest(ServerConstants.URL_RELATIONS+21, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String string) {
+                positiveResponse(string);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                negativeResponse(volleyError.getMessage());
+            }
+        });
+        RequestQueue rQueue = Volley.newRequestQueue(getContext());
+        rQueue.add(request);
+    }
+
+    private void negativeResponse(String message) {
+
+        Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void positiveResponse(String string) {
+        Type listType = new TypeToken<List<FriendlistObject>>(){}.getType();
+        friendlistObject = json.fromJson(string,listType);
+        System.out.println(string);
+        reloadListView();
+        swipeRefreshLayout.setRefreshing(false);
+
     }
 
     /** START OF MyAdapter */
     class MyAdapter extends ArrayAdapter<String> {
 
         Context context;
-        String names[];
-        String descriptions[];
+        List<String> names;
+        List<String> descriptions;
         ImageView image;
         private int LOAD_IMAGE_RESULTS =1;
         Random rnd = new Random();
 
-        MyAdapter(Context c, String[] names, String[] descriptions, ImageView image) {
+        MyAdapter(Context c, List<String> names, List<String> descriptions, ImageView image) {
             //Deleted R.id.lichoosefriend in super()
             super(c, R.layout.row_friends,R.id.liFriendName,names);
             this.context = c;
@@ -117,8 +168,8 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             TextView tvDescription = (TextView)row.findViewById(R.id.liFriendNumOfShishas);
             final ImageView imgFriends = row.findViewById(R.id.liFriendImage);
 
-            tvTitle.setText(names[position]);
-            tvDescription.setText(valueShishas[position]);
+            tvTitle.setText(names.get(position));
+            tvDescription.setText(valueShishas.get(position));
             loadRoundedImage(imgFriends);
 
             String tag;
@@ -150,7 +201,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
                         String tag = (String)v.getTag();
                         value = Integer.parseInt(tag);
                         Toast.makeText(getContext(),tag,Toast.LENGTH_SHORT).show();
-                        friend.deleteFriend(value);
+                        friendlistObject.remove(value-1);
                         reloadListView();
                         if(friend.getNumberOfFriends()==0) {
                             frTvNoFriends.setVisibility(View.VISIBLE);
@@ -184,7 +235,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     @Override
     public void onResume() {
         super.onResume();
-       reloadListView();
+      // reloadListView();
         if(friend.getNumberOfFriends()==0) {
             frTvNoFriends.setVisibility(View.VISIBLE);
         } else {

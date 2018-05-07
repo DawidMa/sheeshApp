@@ -2,9 +2,19 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import java.util.Arrays;
 import java.util.Random;
+
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
 
 /**
  * Created by Informatik on 01.12.2017.
@@ -16,11 +26,13 @@ public class Friend  {
     private SharedPreferences.Editor editor;
     private Random rnd = new Random();
     private boolean sorted;
+    private Context c;
 
     public Friend(Context context) {
         pref = context.getSharedPreferences("com.preferences.sheeshapp",0);
         editor = pref.edit();
         sorted = pref.getBoolean("SORTED_FRIEND_LIST",false);
+        this.c = context;
     }
 
     public boolean checkFriend(String newFriend) {
@@ -40,13 +52,36 @@ public class Friend  {
         return accepted;
     }
 
-    public void addFriend(String newFriend) {
+    public void addFriend(int newFriend) {
+        /*
         int numOfFriends = pref.getInt("NUMBER_OF_FRIENDS",0);
         numOfFriends++;
         editor.putInt("NUMBER_OF_FRIENDS",numOfFriends);
         editor.putString("FRIEND_"+numOfFriends,newFriend);
         editor.putInt("FRIENDS_NUM_SHISHAS_"+numOfFriends,0);
         editor.commit();
+        */
+        StringRequest request =  new StringRequest(ServerConstants.URL_ADD_FRIEND+21+"&friendid="+newFriend, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String string) {
+                positiveResponse(string);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                negativeResponse(volleyError.getMessage());
+            }
+        });
+        RequestQueue rQueue = Volley.newRequestQueue(c);
+        rQueue.add(request);
+    }
+
+    private void negativeResponse(String message) {
+        Toast.makeText(c,message,Toast.LENGTH_SHORT).show();
+    }
+
+    private void positiveResponse(String string) {
+        Toast.makeText(c, string,Toast.LENGTH_SHORT).show();
     }
 
     public String[] getFriends() {

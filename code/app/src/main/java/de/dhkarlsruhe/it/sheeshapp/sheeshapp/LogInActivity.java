@@ -58,10 +58,12 @@ public class LogInActivity extends AppCompatActivity {
     public void login(View view) {
         email = etEmail.getText().toString();
         password = etPassword.getText().toString();
+        dialog.show();
         if (checkInput(email, password)) {
             handleLogin();
         } else {
             Toast.makeText(this,"Check input", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
         }
     }
 
