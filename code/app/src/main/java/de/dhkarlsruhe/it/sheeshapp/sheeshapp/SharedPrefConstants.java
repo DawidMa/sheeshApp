@@ -18,6 +18,9 @@ public class SharedPrefConstants {
     public static String S_FAV_TOBACCO = "fav_tobacco";
     public static String S_HAS_ICON = "has_icon";
 
+    public static String PROFILE = "profile";
+    public static String P_NAME = "name";
+
 
 
 }

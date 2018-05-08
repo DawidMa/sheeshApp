@@ -1,6 +1,8 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -34,15 +36,17 @@ import java.util.List;
 import java.util.Random;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.profile.ProfileActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 
 /**
  * Created by Informatik on 23.11.2017.
  */
 
 public class FriendsFragment extends android.support.v4.app.Fragment {
-//new branch. Working on ListView
+
     private ListView list;
     private List<String> names = new ArrayList<>();
     private List<String> valueShishas = new ArrayList<>();
@@ -54,6 +58,9 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private List<FriendlistObject> friendlistObject;
     private Gson json = new Gson();
+    private UserSessionObject session;
+    private int numOfFriends = 0;
+    private Context c;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,6 +68,8 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_friends, container, false);
         friend = new Friend(this.getActivity());
+        c = this.getActivity();
+        session = new UserSessionObject(getContext());
         frTvNoFriends = (TextView) rootView.findViewById(R.id.tvFragFriInfo);
         friendImage = rootView.findViewById(R.id.liFriendImage);
         list = (ListView) rootView.findViewById(R.id.lvFragFriList);
@@ -75,22 +84,37 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         getResponseOnline();
 
         /** Show text if no friends available */
-        int numberOfFriends = 3;
-        if (numberOfFriends > 0) {
-            frTvNoFriends.setVisibility(View.GONE);
-        }
+        checkAmountFriends();
 
         return rootView;
     }
+
+    private void checkAmountFriends() {
+        if (friendlistObject!=null) {
+            numOfFriends = friendlistObject.size();
+        } else
+            numOfFriends = 0;
+        if (numOfFriends > 0) {
+            frTvNoFriends.setVisibility(View.GONE);
+        } else {
+            frTvNoFriends.setVisibility(View.VISIBLE);
+        }
+    }
+
     public void reloadListView() {
         names.clear();
         valueShishas.clear();
-        for (FriendlistObject rels: friendlistObject) {
-            names.add(rels.getName()+"");
-            valueShishas.add(rels.getRelation_id()+"");
+        if (friendlistObject!=null) {
+            for (FriendlistObject rels: friendlistObject) {
+                names.add(rels.getName()+"");
+                valueShishas.add(rels.getRelation_id()+"");
+            }
+            adapter = new MyAdapter(getContext(), names, valueShishas,friendImage);
+            list.setAdapter(adapter);
+        } else {
+            numOfFriends = 0;
         }
-        adapter = new MyAdapter(getContext(), names, valueShishas,friendImage);
-        list.setAdapter(adapter);
+        checkAmountFriends();
     }
 
     private String[] getNumOfShishas() {
@@ -102,15 +126,14 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     }
 
     public void updateFriendlist() {
-
-        System.out.println("Update Triggered");
         getResponseOnline();
         swipeRefreshLayout.setRefreshing(false);
     }
 
     private void getResponseOnline() {
-         swipeRefreshLayout.setRefreshing(true);
-        StringRequest request =  new StringRequest(ServerConstants.URL_RELATIONS+21, new Response.Listener<String>() {
+        swipeRefreshLayout.setRefreshing(true);
+        long id = session.getUser_id();
+        StringRequest request =  new StringRequest(ServerConstants.URL_RELATIONS+id, new Response.Listener<String>() {
             @Override
             public void onResponse(String string) {
                 positiveResponse(string);
@@ -126,7 +149,6 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     }
 
     private void negativeResponse(String message) {
-
         Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
         swipeRefreshLayout.setRefreshing(false);
     }
@@ -134,10 +156,9 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     private void positiveResponse(String string) {
         Type listType = new TypeToken<List<FriendlistObject>>(){}.getType();
         friendlistObject = json.fromJson(string,listType);
-        System.out.println(string);
+        numOfFriends = friendlistObject.size();
         reloadListView();
         swipeRefreshLayout.setRefreshing(false);
-
     }
 
     /** START OF MyAdapter */
@@ -147,8 +168,6 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         List<String> names;
         List<String> descriptions;
         ImageView image;
-        private int LOAD_IMAGE_RESULTS =1;
-        Random rnd = new Random();
 
         MyAdapter(Context c, List<String> names, List<String> descriptions, ImageView image) {
             //Deleted R.id.lichoosefriend in super()
@@ -163,7 +182,6 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater)getContext().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View row = inflater.inflate(R.layout.row_friends,parent,false);
-            //View rootView = inflater.inflate(R.layout.fragment_friends, parent, false);
             TextView tvTitle = (TextView)row.findViewById(R.id.liFriendName);
             TextView tvDescription = (TextView)row.findViewById(R.id.liFriendNumOfShishas);
             final ImageView imgFriends = row.findViewById(R.id.liFriendImage);
@@ -174,46 +192,30 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
 
             String tag;
             tag = ""+(position+1);
-            imgFriends.setTag(tag);
-            imgFriends.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String tag = (String)v.getTag();
-                    value = Integer.parseInt(tag);
-                    Toast.makeText(getContext(),tag,Toast.LENGTH_SHORT).show();
-                    friend.switchSorted();
-                    reloadListView();
-                    /** Open Gallery */
-                    /*
-                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent,LOAD_IMAGE_RESULTS);
-                    */
-
-                }
-            });
-
             Button button = (Button)row.findViewById(R.id.liDeleteFriend);
             button.setTag(tag);
-
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String tag = (String)v.getTag();
                         value = Integer.parseInt(tag);
-                        Toast.makeText(getContext(),tag,Toast.LENGTH_SHORT).show();
-                        friendlistObject.remove(value-1);
-                        reloadListView();
-                        if(friend.getNumberOfFriends()==0) {
-                            frTvNoFriends.setVisibility(View.VISIBLE);
-                        }
+                        removeFriend(value-1);
                     }
 
+                });
+            row.setTag(tag);
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String tag = (String)v.getTag();
+                        value = Integer.parseInt(tag);
+                        openFriendsProfile(value-1);
+                    }
                 });
             return row;
         }
 
         private void loadRoundedImage(ImageView view) {
-            //final ImageView img = view.findViewById(R.id.liFriendImage);
             /** Loading Random drawable as round icon */
             Resources res = context.getResources();
             int resID = res.getIdentifier(friend.getRandomDrawable(), "drawable", context.getPackageName());
@@ -226,22 +228,40 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
                     view.setImageDrawable(circularBitmapDrawable);
                 }
             });
-
         }
     }
+
+    private void openFriendsProfile(int i) {
+        friend.setProfile(friendlistObject.get(i));
+        Intent intent = new Intent(c, ProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void removeFriend(int i) {
+        final int id = i;
+        MyAlert alert = new MyAlert(c,"Löschen","Bist du sicher dass du " +friendlistObject.get(id).getName()+ " löschen willst?");
+        alert.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                friendlistObject.remove(id);
+                reloadListView();
+            }
+        });alert.show();
+    }
+
     /** END OF ADAPTER */
 
 
     @Override
     public void onResume() {
         super.onResume();
-      // reloadListView();
-        if(friend.getNumberOfFriends()==0) {
-            frTvNoFriends.setVisibility(View.VISIBLE);
-        } else {
-            frTvNoFriends.setVisibility(View.GONE);
-
-        }
+        reloadListView();
     }
 }
 

@@ -32,10 +32,11 @@ public class Login {
         this.c = c;
         pref = c.getSharedPreferences(SharedPrefConstants.NAME, Context.MODE_PRIVATE);
         editor = pref.edit();
-        url = ServerConstants.URL;
+
     }
 
     public String getUrl() {
+        url=ServerConstants.URL;
         return url+="login?email="+email+"&password="+password;
     }
 
@@ -56,6 +57,11 @@ public class Login {
         return pref.getString(SharedPrefConstants.PASSWORD,"email");
     }
 
+    public void setSavedEmail() {
+        editor.putString(SharedPrefConstants.EMAIL,email);
+        editor.commit();
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -66,6 +72,11 @@ public class Login {
 
     public void setSaved(boolean saved) {
         editor.putBoolean(SharedPrefConstants.AUTOMATIC_LOGIN,saved);
+        editor.commit();
+    }
+
+    public void setSavedPassword() {
+        editor.putString(SharedPrefConstants.PASSWORD,password);
         editor.commit();
     }
 }

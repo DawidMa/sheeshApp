@@ -20,7 +20,6 @@ public class FriendlistObject {
         this.name = name;
     }
 
-
     public long getRelation_id() {
         return relation_id;
     }
