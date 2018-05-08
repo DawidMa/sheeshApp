@@ -27,8 +27,6 @@ public class Friend  {
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-    private SharedPreferences profilePref;
-    SharedPreferences.Editor profileEditor;
     private Random rnd = new Random();
     private boolean sorted;
     private Context c;
@@ -36,8 +34,6 @@ public class Friend  {
 
     public Friend(Context context) {
         pref = context.getSharedPreferences("com.preferences.sheeshapp",0);
-        profilePref = context.getSharedPreferences(SharedPrefConstants.PROFILE,Context.MODE_PRIVATE);
-        profileEditor = profilePref.edit();
         editor = pref.edit();
         sorted = pref.getBoolean("SORTED_FRIEND_LIST",false);
         this.c = context;
@@ -167,15 +163,5 @@ public class Friend  {
         }
         editor.putBoolean("SORTED_FRIEND_LIST",sorted);
         editor.commit();
-    }
-
-    public void setProfile(FriendlistObject friendlistObject) {
-
-        profileEditor.putString(SharedPrefConstants.P_NAME,friendlistObject.getName());
-        profileEditor.commit();
-    }
-
-    public String getProfileName() {
-        return profilePref.getString(SharedPrefConstants.P_NAME,"errorName");
     }
 }

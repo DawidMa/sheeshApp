@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Random;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.profile.Profile;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.profile.ProfileActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
@@ -61,6 +62,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     private UserSessionObject session;
     private int numOfFriends = 0;
     private Context c;
+    private Profile profile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +70,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_friends, container, false);
         friend = new Friend(this.getActivity());
+        profile = new Profile(this.getActivity());
         c = this.getActivity();
         session = new UserSessionObject(getContext());
         frTvNoFriends = (TextView) rootView.findViewById(R.id.tvFragFriInfo);
@@ -232,7 +235,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     }
 
     private void openFriendsProfile(int i) {
-        friend.setProfile(friendlistObject.get(i));
+        profile.setProfile(friendlistObject.get(i));
         Intent intent = new Intent(c, ProfileActivity.class);
         startActivity(intent);
     }

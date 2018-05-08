@@ -1,12 +1,10 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp.profile;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
-import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 
 /**
  * Created by d0272129 on 08.05.18.
@@ -15,14 +13,17 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 public class ProfileActivity extends AppCompatActivity {
 
     private TextView tvName;
-    private Friend friend;
+    private TextView tvSessions;
+    private Profile profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        profile = new Profile(this);
         tvName = findViewById(R.id.tvProName);
-        friend = new Friend(this);
-        tvName.setText(friend.getProfileName());
+        tvSessions = findViewById(R.id.tvProSessions);
+        tvName.setText(profile.getProfileName());
+        tvSessions.setText(profile.getTotalSessions()+"");
     }
 }

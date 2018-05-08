@@ -32,7 +32,6 @@ public class Login {
         this.c = c;
         pref = c.getSharedPreferences(SharedPrefConstants.NAME, Context.MODE_PRIVATE);
         editor = pref.edit();
-
     }
 
     public String getUrl() {
