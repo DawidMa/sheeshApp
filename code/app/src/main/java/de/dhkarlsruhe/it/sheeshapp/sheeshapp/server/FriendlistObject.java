@@ -6,11 +6,12 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp.server;
 
 public class FriendlistObject {
 
-    private long relation_id;
-    private long friendid;
-    private long last_session_id;
-    private int total_sessions;
     private String name;
+
+    private long relation_id;
+    private long friend_id;
+    private long last_session_id;
+    private long total_sessions;
 
     public String getName() {
         return name;
@@ -28,12 +29,12 @@ public class FriendlistObject {
         this.relation_id = relation_id;
     }
 
-    public long getFriendid() {
-        return friendid;
+    public long getFriend_id() {
+        return friend_id;
     }
 
-    public void setFriendid(long friendid) {
-        this.friendid = friendid;
+    public void setFriend_id(long friend_id) {
+        this.friend_id = friend_id;
     }
 
     public long getLast_session_id() {
@@ -44,11 +45,11 @@ public class FriendlistObject {
         this.last_session_id = last_session_id;
     }
 
-    public int getTotal_sessions() {
+    public long getTotal_sessions() {
         return total_sessions;
     }
 
-    public void setTotal_sessions(int total_sessions) {
+    public void setTotal_sessions(long total_sessions) {
         this.total_sessions = total_sessions;
     }
 }

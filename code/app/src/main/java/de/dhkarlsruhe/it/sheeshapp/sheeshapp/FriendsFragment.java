@@ -70,7 +70,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_friends, container, false);
         friend = new Friend(this.getActivity());
-        profile = new Profile(this.getActivity());
+        profile = new Profile(this.getActivity(), true);
         c = this.getActivity();
         session = new UserSessionObject(getContext());
         frTvNoFriends = (TextView) rootView.findViewById(R.id.tvFragFriInfo);
@@ -110,7 +110,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         if (friendlistObject!=null) {
             for (FriendlistObject rels: friendlistObject) {
                 names.add(rels.getName()+"");
-                valueShishas.add(rels.getRelation_id()+"");
+                valueShishas.add(rels.getFriend_id()+"");
             }
             adapter = new MyAdapter(getContext(), names, valueShishas,friendImage);
             list.setAdapter(adapter);
@@ -158,6 +158,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
 
     private void positiveResponse(String string) {
         Type listType = new TypeToken<List<FriendlistObject>>(){}.getType();
+        System.out.println("DAWIDOUT:"+string);
         friendlistObject = json.fromJson(string,listType);
         numOfFriends = friendlistObject.size();
         reloadListView();
@@ -235,9 +236,10 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     }
 
     private void openFriendsProfile(int i) {
-        profile.setProfile(friendlistObject.get(i));
         Intent intent = new Intent(c, ProfileActivity.class);
-        startActivity(intent);
+        if (profile.setProfile(friendlistObject.get(i))) {
+            startActivity(intent);
+        }
     }
 
     private void removeFriend(int i) {
@@ -264,7 +266,12 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        reloadListView();
+        //reloadListView();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }
 
