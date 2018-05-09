@@ -57,7 +57,7 @@ public class Friend  {
         return accepted;
     }
 
-    public void addFriend(int newFriend) {
+    public void addFriend(String newFriend) {
         /*
         int numOfFriends = pref.getInt("NUMBER_OF_FRIENDS",0);
         numOfFriends++;
@@ -67,7 +67,7 @@ public class Friend  {
         editor.commit();
         */
         long id = session.getUser_id();
-        StringRequest request =  new StringRequest(ServerConstants.URL_ADD_FRIEND+id+"&friendid="+newFriend, new Response.Listener<String>() {
+        StringRequest request =  new StringRequest(ServerConstants.URL_ADD_FRIEND+id+"&friendmail="+newFriend, new Response.Listener<String>() {
             @Override
             public void onResponse(String string) {
                 positiveResponse(string);
