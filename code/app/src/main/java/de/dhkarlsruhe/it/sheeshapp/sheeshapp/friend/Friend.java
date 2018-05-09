@@ -14,7 +14,10 @@ import java.util.Arrays;
 import java.util.Random;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.SharedPrefConstants;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 
 /**
  * Created by Informatik on 01.12.2017.
@@ -27,12 +30,14 @@ public class Friend  {
     private Random rnd = new Random();
     private boolean sorted;
     private Context c;
+    private UserSessionObject session;
 
     public Friend(Context context) {
         pref = context.getSharedPreferences("com.preferences.sheeshapp",0);
         editor = pref.edit();
         sorted = pref.getBoolean("SORTED_FRIEND_LIST",false);
         this.c = context;
+        session = new UserSessionObject(c);
     }
 
     public boolean checkFriend(String newFriend) {
@@ -61,7 +66,8 @@ public class Friend  {
         editor.putInt("FRIENDS_NUM_SHISHAS_"+numOfFriends,0);
         editor.commit();
         */
-        StringRequest request =  new StringRequest(ServerConstants.URL_ADD_FRIEND+21+"&friendid="+newFriend, new Response.Listener<String>() {
+        long id = session.getUser_id();
+        StringRequest request =  new StringRequest(ServerConstants.URL_ADD_FRIEND+id+"&friendid="+newFriend, new Response.Listener<String>() {
             @Override
             public void onResponse(String string) {
                 positiveResponse(string);

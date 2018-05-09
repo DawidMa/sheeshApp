@@ -22,7 +22,7 @@ public class SignUp {
     private String password;
     private String url = ServerConstants.URL;
     private StringRequest request;
-    private ProgressDialog dialog;
+    //private ProgressDialog dialog;
 
     public SignUp(String name, String email, String password, Context c) {
         this.name = name;
@@ -34,21 +34,21 @@ public class SignUp {
     public boolean startSignup() {
         url+="signup?name="+name+"&email="+email+"&password="+password;
 
-        dialog = new ProgressDialog(c);
+       /* dialog = new ProgressDialog(c);
         dialog.setMessage("Loading....");
-        dialog.show();
+        dialog.show();*/
 
         request = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String string) {
                 Toast.makeText(c, string,Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+               // dialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Toast.makeText((c), "Unable to reach Server!", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+               // dialog.dismiss();
             }
         });
 

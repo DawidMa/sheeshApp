@@ -54,6 +54,7 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void checkAutomaticLogin() {
+        Toast.makeText(this,"automatic",Toast.LENGTH_SHORT).show();
         if(login.isSaved()) {
             email = login.getSavedEmail();
             password = login.getSavedPassword();
@@ -67,6 +68,7 @@ public class LogInActivity extends AppCompatActivity {
     public void login(View view) {
         email = etEmail.getText().toString();
         password = etPassword.getText().toString();
+        System.out.println();
         login.setEmail(email);
         login.setPassword(password);
         dialog.show();
@@ -111,6 +113,8 @@ public class LogInActivity extends AppCompatActivity {
             sessionObject.setContex(this);
             sessionObject.save();
             login.setSaved(cbSaveLogin.isChecked());
+            login.setSavedEmail();
+            login.setSavedPassword();
             this.finish();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);

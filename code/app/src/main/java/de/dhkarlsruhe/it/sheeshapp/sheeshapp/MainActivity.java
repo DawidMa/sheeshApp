@@ -260,7 +260,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
-
         super.onResume();
     }
 
@@ -296,5 +295,10 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         return super.onKeyDown(KeyCode,event);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 }
