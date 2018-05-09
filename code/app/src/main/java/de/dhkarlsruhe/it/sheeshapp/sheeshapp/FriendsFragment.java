@@ -70,7 +70,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_friends, container, false);
         friend = new Friend(this.getActivity());
-        profile = new Profile(this.getActivity(), true);
+        profile = new Profile(this.getActivity());
         c = this.getActivity();
         session = new UserSessionObject(getContext());
         frTvNoFriends = (TextView) rootView.findViewById(R.id.tvFragFriInfo);
@@ -158,7 +158,6 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
 
     private void positiveResponse(String string) {
         Type listType = new TypeToken<List<FriendlistObject>>(){}.getType();
-        System.out.println("DAWIDOUT:"+string);
         friendlistObject = json.fromJson(string,listType);
         numOfFriends = friendlistObject.size();
         reloadListView();
@@ -237,10 +236,10 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
 
     private void openFriendsProfile(int i) {
         Intent intent = new Intent(c, ProfileActivity.class);
-        if (profile.setProfile(friendlistObject.get(i))) {
-            startActivity(intent);
+        profile.setProfile(friendlistObject.get(i));
+        startActivity(intent);
         }
-    }
+
 
     private void removeFriend(int i) {
         final int id = i;
