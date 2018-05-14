@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="HEY"
+        android:text="Name"
         android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
         app:layout_constraintStart_toEndOf="@+id/dropdownImage"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,7 +25,7 @@
         android:layout_alignStart="@id/dropdownTitle"
         android:layout_below="@id/dropdownTitle"
         android:layout_marginStart="8dp"
-        android:text="BYE"
+        android:text="Email"
         android:textAppearance="?android:attr/textAppearanceSmall"
         app:layout_constraintStart_toEndOf="@+id/dropdownImage"
         app:layout_constraintTop_toBottomOf="@+id/dropdownTitle" />
@@ -41,5 +41,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/icon_friends_orange" />
+
+    <Button
+        android:id="@+id/dropdownButton"
+        android:layout_width="45dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:drawable/ic_input_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
