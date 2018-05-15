@@ -60,7 +60,5 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:15.0.2'
     compile 'com.google.code.gson:gson:2.8.1'
     compile "com.andkulikov:transitionseverywhere:1.7.9"
-
-
 }
 apply plugin: 'com.google.gms.google-services'
