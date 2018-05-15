@@ -182,7 +182,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater)getContext().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View row = inflater.inflate(R.layout.row_friends,parent,false);
             TextView tvTitle = (TextView)row.findViewById(R.id.liFriendName);
@@ -192,27 +192,18 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             tvTitle.setText(names.get(position));
             tvDescription.setText(valueShishas.get(position));
             loadRoundedImage(imgFriends);
-
-            String tag;
-            tag = ""+(position+1);
             Button button = (Button)row.findViewById(R.id.liDeleteFriend);
-            button.setTag(tag);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String tag = (String)v.getTag();
-                        value = Integer.parseInt(tag);
-                        removeFriend(value-1);
+                        removeFriend(position);
                     }
 
                 });
-            row.setTag(tag);
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String tag = (String)v.getTag();
-                        value = Integer.parseInt(tag);
-                        openFriendsProfile(value-1);
+                        openFriendsProfile(position);
                     }
                 });
             return row;

@@ -24,6 +24,6 @@ public class SharedPrefConstants {
     public static String P_ID = "user_id" ;
     public static String P_RESPONSE = "response";
     public static String P_READY = "ready" ;
-
+    
 
 }
