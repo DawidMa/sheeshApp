@@ -25,4 +25,6 @@
     <string name="press_play_text">Press play to start!</string>
     <string name="tracker_friends_title">Your friends</string>
     <string name="action_refresh_friends">Refresh</string>
+    <string name="default_notification_channel_id">100</string>
+    <string name="login_text">Login</string>
 </resources>

@@ -44,7 +44,7 @@ public class AddFriendActivity extends AppCompatActivity {
     private void init() {
         tvTitle = findViewById(R.id.addTvTitle);
         autoCompleteTextView = findViewById(R.id.autoAddName);
-        autoCompleteTextView.setThreshold(1);
+        autoCompleteTextView.setThreshold(2);
         autoCompleteTextView.setAdapter(new FriendAutoCompleteAdapter(this)); // 'this' is Activity instance
         autoCompleteTextView.setLoadingIndicator((android.widget.ProgressBar) findViewById(R.id.pb_loading_indicator));
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -55,7 +55,6 @@ public class AddFriendActivity extends AppCompatActivity {
                 emailOfFriend = user.getEmail();
             }
         });
-
         fabAdd = findViewById(R.id.addFabAdd);
         fabAdd.setImageResource(R.mipmap.icon_plus_white);
         fabAdd.setOnClickListener(new View.OnClickListener() {
