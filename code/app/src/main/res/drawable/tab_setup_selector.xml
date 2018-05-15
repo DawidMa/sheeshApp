@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:state_selected="true"
-        android:drawable="@mipmap/icon_setup_orange" />
-    <item
-        android:state_selected="false"
-        android:drawable="@mipmap/icon_setup_white" />
+    <item android:state_selected="true">
+        <bitmap
+            android:src="@mipmap/icon_setup_white"
+            android:tint="@color/colorAccent" />
+    </item>
+
+    <item android:state_selected="false">
+        <bitmap
+            android:src="@mipmap/icon_setup_white" />
+    </item>
 </selector>

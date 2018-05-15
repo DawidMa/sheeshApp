@@ -24,7 +24,7 @@
             android:id="@+id/tbl_pages"
             android:background="@drawable/tablayout_colors"
             app:tabSelectedTextColor="#ffffff"
-            app:tabIndicatorColor="@color/colorPrimaryDark"
+            app:tabIndicatorColor="#666"
             app:tabIndicatorHeight="4dp"
             app:tabTextColor="#FFFFFF"
             android:layout_width="match_parent"
