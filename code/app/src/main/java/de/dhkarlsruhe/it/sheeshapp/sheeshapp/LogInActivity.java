@@ -104,7 +104,6 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void handleResponse(String string) {
-        dialog.dismiss();
         if (string.substring(0,3).equals("OK:")) {
             String response = string.substring(3,string.length());
             UserSessionObject sessionObject;
@@ -121,6 +120,7 @@ public class LogInActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, string, Toast.LENGTH_LONG).show();
         }
+        dialog.dismiss();
     }
 
 }

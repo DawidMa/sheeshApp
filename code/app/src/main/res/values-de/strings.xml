@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">SheeshApp</string>
+    <string name="transition_string">uniqueStringTransition</string>
+
 
     <string name="navigation_drawer_open">Öffne navigation drawer</string>
     <string name="navigation_drawer_close">Schließe navigation drawer</string>
@@ -27,4 +29,5 @@
     <string name="action_refresh_friends">Aktualisiere</string>
     <string name="default_notification_channel_id">100</string>
     <string name="login_text">Login</string>
+    <string name="edit">Bearbeiten</string>
 </resources>
