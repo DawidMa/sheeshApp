@@ -245,6 +245,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 friendlistObject.remove(id);
+                friend.deleteFriendOnline(friendlistObject.get(id).getFriend_id());
                 reloadListView();
             }
         });alert.show();

@@ -126,6 +126,29 @@ public class Friend  {
         editor.commit();
     }
 
+    public void deleteFriendOnline(long friendid) {
+        long id = session.getUser_id();
+        StringRequest request =  new StringRequest(ServerConstants.URL_DELETE_FRIEND+id+"&friendid="+friendid, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String string) {
+                String response;
+                if (string.equals("OK")) {
+                    response = "Friend deleted";
+                } else {
+                    response = string;
+                }
+                Toast.makeText(c,response,Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                negativeResponse(volleyError.getMessage());
+            }
+        });
+        RequestQueue rQueue = Volley.newRequestQueue(c);
+        rQueue.add(request);
+    }
+
     public boolean getChecked(String tag) {
         return pref.getBoolean("FRIEND_CHOOSEN_"+tag,false);
     }
