@@ -53,6 +53,7 @@ public class ImageHelper {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             editor.putString(SharedPrefConstants.I_NR+name, directory.getAbsolutePath());
             editor.commit();
+            setChanged(true,name);
             ok = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,6 +70,7 @@ public class ImageHelper {
     public Bitmap loadImageFromStorage(String name) {
         Bitmap bitmap = null;
         String path = pref.getString(SharedPrefConstants.I_NR + name, "empty");
+        Toast.makeText(c,path,Toast.LENGTH_SHORT).show();
         if (!path.equals("empty")) {
             try {
                 File f = new File(path, name+".png");
@@ -95,7 +97,6 @@ public class ImageHelper {
         WindowManager windowManager= ((Activity) c).getWindowManager();
         windowManager.getDefaultDisplay().getMetrics(displaymetrics);
         int screenWidth = displaymetrics.widthPixels;
-        int screenHeight = displaymetrics.heightPixels;
 
         Bitmap Objbitmap = bitmap;
 
@@ -109,5 +110,14 @@ public class ImageHelper {
 
         return bitmap;
 
+    }
+
+    public void setChanged(boolean b, String userid) {
+        editor.putBoolean(SharedPrefConstants.I_NR_CHANGED+userid,b);
+        editor.commit();
+    }
+
+    public boolean getChanged(String userid) {
+        return pref.getBoolean(SharedPrefConstants.I_NR_CHANGED+userid,false);
     }
 }

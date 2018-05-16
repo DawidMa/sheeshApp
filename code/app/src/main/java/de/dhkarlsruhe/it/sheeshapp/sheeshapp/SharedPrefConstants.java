@@ -27,7 +27,5 @@ public class SharedPrefConstants {
 
     public static String IMAGES = "images";
     public static String I_NR = "image_";
-
-
-
+    public static String I_NR_CHANGED = "changed_image_";
 }

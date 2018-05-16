@@ -321,7 +321,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        setImgUser();
+        if (imageHelper.getChanged(session.getUser_id()+"")) {
+            setImgUser();
+        }
     }
 
     //Dialog when pressed back

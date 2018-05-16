@@ -44,6 +44,7 @@ public class MyProfileActivity extends AppCompatActivity{
     private ConstraintLayout layout;
     private UserSessionObject session;
     private ImageHelper imageHelper;
+    private String userid;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class MyProfileActivity extends AppCompatActivity{
         layout.setBackground(trans);
         trans.startTransition(500);
         img = findViewById(R.id.imgMyProfile);
+        userid = session.getUser_id()+"";
         btEdit = findViewById(R.id.btMyProfileEdit);
         btEdit.setAnimation(AnimationUtils.loadAnimation(this,android.R.anim.fade_in));
         btEdit.animate();
@@ -70,7 +72,8 @@ public class MyProfileActivity extends AppCompatActivity{
                 selectImage();
             }
         });
-        setImage(imageHelper.loadImageFromStorage(session.getUser_id()+""));
+        setImage(imageHelper.loadImageFromStorage(userid));
+        imageHelper.setChanged(false,userid);
     }
 
     private void setImage(Bitmap image) {
@@ -102,10 +105,9 @@ public class MyProfileActivity extends AppCompatActivity{
                 e.printStackTrace();
             }
         }
-        changedImage = true;
     }
 
     private void saveBitmap() {
-        imageHelper.saveBitmapToStorage(bitmap,session.getUser_id()+"");
+        imageHelper.saveBitmapToStorage(bitmap,userid);
     }
 }
