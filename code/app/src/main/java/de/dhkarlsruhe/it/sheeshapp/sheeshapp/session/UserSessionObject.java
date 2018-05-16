@@ -34,7 +34,6 @@ public class UserSessionObject {
     public void save() {
         pref = c.getSharedPreferences(SharedPrefConstants.SESSION, Context.MODE_PRIVATE);
         editor = pref.edit();
-
         editor.putLong(SharedPrefConstants.S_USER_ID,user_id);
         editor.putString(SharedPrefConstants.S_NAME,name);
         editor.putString(SharedPrefConstants.S_EMAIL,email);
@@ -61,5 +60,14 @@ public class UserSessionObject {
 
     public boolean isHas_icon() {
         return pref.getBoolean(SharedPrefConstants.S_HAS_ICON,false);
+    }
+
+    public String getImage() {
+        return pref.getString(SharedPrefConstants.S_IMAGE,"empty");
+    }
+
+    public void setImage(String image) {
+        editor.putString(SharedPrefConstants.S_IMAGE,image);
+        editor.commit();
     }
 }

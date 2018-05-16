@@ -48,5 +48,4 @@ public class Profile {
         return profilePref.getLong(SharedPrefConstants.P_TOTAL_SESSIONS,0);
     }
 
-
 }

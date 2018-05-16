@@ -4,7 +4,7 @@
     <item android:state_selected="true">
         <bitmap
             android:src="@mipmap/icon_statistic_white"
-            android:tint="@color/colorAccent" />
+            android:tint="@color/orangeAccent" />
     </item>
 
     <item android:state_selected="false">

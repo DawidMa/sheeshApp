@@ -6,8 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +20,8 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -26,6 +30,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -75,7 +80,6 @@ public class MainActivity extends AppCompatActivity
 
     private void initStart() {
         pref = getSharedPreferences("com.preferences.sheeshapp", Context.MODE_PRIVATE);
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -135,23 +139,38 @@ public class MainActivity extends AppCompatActivity
         tvEmail.setText(session.getEmail());
 
         imgUser = header.findViewById(R.id.imgHeader);
+        setImgUser();
         imgUser.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 animateIntent(v);
             }
         });
 
+    }
 
+    private void setImgUser() {
+        String image = session.getImage();
+        if (image.equals("empty")) {
+            imgUser.setImageResource(R.mipmap.ic_launcher_round);
+        } else {
+            byte[] decodedByte = Base64.decode(image, 0);
+            Bitmap realImage = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+            Bitmap thumbnail = ThumbnailUtils.extractThumbnail((realImage), 200, 200);
 
+            RoundedBitmapDrawable circularBitmapDrawable =
+                    RoundedBitmapDrawableFactory.create(getResources(),thumbnail );
+            circularBitmapDrawable.setCircular(true);
+            imgUser.setImageDrawable(circularBitmapDrawable);
+        }
     }
 
     public void animateIntent(View view) {
-        Bitmap bitmap = ((BitmapDrawable)imgUser.getDrawable()).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
+        System.out.println("ANIMATING");
+       // Bitmap bitmap = ((BitmapDrawable)imgUser.getDrawable()).getBitmap();
+      //  ByteArrayOutputStream stream = new ByteArrayOutputStream();
+       // bitmap.compress(Bitmap.CompressFormat.PNG, 10, stream);
+        //byte[] byteArray = stream.toByteArray();
         Intent intent = new Intent(this, MyProfileActivity.class);
         String transitionName = getString(R.string.transition_string);
         ActivityOptionsCompat options =
@@ -159,7 +178,8 @@ public class MainActivity extends AppCompatActivity
                         imgUser,   // Starting view
                         transitionName    // The String
                 );
-        intent.putExtra("image",byteArray);
+        //intent.putExtra("image",byteArray);
+        System.out.println("BEFORE STARTING");
         ActivityCompat.startActivity(this, intent, options.toBundle());
     }
 
@@ -303,6 +323,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        setImgUser();
     }
 
     //Dialog when pressed back

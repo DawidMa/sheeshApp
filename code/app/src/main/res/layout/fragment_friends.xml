@@ -36,6 +36,8 @@
         android:footerDividersEnabled="false"
         android:overScrollFooter="@android:color/transparent"
         android:layout_width="match_parent"
+        android:paddingBottom="80dp"
+        android:clipToPadding="false"
         android:layout_height="match_parent" />
     </android.support.v4.widget.SwipeRefreshLayout>
 

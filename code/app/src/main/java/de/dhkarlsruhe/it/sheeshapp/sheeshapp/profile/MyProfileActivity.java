@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,9 +23,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 
 /**
  * Created by d0272129 on 15.05.18.
@@ -38,6 +41,7 @@ public class MyProfileActivity extends AppCompatActivity{
     private Button btEdit;
     private boolean changedImage = false;
     private ConstraintLayout layout;
+    private UserSessionObject session;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -46,9 +50,8 @@ public class MyProfileActivity extends AppCompatActivity{
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
-
         this.setContentView(R.layout.activity_my_profile);
-
+        session = new UserSessionObject(this);
         layout = findViewById(R.id.layoutMyProfile);
         ColorDrawable[] color = {new ColorDrawable(Color.GRAY), new ColorDrawable(Color.BLACK)};
         TransitionDrawable trans = new TransitionDrawable(color);
@@ -58,7 +61,7 @@ public class MyProfileActivity extends AppCompatActivity{
         btEdit = findViewById(R.id.btMyProfileEdit);
         btEdit.setAnimation(AnimationUtils.loadAnimation(this,android.R.anim.fade_in));
         btEdit.animate();
-        setImage(getIntent().getByteArrayExtra("image"));
+        setImage(session.getImage());
         btEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,9 +70,15 @@ public class MyProfileActivity extends AppCompatActivity{
         });
     }
 
-    private void setImage(byte[] bytes) {
-        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        img.setImageBitmap(bmp);
+    private void setImage(String image) {
+        if (image.equals("empty")) {
+            img.setImageResource(R.mipmap.ic_launcher_round);
+        }else  {
+            byte[] decodedByte = Base64.decode(image, 0);
+            Bitmap realImage = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+            img.setImageBitmap(realImage);
+        }
+
     }
 
     private void selectImage() {
@@ -87,22 +96,19 @@ public class MyProfileActivity extends AppCompatActivity{
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),path);
                 img.setImageBitmap(bitmap);
+                saveBitmap();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            /*
-            Glide.with(this).load(path).asBitmap().centerCrop().into(new BitmapImageViewTarget(img) {
-                @Override
-                protected void setResource(Bitmap resource) {
-                    RoundedBitmapDrawable circularBitmapDrawable =
-                            RoundedBitmapDrawableFactory.create(getApplicationContext().getResources(), resource);
-                    circularBitmapDrawable.setCircular(true);
-                    view.setImageDrawable(circularBitmapDrawable);
-                }
-            });*/
         }
         changedImage = true;
     }
 
-
+    private void saveBitmap() {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 10, byteArrayOutputStream);
+        byte[] b = byteArrayOutputStream.toByteArray();
+        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
+        session.setImage(imageEncoded);
+    }
 }
