@@ -1,54 +1,48 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
 import android.app.Dialog;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
-import android.view.KeyEvent;
-import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
-
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.profile.MyProfileActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
@@ -70,6 +64,7 @@ public class MainActivity extends AppCompatActivity
     private MenuItem refreshFriendItem;
     private UserSessionObject session;
     private ImageView imgUser;
+    private LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,11 +80,10 @@ public class MainActivity extends AppCompatActivity
 
     private void initStart() {
         pref = getSharedPreferences("com.preferences.sheeshapp", Context.MODE_PRIVATE);
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        viewPager= (ViewPager) findViewById(R.id.pager);
-        pagerAdapter=new FragmentAdapter(getSupportFragmentManager());
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        pagerAdapter = new FragmentAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
@@ -98,14 +92,14 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        header=navigationView.getHeaderView(0);
-        tabLayout= (TabLayout) findViewById(R.id.tbl_pages);
+        header = navigationView.getHeaderView(0);
+        tabLayout = (TabLayout) findViewById(R.id.tbl_pages);
         tabLayout.setupWithViewPager(viewPager);
         toolbar.setTitle("Friends");
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                switch(tab.getPosition()){
+                switch (tab.getPosition()) {
                     case 0:
                         changeFabToAddFriend();
                         toolbar.setTitle("Friends");
@@ -145,20 +139,38 @@ public class MainActivity extends AppCompatActivity
         tvEmail.setText(session.getEmail());
 
         imgUser = header.findViewById(R.id.imgHeader);
+        setImgUser();
         imgUser.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 animateIntent(v);
             }
         });
+
+    }
+
+    private void setImgUser() {
+        String image = session.getImage();
+        if (image.equals("empty")) {
+            imgUser.setImageResource(R.mipmap.ic_launcher_round);
+        } else {
+            byte[] decodedByte = Base64.decode(image, 0);
+            Bitmap realImage = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+            Bitmap thumbnail = ThumbnailUtils.extractThumbnail((realImage), 200, 200);
+
+            RoundedBitmapDrawable circularBitmapDrawable =
+                    RoundedBitmapDrawableFactory.create(getResources(),thumbnail );
+            circularBitmapDrawable.setCircular(true);
+            imgUser.setImageDrawable(circularBitmapDrawable);
+        }
     }
 
     public void animateIntent(View view) {
-        Bitmap bitmap = ((BitmapDrawable)imgUser.getDrawable()).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
+        System.out.println("ANIMATING");
+       // Bitmap bitmap = ((BitmapDrawable)imgUser.getDrawable()).getBitmap();
+      //  ByteArrayOutputStream stream = new ByteArrayOutputStream();
+       // bitmap.compress(Bitmap.CompressFormat.PNG, 10, stream);
+        //byte[] byteArray = stream.toByteArray();
         Intent intent = new Intent(this, MyProfileActivity.class);
         String transitionName = getString(R.string.transition_string);
         ActivityOptionsCompat options =
@@ -166,7 +178,8 @@ public class MainActivity extends AppCompatActivity
                         imgUser,   // Starting view
                         transitionName    // The String
                 );
-        intent.putExtra("image",byteArray);
+        //intent.putExtra("image",byteArray);
+        System.out.println("BEFORE STARTING");
         ActivityCompat.startActivity(this, intent, options.toBundle());
     }
 
@@ -310,6 +323,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        setImgUser();
     }
 
     //Dialog when pressed back

@@ -17,13 +17,12 @@ public class SharedPrefConstants {
     public static String S_NAME = "name";
     public static String S_FAV_TOBACCO = "fav_tobacco";
     public static String S_HAS_ICON = "has_icon";
+    public static String S_IMAGE = "profile_image" ;
 
     public static String PROFILE = "profile";
     public static String P_NAME = "name";
     public static String P_TOTAL_SESSIONS = "total_sessions";
     public static String P_ID = "user_id" ;
-    public static String P_RESPONSE = "response";
-    public static String P_READY = "ready" ;
-
+    public static String P_IMAGE = "profile_image";
 
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frameAddFriend"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete.DelayAutoCompleteTextView
+        android:id="@+id/autoAddName"
+        style="@style/etStyle"
+        android:layout_width="270dp"
+        android:hint="Search friend"
+        android:layout_height="40dp"
+        android:paddingLeft="25dp"
+        android:imeOptions="flagNoExtractUi|actionSearch"
+        android:inputType="textCapSentences"
+        android:paddingRight="32dp" />
+
+    <ProgressBar
+        android:id="@+id/pb_loading_indicator"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_gravity="left|center_vertical"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnAddDelete"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginRight="8dp"
+        android:background="@android:drawable/ic_delete"
+        android:backgroundTint="#000" />
+<!--
+    <Button
+        android:id="@+id/btnAddSearch"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="8dp"
+        android:layout_gravity="left|center_vertical"
+        android:background="@android:drawable/ic_search_category_default"
+        android:backgroundTint="#000"/> -->
+</FrameLayout>
