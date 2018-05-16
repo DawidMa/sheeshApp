@@ -44,6 +44,7 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.images.ImageHelper;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.profile.MyProfileActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity
     private UserSessionObject session;
     private ImageView imgUser;
     private LinearLayout linearLayout;
+    private ImageHelper imageHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +122,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        imageHelper = new ImageHelper(this);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         changeFabToAddFriend();
         int[] icons = {
@@ -150,18 +153,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setImgUser() {
-        String image = session.getImage();
-        if (image.equals("empty")) {
+        String user = session.getUser_id()+"";
+        Bitmap bitmap = imageHelper.loadImageFromStorage(user);
+        if (bitmap == null) {
             imgUser.setImageResource(R.mipmap.ic_launcher_round);
         } else {
-            byte[] decodedByte = Base64.decode(image, 0);
-            Bitmap realImage = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-            Bitmap thumbnail = ThumbnailUtils.extractThumbnail((realImage), 200, 200);
-
-            RoundedBitmapDrawable circularBitmapDrawable =
-                    RoundedBitmapDrawableFactory.create(getResources(),thumbnail );
-            circularBitmapDrawable.setCircular(true);
-            imgUser.setImageDrawable(circularBitmapDrawable);
+            Bitmap thumbnail = imageHelper.getThumbnailOfBitmap(bitmap,200,200);
+            imgUser.setImageDrawable(imageHelper.getRoundedBitmap(thumbnail));
         }
     }
 

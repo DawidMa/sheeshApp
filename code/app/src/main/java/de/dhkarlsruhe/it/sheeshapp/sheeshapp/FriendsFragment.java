@@ -51,7 +51,6 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     private ListView list;
     private List<String> names = new ArrayList<>();
     private List<String> valueShishas = new ArrayList<>();
-    int value;
     private TextView frTvNoFriends;
     private Friend friend;
     ImageView friendImage;
@@ -244,9 +243,13 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         alert.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                friend.deleteFriendOnline(friendlistObject.get(id).getFriend_id());
-                friendlistObject.remove(id);
-                reloadListView();
+                try {
+                    friend.deleteFriendOnline(friendlistObject.get(id).getFriend_id());
+                    friendlistObject.remove(id);
+                    reloadListView();
+                } catch (Exception e) {
+
+                }
             }
         });alert.show();
     }

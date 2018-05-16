@@ -27,6 +27,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.images.ImageHelper;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 
 /**
@@ -42,6 +43,7 @@ public class MyProfileActivity extends AppCompatActivity{
     private boolean changedImage = false;
     private ConstraintLayout layout;
     private UserSessionObject session;
+    private ImageHelper imageHelper;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class MyProfileActivity extends AppCompatActivity{
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
         this.setContentView(R.layout.activity_my_profile);
         session = new UserSessionObject(this);
+        imageHelper = new ImageHelper(this);
         layout = findViewById(R.id.layoutMyProfile);
         ColorDrawable[] color = {new ColorDrawable(Color.GRAY), new ColorDrawable(Color.BLACK)};
         TransitionDrawable trans = new TransitionDrawable(color);
@@ -61,22 +64,20 @@ public class MyProfileActivity extends AppCompatActivity{
         btEdit = findViewById(R.id.btMyProfileEdit);
         btEdit.setAnimation(AnimationUtils.loadAnimation(this,android.R.anim.fade_in));
         btEdit.animate();
-        setImage(session.getImage());
         btEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage();
             }
         });
+        setImage(imageHelper.loadImageFromStorage(session.getUser_id()+""));
     }
 
-    private void setImage(String image) {
-        if (image.equals("empty")) {
+    private void setImage(Bitmap image) {
+        if (image == null) {
             img.setImageResource(R.mipmap.ic_launcher_round);
         }else  {
-            byte[] decodedByte = Base64.decode(image, 0);
-            Bitmap realImage = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-            img.setImageBitmap(realImage);
+            img.setImageBitmap(image);
         }
 
     }
@@ -94,7 +95,7 @@ public class MyProfileActivity extends AppCompatActivity{
         if (requestCode == IMG_REQUEST && resultCode==RESULT_OK && data!=null) {
             Uri path = data.getData();
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),path);
+                bitmap = imageHelper.scaleBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(),path));
                 img.setImageBitmap(bitmap);
                 saveBitmap();
             } catch (IOException e) {
@@ -105,10 +106,6 @@ public class MyProfileActivity extends AppCompatActivity{
     }
 
     private void saveBitmap() {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 10, byteArrayOutputStream);
-        byte[] b = byteArrayOutputStream.toByteArray();
-        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
-        session.setImage(imageEncoded);
+        imageHelper.saveBitmapToStorage(bitmap,session.getUser_id()+"");
     }
 }
