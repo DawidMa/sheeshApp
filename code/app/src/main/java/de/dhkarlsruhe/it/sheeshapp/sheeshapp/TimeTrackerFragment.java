@@ -475,7 +475,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     }
 
     private void startNotificationThread() {
-        notification.setSmallIcon(R.mipmap.button_shisha);
+        notification.setSmallIcon(R.mipmap.icon_setup_white);
         notification.setWhen(System.currentTimeMillis());
         notification.setTicker(sequence.get(actualFriend) + " ist dran.");
         notification.setContentTitle(tiTvInfo.getText());

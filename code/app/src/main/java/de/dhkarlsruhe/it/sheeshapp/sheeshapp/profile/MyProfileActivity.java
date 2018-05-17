@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -22,6 +23,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -108,6 +110,12 @@ public class MyProfileActivity extends AppCompatActivity{
     }
 
     private void saveBitmap() {
-        imageHelper.saveBitmapToStorage(bitmap,userid);
+        String response;
+        if(imageHelper.saveBitmapToStorage(bitmap,userid)) {
+            response = "Saved";
+        } else {
+            response = "Error saving picture";
+        }
+        Snackbar.make(layout,response,Snackbar.LENGTH_LONG).show();
     }
 }

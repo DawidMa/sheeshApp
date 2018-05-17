@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity
 
     public void changeFabToSetup() {
         fab.setVisibility(View.VISIBLE);
-        fab.setImageResource(R.mipmap.button_shisha);
+        fab.setImageResource(R.mipmap.icon_setup_white);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

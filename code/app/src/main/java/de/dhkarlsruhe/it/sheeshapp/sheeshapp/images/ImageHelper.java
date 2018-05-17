@@ -70,7 +70,6 @@ public class ImageHelper {
     public Bitmap loadImageFromStorage(String name) {
         Bitmap bitmap = null;
         String path = pref.getString(SharedPrefConstants.I_NR + name, "empty");
-        Toast.makeText(c,path,Toast.LENGTH_SHORT).show();
         if (!path.equals("empty")) {
             try {
                 File f = new File(path, name+".png");
