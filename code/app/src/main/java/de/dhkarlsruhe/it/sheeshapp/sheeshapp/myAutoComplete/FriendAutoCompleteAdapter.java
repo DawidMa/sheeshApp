@@ -144,7 +144,7 @@ public class FriendAutoCompleteAdapter extends BaseAdapter implements Filterable
         StringRequest request = new StringRequest(url, new Response.Listener < String > () {
             @Override
             public void onResponse(String Response) {
-                Toast.makeText(context,Response,Toast.LENGTH_LONG).show();
+                //Toast.makeText(context,Response,Toast.LENGTH_LONG).show();
                 callback.onSuccessResponse(Response);
             }
         }, new Response.ErrorListener() {

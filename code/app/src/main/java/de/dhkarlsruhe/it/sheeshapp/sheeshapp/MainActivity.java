@@ -42,8 +42,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.io.ByteArrayOutputStream;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.images.ImageHelper;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.profile.MyProfileActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 
@@ -65,6 +69,7 @@ public class MainActivity extends AppCompatActivity
     private UserSessionObject session;
     private ImageView imgUser;
     private LinearLayout linearLayout;
+    private ImageHelper imageHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +125,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        imageHelper = new ImageHelper(this);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         changeFabToAddFriend();
         int[] icons = {
@@ -150,18 +156,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setImgUser() {
-        String image = session.getImage();
-        if (image.equals("empty")) {
-            imgUser.setImageResource(R.mipmap.ic_launcher_round);
+        String user = session.getUser_id()+"";
+        Bitmap bitmap = imageHelper.loadImageFromStorage(user);
+        if (bitmap == null) {
+            if (imgUser != null) {
+                Glide.with(getApplicationContext()).load(R.drawable.sheeshopa).apply(RequestOptions.circleCropTransform()).into(imgUser);
+            }
         } else {
-            byte[] decodedByte = Base64.decode(image, 0);
-            Bitmap realImage = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-            Bitmap thumbnail = ThumbnailUtils.extractThumbnail((realImage), 200, 200);
-
-            RoundedBitmapDrawable circularBitmapDrawable =
-                    RoundedBitmapDrawableFactory.create(getResources(),thumbnail );
-            circularBitmapDrawable.setCircular(true);
-            imgUser.setImageDrawable(circularBitmapDrawable);
+            Bitmap thumbnail = imageHelper.getThumbnailOfBitmap(bitmap,200,200);
+            Glide.with(getApplicationContext()).load(thumbnail).apply(RequestOptions.circleCropTransform()).into(imgUser);
+            //imgUser.setImageDrawable(imageHelper.getRoundedBitmap(thumbnail));
         }
     }
 
@@ -198,7 +202,7 @@ public class MainActivity extends AppCompatActivity
 
     public void changeFabToSetup() {
         fab.setVisibility(View.VISIBLE);
-        fab.setImageResource(R.mipmap.button_shisha);
+        fab.setImageResource(R.mipmap.icon_setup_white);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -323,7 +327,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        setImgUser();
+        if (imageHelper.getChanged(session.getUser_id()+"")) {
+            setImgUser();
+        }
     }
 
     //Dialog when pressed back

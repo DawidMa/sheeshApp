@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+
 
 /**
  * Created by Informatik on 17.11.2017.
@@ -19,7 +19,6 @@ import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 public class WelcomeActivity extends AppCompatActivity {
 
     ImageView image;
-    GlideDrawableImageViewTarget imageViewTarget;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +27,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         image = findViewById(R.id.imgWelLogo);
         if (image != null) {
-            imageViewTarget = new GlideDrawableImageViewTarget(image);
-            Glide.with(this).load(R.drawable.sheeshopa).into(imageViewTarget);
+            Glide.with(this).load(R.drawable.sheeshopa).into(image);
             sendViewToBack(image);
         }
     }

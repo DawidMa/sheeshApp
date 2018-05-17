@@ -25,4 +25,7 @@ public class SharedPrefConstants {
     public static String P_ID = "user_id" ;
     public static String P_IMAGE = "profile_image";
 
+    public static String IMAGES = "images";
+    public static String I_NR = "image_";
+    public static String I_NR_CHANGED = "changed_image_";
 }

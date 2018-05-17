@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -22,11 +23,15 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.images.ImageHelper;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 
 /**
@@ -42,6 +47,8 @@ public class MyProfileActivity extends AppCompatActivity{
     private boolean changedImage = false;
     private ConstraintLayout layout;
     private UserSessionObject session;
+    private ImageHelper imageHelper;
+    private String userid;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -52,31 +59,34 @@ public class MyProfileActivity extends AppCompatActivity{
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
         this.setContentView(R.layout.activity_my_profile);
         session = new UserSessionObject(this);
+        imageHelper = new ImageHelper(this);
         layout = findViewById(R.id.layoutMyProfile);
         ColorDrawable[] color = {new ColorDrawable(Color.GRAY), new ColorDrawable(Color.BLACK)};
         TransitionDrawable trans = new TransitionDrawable(color);
         layout.setBackground(trans);
         trans.startTransition(500);
         img = findViewById(R.id.imgMyProfile);
+        userid = session.getUser_id()+"";
         btEdit = findViewById(R.id.btMyProfileEdit);
         btEdit.setAnimation(AnimationUtils.loadAnimation(this,android.R.anim.fade_in));
         btEdit.animate();
-        setImage(session.getImage());
         btEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage();
             }
         });
+        setImage(imageHelper.loadImageFromStorage(userid));
+        imageHelper.setChanged(false,userid);
     }
 
-    private void setImage(String image) {
-        if (image.equals("empty")) {
-            img.setImageResource(R.mipmap.ic_launcher_round);
+    private void setImage(Bitmap image) {
+        if (image == null) {
+            if (img != null) {
+                Glide.with(getApplicationContext()).load(R.drawable.sheeshopa).into(img);
+            }
         }else  {
-            byte[] decodedByte = Base64.decode(image, 0);
-            Bitmap realImage = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-            img.setImageBitmap(realImage);
+            img.setImageBitmap(image);
         }
 
     }
@@ -94,21 +104,22 @@ public class MyProfileActivity extends AppCompatActivity{
         if (requestCode == IMG_REQUEST && resultCode==RESULT_OK && data!=null) {
             Uri path = data.getData();
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),path);
+                bitmap = imageHelper.scaleBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(),path));
                 img.setImageBitmap(bitmap);
                 saveBitmap();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        changedImage = true;
     }
 
     private void saveBitmap() {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 10, byteArrayOutputStream);
-        byte[] b = byteArrayOutputStream.toByteArray();
-        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
-        session.setImage(imageEncoded);
+        String response;
+        if(imageHelper.saveBitmapToStorage(bitmap,userid)) {
+            response = "Saved";
+        } else {
+            response = "Error saving picture";
+        }
+        Snackbar.make(layout,response,Snackbar.LENGTH_LONG).show();
     }
 }

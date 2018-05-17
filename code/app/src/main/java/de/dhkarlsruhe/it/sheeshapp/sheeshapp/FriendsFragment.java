@@ -3,12 +3,10 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,21 +24,25 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.images.ImageHelper;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.profile.Profile;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.profile.ProfileActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
+import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
  * Created by Informatik on 23.11.2017.
@@ -51,11 +53,10 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     private ListView list;
     private List<String> names = new ArrayList<>();
     private List<String> valueShishas = new ArrayList<>();
-    int value;
     private TextView frTvNoFriends;
     private Friend friend;
-    ImageView friendImage;
-    MyAdapter adapter;
+    private ImageView friendImage;
+    private MyAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private List<FriendlistObject> friendlistObject;
     private Gson json = new Gson();
@@ -63,6 +64,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     private int numOfFriends = 0;
     private Context c;
     private Profile profile;
+    private ImageHelper imageHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +75,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         profile = new Profile(this.getActivity());
         c = this.getActivity();
         session = new UserSessionObject(getContext());
+        imageHelper = new ImageHelper(c);
         frTvNoFriends = (TextView) rootView.findViewById(R.id.tvFragFriInfo);
         friendImage = rootView.findViewById(R.id.liFriendImage);
         list = (ListView) rootView.findViewById(R.id.lvFragFriList);
@@ -188,10 +191,10 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             TextView tvTitle = (TextView)row.findViewById(R.id.liFriendName);
             TextView tvDescription = (TextView)row.findViewById(R.id.liFriendNumOfShishas);
             final ImageView imgFriends = row.findViewById(R.id.liFriendImage);
-
             tvTitle.setText(names.get(position));
             tvDescription.setText(valueShishas.get(position));
-            loadRoundedImage(imgFriends);
+            loadRoundedImage(imgFriends, position);
+            //imgFriends.setBorderWidth(5);
             Button button = (Button)row.findViewById(R.id.liDeleteFriend);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -209,19 +212,16 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             return row;
         }
 
-        private void loadRoundedImage(ImageView view) {
-            /** Loading Random drawable as round icon */
-            Resources res = context.getResources();
-            int resID = res.getIdentifier(friend.getRandomDrawable(), "drawable", context.getPackageName());
-            Glide.with(context).load(resID).asBitmap().centerCrop().into(new BitmapImageViewTarget(view) {
-                @Override
-                protected void setResource(Bitmap resource) {
-                    RoundedBitmapDrawable circularBitmapDrawable =
-                            RoundedBitmapDrawableFactory.create(context.getResources(), resource);
-                    circularBitmapDrawable.setCircular(true);
-                    view.setImageDrawable(circularBitmapDrawable);
+        private void loadRoundedImage(ImageView view, int id) {
+            Bitmap bitmap = imageHelper.loadImageFromStorage(friendlistObject.get(id).getFriend_id()+"");
+            if (bitmap != null) {
+                Bitmap thumbnail = imageHelper.getThumbnailOfBitmap(bitmap,200,200);
+                Glide.with(context).load(thumbnail).apply(RequestOptions.circleCropTransform()).into(view);
+            } else {
+                if (view != null) {
+                    Glide.with(context).load(R.drawable.sheeshopa).apply(RequestOptions.circleCropTransform()).into(view);
                 }
-            });
+            }
         }
     }
 
@@ -244,9 +244,13 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         alert.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                friend.deleteFriendOnline(friendlistObject.get(id).getFriend_id());
-                friendlistObject.remove(id);
-                reloadListView();
+                try {
+                    friend.deleteFriendOnline(friendlistObject.get(id).getFriend_id());
+                    friendlistObject.remove(id);
+                    reloadListView();
+                } catch (Exception e) {
+
+                }
             }
         });alert.show();
     }
