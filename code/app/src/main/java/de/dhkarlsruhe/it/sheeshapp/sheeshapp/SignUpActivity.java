@@ -38,6 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private Animation animEtShake;
     private boolean allDataValid[] = new boolean[4], checked = false;
+    private View layout;
 
 
     @Override
@@ -46,6 +47,8 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_singup);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        layout = findViewById(R.id.layoutSignUp);
 
         etUsername = findViewById(R.id.edTUsername);
         etEmail = findViewById(R.id.edTEmail);
@@ -141,8 +144,8 @@ public class SignUpActivity extends AppCompatActivity {
         editor.commit();
 
         SignUp signUp = new SignUp(userName,userEmail,userPassword,this);
-        if (signUp.startSignup()) {
-            this.finish();
+        if (signUp.startSignup(layout)) {
+            //this.finish();
         }
     }
     private boolean isCbAutoLoginChecked(){
