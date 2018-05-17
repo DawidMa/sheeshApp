@@ -42,6 +42,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.io.ByteArrayOutputStream;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.images.ImageHelper;
@@ -156,7 +158,9 @@ public class MainActivity extends AppCompatActivity
         String user = session.getUser_id()+"";
         Bitmap bitmap = imageHelper.loadImageFromStorage(user);
         if (bitmap == null) {
-            imgUser.setImageResource(R.mipmap.ic_launcher_round);
+            if (imgUser != null) {
+                Glide.with(getApplicationContext()).load(R.drawable.sheeshopa).into(imgUser);
+            }
         } else {
             Bitmap thumbnail = imageHelper.getThumbnailOfBitmap(bitmap,200,200);
             imgUser.setImageDrawable(imageHelper.getRoundedBitmap(thumbnail));

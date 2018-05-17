@@ -6,11 +6,8 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,17 +25,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.images.ImageHelper;
@@ -47,6 +39,9 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.profile.ProfileActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static de.dhkarlsruhe.it.sheeshapp.sheeshapp.WelcomeActivity.sendViewToBack;
 
 /**
  * Created by Informatik on 23.11.2017.
@@ -59,7 +54,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     private List<String> valueShishas = new ArrayList<>();
     private TextView frTvNoFriends;
     private Friend friend;
-    ImageView friendImage;
+    CircleImageView friendImage;
     MyAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private List<FriendlistObject> friendlistObject;
@@ -177,9 +172,9 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         Context context;
         List<String> names;
         List<String> descriptions;
-        ImageView image;
+        CircleImageView image;
 
-        MyAdapter(Context c, List<String> names, List<String> descriptions, ImageView image) {
+        MyAdapter(Context c, List<String> names, List<String> descriptions, CircleImageView image) {
             //Deleted R.id.lichoosefriend in super()
             super(c, R.layout.row_friends,R.id.liFriendName,names);
             this.context = c;
@@ -198,6 +193,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             tvTitle.setText(names.get(position));
             tvDescription.setText(valueShishas.get(position));
             loadRoundedImage(imgFriends, position);
+            //imgFriends.setBorderWidth(5);
             Button button = (Button)row.findViewById(R.id.liDeleteFriend);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -216,16 +212,13 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         }
 
         private void loadRoundedImage(ImageView view, int id) {
-             Bitmap loadedBitmap = imageHelper.loadImageFromStorage(friendlistObject.get(id).getFriend_id() + "");
-            if (loadedBitmap != null) {
-                view.setImageBitmap(loadedBitmap);
+             String loadedBitmap = imageHelper.getImagePath(friendlistObject.get(id).getFriend_id());
+            if (!loadedBitmap.equals("empty")) {
+                Glide.with(context).load(Uri.parse(loadedBitmap)).into(view);
             } else {
-                /** Loading Random drawable as round icon */
-                Resources res = context.getResources();
-                int resID = res.getIdentifier(friend.getRandomDrawable(), "drawable", context.getPackageName());
-                Glide.with(c).asBitmap()
-                        .load(resID)
-                        .into(view);
+                if (view != null) {
+                    Glide.with(context).load(R.drawable.sheeshopa).into(view);
+                }
             }
         }
     }

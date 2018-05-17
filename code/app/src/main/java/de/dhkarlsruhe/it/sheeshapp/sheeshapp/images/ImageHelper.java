@@ -119,4 +119,8 @@ public class ImageHelper {
     public boolean getChanged(String userid) {
         return pref.getBoolean(SharedPrefConstants.I_NR_CHANGED+userid,false);
     }
+
+    public String getImagePath(long id) {
+        return pref.getString(SharedPrefConstants.I_NR + id, "empty");
+    }
 }
