@@ -2,6 +2,8 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp.server;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -22,7 +24,7 @@ public class SignUp {
     private String password;
     private String url = ServerConstants.URL;
     private StringRequest request;
-    //private ProgressDialog dialog;
+    private ProgressDialog dialog;
 
     public SignUp(String name, String email, String password, Context c) {
         this.name = name;
@@ -31,24 +33,31 @@ public class SignUp {
         this.c = c;
     }
 
-    public boolean startSignup() {
+    public boolean startSignup(final View layout) {
         url+="signup?name="+name+"&email="+email+"&password="+password;
 
-       /* dialog = new ProgressDialog(c);
+        dialog = new ProgressDialog(c);
         dialog.setMessage("Loading....");
-        dialog.show();*/
-
+        dialog.show();
         request = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String string) {
-                Toast.makeText(c, string,Toast.LENGTH_SHORT).show();
-               // dialog.dismiss();
+                String response;
+                if (string.equals("OK")) {
+                    response = "Success! Check your Emails.";
+                } else if (string.equals("")) {
+                    response = "Error connecting to server";
+                } else {
+                    response = string;
+                }
+                dialog.dismiss();
+                Snackbar.make(layout, response,Snackbar.LENGTH_LONG).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText((c), "Unable to reach Server!", Toast.LENGTH_SHORT).show();
-               // dialog.dismiss();
+                dialog.dismiss();
+                Snackbar.make(layout, "No internet Connection",Snackbar.LENGTH_LONG).show();
             }
         });
 
