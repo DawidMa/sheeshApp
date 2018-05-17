@@ -43,6 +43,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.ByteArrayOutputStream;
 
@@ -159,11 +160,12 @@ public class MainActivity extends AppCompatActivity
         Bitmap bitmap = imageHelper.loadImageFromStorage(user);
         if (bitmap == null) {
             if (imgUser != null) {
-                Glide.with(getApplicationContext()).load(R.drawable.sheeshopa).into(imgUser);
+                Glide.with(getApplicationContext()).load(R.drawable.sheeshopa).apply(RequestOptions.circleCropTransform()).into(imgUser);
             }
         } else {
             Bitmap thumbnail = imageHelper.getThumbnailOfBitmap(bitmap,200,200);
-            imgUser.setImageDrawable(imageHelper.getRoundedBitmap(thumbnail));
+            Glide.with(getApplicationContext()).load(thumbnail).apply(RequestOptions.circleCropTransform()).into(imgUser);
+            //imgUser.setImageDrawable(imageHelper.getRoundedBitmap(thumbnail));
         }
     }
 

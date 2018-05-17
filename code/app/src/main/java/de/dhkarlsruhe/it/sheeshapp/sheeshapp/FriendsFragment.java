@@ -3,7 +3,6 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -25,6 +24,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -39,9 +40,9 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.profile.ProfileActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
-import de.hdodenhof.circleimageview.CircleImageView;
-
-import static de.dhkarlsruhe.it.sheeshapp.sheeshapp.WelcomeActivity.sendViewToBack;
+import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
  * Created by Informatik on 23.11.2017.
@@ -54,8 +55,8 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     private List<String> valueShishas = new ArrayList<>();
     private TextView frTvNoFriends;
     private Friend friend;
-    CircleImageView friendImage;
-    MyAdapter adapter;
+    private ImageView friendImage;
+    private MyAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private List<FriendlistObject> friendlistObject;
     private Gson json = new Gson();
@@ -172,9 +173,9 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         Context context;
         List<String> names;
         List<String> descriptions;
-        CircleImageView image;
+        ImageView image;
 
-        MyAdapter(Context c, List<String> names, List<String> descriptions, CircleImageView image) {
+        MyAdapter(Context c, List<String> names, List<String> descriptions, ImageView image) {
             //Deleted R.id.lichoosefriend in super()
             super(c, R.layout.row_friends,R.id.liFriendName,names);
             this.context = c;
@@ -212,12 +213,13 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         }
 
         private void loadRoundedImage(ImageView view, int id) {
-             String loadedBitmap = imageHelper.getImagePath(friendlistObject.get(id).getFriend_id());
-            if (!loadedBitmap.equals("empty")) {
-                Glide.with(context).load(Uri.parse(loadedBitmap)).into(view);
+            Bitmap bitmap = imageHelper.loadImageFromStorage(friendlistObject.get(id).getFriend_id()+"");
+            if (bitmap != null) {
+                Bitmap thumbnail = imageHelper.getThumbnailOfBitmap(bitmap,200,200);
+                Glide.with(context).load(thumbnail).apply(RequestOptions.circleCropTransform()).into(view);
             } else {
                 if (view != null) {
-                    Glide.with(context).load(R.drawable.sheeshopa).into(view);
+                    Glide.with(context).load(R.drawable.sheeshopa).apply(RequestOptions.circleCropTransform()).into(view);
                 }
             }
         }

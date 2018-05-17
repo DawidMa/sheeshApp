@@ -25,6 +25,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -80,7 +82,9 @@ public class MyProfileActivity extends AppCompatActivity{
 
     private void setImage(Bitmap image) {
         if (image == null) {
-            img.setImageResource(R.mipmap.ic_launcher_round);
+            if (img != null) {
+                Glide.with(getApplicationContext()).load(R.drawable.sheeshopa).into(img);
+            }
         }else  {
             img.setImageBitmap(image);
         }
