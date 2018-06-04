@@ -54,14 +54,14 @@ public class AddFriendActivitySteps extends ActivityInstrumentationTestCase2<Add
     }
 
     @Given("^App is launched$")
-    public void app_launched() {
+    public void appLaunched() {
         Context appContext = InstrumentationRegistry.getTargetContext();
         assertEquals("de.dhkarlsruhe.it.sheeshapp.sheeshapp", appContext.getPackageName());
 
     }
 
     @And("^I am signed up$")
-    public void signing_in() {
+    public void signingIn() {
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.btnWelSignUp), withText("SignUp"),
                         childAtPosition(
@@ -143,7 +143,7 @@ public class AddFriendActivitySteps extends ActivityInstrumentationTestCase2<Add
         appCompatButton2.perform(click());
     }
     @And("^I am logged in$")
-    public void logging_in() {
+    public void loggingIn() {
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.btnWelLogin), withText("LogIn"),
                         childAtPosition(
@@ -165,7 +165,7 @@ public class AddFriendActivitySteps extends ActivityInstrumentationTestCase2<Add
         appCompatButton4.perform(click());
     }
     @Then("^I start AddFriendActivity$")
-    public void start_addfriend() {
+    public void startAddfriend() {
         ViewInteraction floatingActionButton = onView(
                 allOf(withId(R.id.fab),
                         childAtPosition(
@@ -179,7 +179,7 @@ public class AddFriendActivitySteps extends ActivityInstrumentationTestCase2<Add
 
 
     @And("^I insert a name into text field$")
-    public void i_insert_name() {
+    public void iInsertName() {
         ViewInteraction appCompatEditText9 = onView(
                 allOf(withId(R.id.addEtName),
                         childAtPosition(
@@ -201,7 +201,7 @@ public class AddFriendActivitySteps extends ActivityInstrumentationTestCase2<Add
     }
 
     @And("^I click the FAB$")
-    public void i_clicked_fab() {
+    public void iClickedFab() {
         ViewInteraction floatingActionButton2 = onView(
                 allOf(withId(R.id.addFabAdd),
                         childAtPosition(
@@ -214,7 +214,7 @@ public class AddFriendActivitySteps extends ActivityInstrumentationTestCase2<Add
     }
 
     @Then("^I see friend in list at MainActivity$")
-    public void i_see_friend()  {
+    public void iSeeFriend()  {
         ViewInteraction textView = onView(
                 allOf(withId(R.id.liChooseFriendName), withText("manu"),
                         childAtPosition(
@@ -227,7 +227,7 @@ public class AddFriendActivitySteps extends ActivityInstrumentationTestCase2<Add
     }
 
     @Then("^text field is deleted$")
-    public void text_field_is_empty() {
+    public void textFieldIsEmpty() {
         ViewInteraction editText = onView(
                 allOf(withId(R.id.addEtName), withText("Name"),
                         childAtPosition(
@@ -240,7 +240,7 @@ public class AddFriendActivitySteps extends ActivityInstrumentationTestCase2<Add
     }
 
     @And("^I stay in the AddFriendActivity$")
-        public void stay_in_addfriend() {
+        public void stayInAddfriend() {
         ViewInteraction textView = onView(
                 allOf(withId(R.id.addTvTitle), withText("Wie heißt dein Kumpel?"),
                         childAtPosition(
