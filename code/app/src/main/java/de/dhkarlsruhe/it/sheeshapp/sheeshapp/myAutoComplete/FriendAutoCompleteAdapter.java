@@ -95,7 +95,7 @@ public class FriendAutoCompleteAdapter extends BaseAdapter implements Filterable
         ((Button) convertView.findViewById(R.id.dropdownButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                friend.addFriend(getItem(position).getEmail());
+                friend.addFriend(getItem(position).getEmail(),getItem(position).getName());
                 ((AppCompatActivity)context).finish();
             }
         });

@@ -7,7 +7,6 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp.server;
 public class FriendlistObject {
 
     private String name;
-
     private long relation_id;
     private long friend_id;
     private long last_session_id;

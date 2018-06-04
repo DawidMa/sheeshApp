@@ -35,6 +35,12 @@ android {
     }
 }
 
+repositories {
+    maven {
+        url  "http://dl.bintray.com/lukaville/maven"
+    }
+}
+
 dependencies {
     // Required -- JUnit 4 framework
     testCompile 'junit:junit:4.12'
@@ -56,6 +62,7 @@ dependencies {
         implementation ("com.github.bumptech.glide:glide:4.7.1") {
             exclude group: "com.android.support"
         }
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
     implementation ('jp.wasabeef:glide-transformations:3.3.0'){
         exclude group: "com.android.support"
     }
@@ -65,6 +72,8 @@ dependencies {
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.google.firebase:firebase-messaging:15.0.2'
     compile 'com.google.code.gson:gson:2.8.1'
-    compile "com.andkulikov:transitionseverywhere:1.7.9"
+    compile 'com.andkulikov:transitionseverywhere:1.7.9'
+    compile 'com.squareup.okhttp3:okhttp:3.1.1'
+    compile 'com.nbsp:library:1.8'
 }
 apply plugin: 'com.google.gms.google-services'

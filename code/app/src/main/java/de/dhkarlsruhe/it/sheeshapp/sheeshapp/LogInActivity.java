@@ -104,7 +104,7 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void handleResponse(String string) {
-        if (string.substring(0,3).equals("OK:")) {
+        if (string!=null&&string.substring(0,3).equals("OK:")) {
             String response = string.substring(3,string.length());
             UserSessionObject sessionObject;
             Type type = new TypeToken<UserSessionObject>(){}.getType();

@@ -28,4 +28,11 @@ public class SharedPrefConstants {
     public static String IMAGES = "images";
     public static String I_NR = "image_";
     public static String I_NR_CHANGED = "changed_image_";
+
+    public static String FRIEND = "friend";
+    public static String F_OFFILNE_JSON = "offline_json";
+    public static String F_LAST_CHANGED = "last_changed";
+
+
+
 }
