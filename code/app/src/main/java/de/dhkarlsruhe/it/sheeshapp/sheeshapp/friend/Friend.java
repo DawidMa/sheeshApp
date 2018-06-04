@@ -11,6 +11,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
@@ -27,13 +29,12 @@ public class Friend  {
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-    private Random rnd = new Random();
     private boolean sorted;
     private Context c;
     private UserSessionObject session;
 
     public Friend(Context context) {
-        pref = context.getSharedPreferences("com.preferences.sheeshapp",0);
+        pref = context.getSharedPreferences(SharedPrefConstants.FRIEND,0);
         editor = pref.edit();
         sorted = pref.getBoolean("SORTED_FRIEND_LIST",false);
         this.c = context;
@@ -57,20 +58,12 @@ public class Friend  {
         return accepted;
     }
 
-    public void addFriend(String newFriend) {
-        /*
-        int numOfFriends = pref.getInt("NUMBER_OF_FRIENDS",0);
-        numOfFriends++;
-        editor.putInt("NUMBER_OF_FRIENDS",numOfFriends);
-        editor.putString("FRIEND_"+numOfFriends,newFriend);
-        editor.putInt("FRIENDS_NUM_SHISHAS_"+numOfFriends,0);
-        editor.commit();
-        */
+    public void addFriend(String newFriend, final String friendName) {
         long id = session.getUser_id();
         StringRequest request =  new StringRequest(ServerConstants.URL_ADD_FRIEND+id+"&friendmail="+newFriend, new Response.Listener<String>() {
             @Override
             public void onResponse(String string) {
-                positiveResponse(string);
+                positiveResponse(string,friendName);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -86,8 +79,13 @@ public class Friend  {
         Toast.makeText(c,message,Toast.LENGTH_SHORT).show();
     }
 
-    private void positiveResponse(String string) {
+    private void positiveResponse(String string, String friendName) {
         Toast.makeText(c, string,Toast.LENGTH_SHORT).show();
+        int numOfFriends = pref.getInt("NUMBER_OF_FRIENDS",0);
+        numOfFriends++;
+        editor.putString("FRIEND_"+(numOfFriends),friendName);
+        editor.putInt("NUMBER_OF_FRIENDS",numOfFriends);
+        editor.commit();
     }
 
     public String[] getFriends() {
@@ -164,20 +162,6 @@ public class Friend  {
         return pref.getInt("FRIENDS_NUM_SHISHAS_"+i,2);
     }
 
-    public String getRandomDrawable() {
-
-        String imageName;
-        int randomInt = rnd.nextInt(3);
-        if (randomInt ==0 ) {
-            imageName = "user_avatar";
-        } else if (randomInt == 1){
-            imageName = "logo_splash";
-        } else {
-            imageName = "ic_info";
-        }
-        return imageName;
-    }
-
     public void switchSorted() {
         if (!sorted) {
             sorted = true;
@@ -186,5 +170,23 @@ public class Friend  {
         }
         editor.putBoolean("SORTED_FRIEND_LIST",sorted);
         editor.commit();
+    }
+
+    public boolean actualInformationAvailable() {
+        return pref.contains(SharedPrefConstants.F_OFFILNE_JSON);
+    }
+
+    public void saveOfflineInformation(String string) {
+        editor.putString(SharedPrefConstants.F_OFFILNE_JSON,string);
+        editor.putString(SharedPrefConstants.F_LAST_CHANGED, Calendar.getInstance().toString());
+        editor.commit();
+    }
+
+    public String getOfflineData() {
+        return pref.getString(SharedPrefConstants.F_OFFILNE_JSON,"empty");
+    }
+
+    public String getFriendName(String i) {
+        return pref.getString("FRIEND_"+i,"FEHLER");
     }
 }

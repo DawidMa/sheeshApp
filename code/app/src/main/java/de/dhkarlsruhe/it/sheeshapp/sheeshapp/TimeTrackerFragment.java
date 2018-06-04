@@ -22,6 +22,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
+
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
@@ -48,6 +50,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     static String firstFriend;
     private String friendsAsString="", dateStart ="", dateEnd="",totalTime;
 
+    private Friend friend;
 
     private Thread threadTotal, threadSingle, threadTimeToChange, threadVibrator;
 
@@ -82,6 +85,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         View rootView = inflater.inflate(R.layout.fragment_time_tracker, container, false);
         v= rootView;
         init();
+        friend = new Friend(getContext());
         sequence = getChoosenFriendsAsList();
         printFriendsList(sequence);
         Collections.shuffle(sequence);
@@ -106,7 +110,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     }
 
     private void init() {
-        pref = this.getActivity().getSharedPreferences("com.preferences.sheeshapp", 0);
+        pref = this.getActivity().getSharedPreferences("EINSTELLUNGEN", 0);
         editor = pref.edit();
         history = new History(getContext());
         tiTvChoosenFriends = (TextView) v.findViewById(R.id.tiTvChoosenFriends);
@@ -218,7 +222,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
         super.onDetach();
     }
-
+/*
     private String[] getChoosenFriends() {
         int numberFriends = pref.getInt("NUMBER_OF_FRIENDS",0);
         int numberChoosenFriends=0;
@@ -238,19 +242,19 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
             }
         }
         return choosenFriends;
-    }
+    }*/
 
     private List<String> getChoosenFriendsAsList() {
-        int numberFriends = pref.getInt("NUMBER_OF_FRIENDS",0);
+        int numberFriends = friend.getNumberOfFriends();
         System.out.println("Friends:"+numberFriends);
         List<String> choosenFriends = new ArrayList<>();
         for (int i=1 ;i<=numberFriends; i++) {
-            boolean choosen = pref.getBoolean("FRIEND_CHOOSEN_"+i,false);
+            boolean choosen = friend.getChecked(i+"");
             if(choosen) {
-                choosenFriends.add(pref.getString("FRIEND_"+i,"FEHLER"));
+                choosenFriends.add(friend.getFriendName(i+""));
             }
         }
-        choosenFriends.add(pref.getString("savedUsername","noUser"));
+        //choosenFriends.add(pref.getString("savedUsername","noUser"));
         return choosenFriends;
     }
 

@@ -42,6 +42,7 @@ public class AddFriendActivity extends AppCompatActivity {
     private DelayAutoCompleteTextView autoCompleteTextView;
     private Friend friend;
     private String emailOfFriend;
+    private String nameOfFriend;
     private Button btnDelete;
 
     @Override
@@ -79,6 +80,7 @@ public class AddFriendActivity extends AppCompatActivity {
                 UserSearchObject user = (UserSearchObject) adapterView.getItemAtPosition(position);
                 autoCompleteTextView.setText(user.getName());
                 emailOfFriend = user.getEmail();
+                nameOfFriend = user.getName();
             }
         });
         fabAdd = findViewById(R.id.addFabAdd);
@@ -86,7 +88,7 @@ public class AddFriendActivity extends AppCompatActivity {
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                        friend.addFriend(emailOfFriend);
+                        friend.addFriend(emailOfFriend,nameOfFriend);
                         finish();
                 }
         });

@@ -23,6 +23,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
+
 /**
  * Created by d0272129 on 14.04.17.
  */
@@ -33,15 +35,16 @@ public class TrackerSetupFragment extends Fragment{
    // private Typeface slabo;
     private static NumberPicker pickSeconds, pickMinutes;
     private Button btStartMeeting;
-    static SharedPreferences pref;
-    private SharedPreferences settingsPref;
-    static SharedPreferences.Editor editor;
+    private static SharedPreferences pref;
+    private static SharedPreferences.Editor editor;
+    private static Friend friend;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        // slabo = Typeface.createFromAsset(getContext().getAssets(),  "fonts/Slabo.ttf");
-        pref = this.getActivity().getSharedPreferences("com.preferences.sheeshapp",0);
+        friend = new Friend(getContext());
+        pref = getActivity().getSharedPreferences("EINSTELLUNGEN",0);
         editor = pref.edit();
     }
 
@@ -107,10 +110,10 @@ public class TrackerSetupFragment extends Fragment{
 
     private static boolean checkChoosenFriends() {
         boolean check = false;
-        int numberFriends = pref.getInt("NUMBER_OF_FRIENDS",0);
+        int numberFriends = friend.getNumberOfFriends();
         int sumChoosen=0;
         for(int i=1; i<=numberFriends; i++) {
-            boolean choosen =pref.getBoolean("FRIEND_CHOOSEN_"+i,false);
+            boolean choosen =friend.getChecked(i+"");
             if(choosen) {
                 sumChoosen++;
                 int numShishas = pref.getInt("FRIENDS_NUM_SHISHAS_"+i,0);
