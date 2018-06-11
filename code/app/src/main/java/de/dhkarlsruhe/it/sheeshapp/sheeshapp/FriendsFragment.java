@@ -257,13 +257,13 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             final ImageView imgFriends = row.findViewById(R.id.liFriendImage);
             tvTitle.setText(names.get(position));
             tvDescription.setText(valueShishas.get(position));
-            loadRoundedImage(imgFriends, position);
-            imgFriends.setOnClickListener(new View.OnClickListener() {
+            loadFileFromServer(friendlistObject.get(position).getFriend_id() + "", imgFriends);
+            /* imgFriends.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     loadFileFromServer(friendlistObject.get(position).getFriend_id() + "", imgFriends);
                 }
-            });
+            });*/
 
             Button button = (Button) row.findViewById(R.id.liDeleteFriend);
             button.setOnClickListener(new View.OnClickListener() {
@@ -303,6 +303,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     }
 
     private void loadFileFromServer(final String userid, final ImageView imageView) {
+
         final Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -354,9 +355,12 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
 
     private void showLoadedFile(ImageView imageView, String s) {
         File file = new File(s);
-        Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
-        Glide.with(context).load(bitmap).apply(RequestOptions.circleCropTransform()).into(imageView);
-        Toast.makeText(context, "OK", Toast.LENGTH_SHORT).show();
+        if (file.length()<300) {
+            Glide.with(context).load(R.drawable.sheeshopa).apply(RequestOptions.circleCropTransform()).into(imageView);
+        } else {
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
+            Glide.with(context).load(bitmap).apply(RequestOptions.circleCropTransform()).into(imageView);
+        }
     }
 
     private void removeFriend(int i) {
