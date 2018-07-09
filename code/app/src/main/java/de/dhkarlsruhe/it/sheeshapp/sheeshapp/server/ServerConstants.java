@@ -7,7 +7,6 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp.server;
 public class ServerConstants {
 
     public static final String URL = "http://sheeshapp.it.dh-karlsruhe.de/";
-
     public static final String URL_RELATIONS = URL+"friend/all?userid=";
     public static final String URL_ADD_FRIEND = URL+"friend/add?userid=";
     public static final String URL_DELETE_FRIEND = URL+"friend/delete?userid=";

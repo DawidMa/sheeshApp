@@ -67,7 +67,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
     //Notification Setup
     private NotificationCompat.Builder notification;
-    private static final int uniqueID = 123456;
+    private static final int uniqueID = 111;
     private boolean showNotification = true;
     private boolean notificationIsActive = false;
     private NotificationManager manager;
@@ -479,6 +479,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     }
 
     private void startNotificationThread() {
+        System.out.println("CONFIGURATION");
         notification.setSmallIcon(R.mipmap.icon_setup_white);
         notification.setWhen(System.currentTimeMillis());
         notification.setTicker(sequence.get(actualFriend) + " ist dran.");
@@ -495,10 +496,12 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
             public void run() {
                 try {
                     while (notificationIsActive) {
+                        System.out.println("THREAD RUNNING");
                         Thread.sleep(500);
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                System.out.println("INNER THREAD");
                                 notification.setTicker(sequence.get(actualFriend) + " ist dran.");
                                 notification.setContentTitle(tiTvInfo.getText());
                                 notification.setContentText(timerSingle.getSingleTimeAsString() + " verbleibend");
@@ -507,6 +510,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
                         });
                     }
                 } catch (InterruptedException e) {
+                    System.out.println("CATCH "+ e);
                 }
             }
         };

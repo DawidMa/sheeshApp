@@ -213,8 +213,6 @@ public class MyProfileActivity extends AppCompatActivity{
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-//Convert bitmap to byte array
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
                 byte[] bitmapdata = bos.toByteArray();
@@ -223,7 +221,6 @@ public class MyProfileActivity extends AppCompatActivity{
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-//write the bytes in file
                 FileOutputStream fos ;
                 try {
                     fos = new FileOutputStream(f);
@@ -236,7 +233,6 @@ public class MyProfileActivity extends AppCompatActivity{
                     e.printStackTrace();
                 }                String content_type = getMimeType(f.getPath());
                 String filePath = f.getAbsolutePath();
-
                 OkHttpClient client = new OkHttpClient();
                 RequestBody fileBody =  RequestBody.create(MediaType.parse(content_type),f);
                 RequestBody requestBody = new MultipartBody.Builder()
@@ -244,12 +240,10 @@ public class MyProfileActivity extends AppCompatActivity{
                         .addFormDataPart("type","image/png")
                         .addFormDataPart("file",filePath.substring(filePath.lastIndexOf("/")+1),fileBody)
                         .build();
-
                 Request request = new Request.Builder()
                         .url(ServerConstants.URL_UPLOAD)
                         .post(requestBody)
                         .build();
-
                 try {
                     Response response = client.newCall(request).execute();
                     if (!response.isSuccessful()) {
