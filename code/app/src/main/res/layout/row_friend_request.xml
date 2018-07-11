@@ -22,7 +22,7 @@
         android:id="@+id/tv_request_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="0dp"
         android:text="01.01.1990"
@@ -38,7 +38,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/icon_accept"
-        android:backgroundTint="#32ff00"
+        android:backgroundTint="#191919"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -51,7 +51,6 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/icon_denie"
-        android:backgroundTint="@color/RedFocused"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_accept_friend"
         app:layout_constraintTop_toTopOf="parent" />
