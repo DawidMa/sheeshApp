@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,10 +19,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -70,13 +73,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
 
     private View rootView;
     private View header;
-    private ListView list;
     private ListView listRequests;
-    private List<String> names = new ArrayList<>();
-    private List<String> valueShishas = new ArrayList<>();
-
-    private List<String> friendRequestNames = new ArrayList<>();
-    private List<String> friendRequestDates = new ArrayList<>();
     private int numOfRequests = 0;
 
     private TextView frTvNoFriends;
@@ -86,6 +83,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     private MyAdapter2 adapter2;
     private SwipeRefreshLayout swipeRefreshLayout;
     private List<FriendlistObject> friendlistObject;
+    private ListView list;
     private List<FriendRequestObject> friendRequestObjects;
     private Gson json = new Gson();
     private UserSessionObject session;
@@ -103,7 +101,6 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_friends, container, false);
-
         initElementts();
         return rootView;
     }
@@ -114,12 +111,10 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         profile = new Profile(context);
         session = new UserSessionObject(context);
         imageHelper = new ImageHelper(context);
-
         frTvNoFriends = rootView.findViewById(R.id.tvFragFriInfo);
         friendImage = rootView.findViewById(R.id.liFriendImage);
         list = rootView.findViewById(R.id.lvFragFriList);
         swipeRefreshLayout = rootView.findViewById(R.id.swipeFragFri);
-
         swipeRefreshLayout.setColorSchemeColors(Color.CYAN);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -127,7 +122,6 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
                 updateFriendlist();
             }
         });
-
         header = getLayoutInflater().inflate(R.layout.header_friends, null);
         list.addHeaderView(header);
         header.setOnClickListener(new View.OnClickListener() {
@@ -168,19 +162,23 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         friendRequestObjects = json.fromJson(string, listType);
         numOfRequests = friendRequestObjects.size();
         setHeaderInfo();
-
     }
 
     private void setHeaderInfo() {
         TextView tvTitle = header.findViewById(R.id.tvHeaderTitle);
         TextView tvInfo = header.findViewById(R.id.tvHeaderInfo);
+        ImageView imgNotification = header.findViewById(R.id.imgHeaderNotification);
         String formattedTitle = "You have " + "<i>"+numOfRequests+"</i>" + " new Friend Requests";
         if (numOfRequests>0) {
             tvTitle.setText(Html.fromHtml(formattedTitle));
             tvInfo.setText("Click to open");
-        } else {
+            header.setBackgroundColor(Color.WHITE);
+            imgNotification.setVisibility(View.VISIBLE);
+            } else {
             tvTitle.setText("No Friend Requests");
             tvInfo.setText("---");
+            header.setBackgroundColor(Color.LTGRAY);
+            imgNotification.setVisibility(View.GONE);
         }
 
     }
@@ -194,32 +192,25 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         //popupWindow.setAnimationStyle(R.style.popupAnimation);
         popupWindow.setAnimationStyle(R.style.popupAnimation);
 
-        // Example: If you have a TextView inside `popup_layout.xml`
-        //TextView tv = (TextView) popupView.findViewById(R.id.tv);
-
-        //tv.setText(....);
         listRequests = popupView.findViewById(R.id.lv_friend_requests);
         adapter2 = new MyAdapter2(friendRequestObjects,context);
         listRequests.setAdapter(adapter2);
-
-
-        // Initialize more widgets from `popup_layout.xml`
-
         // If the PopupWindow should be focusable
         popupWindow.setFocusable(true);
-
         // If you need the PopupWindow to dismiss when when touched outside
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.LTGRAY));
-
+        if (friendRequestObjects.size()>5) {
+            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            popupWindow.setHeight(size.y/2);
+        }
         int location[] = new int[2];
-
         // Get the View's(the one that was clicked in the Fragment) location
         anchorView.getLocationOnScreen(location);
-
         // Using location, the PopupWindow will be displayed right under anchorView
         popupWindow.showAtLocation(anchorView, Gravity.NO_GRAVITY, location[0], location[1] + anchorView.getHeight());
-
-
     }
 
     private void checkPermission() {
@@ -253,16 +244,11 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     }
 
     public void reloadListView() {
-        names.clear();
-        valueShishas.clear();
-        if (friendlistObject != null) {
-            for (FriendlistObject rels : friendlistObject) {
-                names.add(rels.getName() + "");
-                valueShishas.add(rels.getFriend_id() + "");
-            }
+
+        if (friendlistObject != null && adapter!=null) {
             prepareProgressDialog();
-            adapter = new MyAdapter(context, names, valueShishas, friendImage);
-            list.setAdapter(adapter);
+            loadRequestInformation();
+            adapter.notifyDataSetChanged();
         } else {
             numOfFriends = 0;
         }
@@ -325,6 +311,9 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         //Save for offline use
         friend.saveOfflineInformation(string);
         swipeRefreshLayout.setRefreshing(false);
+        adapter = new MyAdapter(context, friendlistObject);
+        list.setAdapter(adapter);
+
     }
 
 
@@ -342,32 +331,42 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     /**
      * START OF MyAdapter
      */
-    class MyAdapter extends ArrayAdapter<String> {
+    public class MyAdapter extends ArrayAdapter<FriendlistObject> {
 
+        private List<FriendlistObject> dataSet;
         Context context;
-        List<String> names;
-        List<String> descriptions;
-        ImageView image;
 
-        MyAdapter(Context c, List<String> names, List<String> descriptions, ImageView image) {
-            //Deleted R.id.lichoosefriend in super()
-            super(c, R.layout.row_friends, R.id.liFriendName, names);
+        MyAdapter(Context c, List<FriendlistObject> friendlistObjects) {
+
+            super(c, R.layout.row_friends, R.id.liFriendName, friendlistObjects);
             this.context = c;
-            this.names = names;
-            this.descriptions = descriptions;
-            this.image = image;
+            this.dataSet = friendlistObjects;
         }
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater) getContext().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            FriendlistObject actualObject = getItem(position);
             View row = inflater.inflate(R.layout.row_friends, parent, false);
             TextView tvTitle = (TextView) row.findViewById(R.id.liFriendName);
             TextView tvDescription = (TextView) row.findViewById(R.id.liFriendNumOfShishas);
             final ImageView imgFriends = row.findViewById(R.id.liFriendImage);
-            tvTitle.setText(names.get(position));
-            tvDescription.setText(valueShishas.get(position));
-            loadFileFromServer(friendlistObject.get(position).getFriend_id() + "", imgFriends);
+            long friendid = actualObject.getFriend_id();
+            tvTitle.setText(actualObject.getName());
+            tvDescription.setText(friendid+"");
+            if (actualObject.isHas_icon()) {
+                prepareProgressDialog();
+                String localURL = Environment.getExternalStorageDirectory() + "/Download/" + friendid + ".png";
+                File localFile = new File(localURL);
+                if (localFile.exists()) {
+                    showLoadedFile(imgFriends,localURL);
+                } else {
+                    loadFileFromServer(actualObject.getFriend_id() + "", imgFriends);
+                }
+            } else {
+                showLoadedFile(imgFriends,null);
+            }
+
             /* imgFriends.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -430,7 +429,6 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
                     byte[] data = new byte[8192];
                     float total = 0;
                     int readedBytes = 0;
-
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -464,12 +462,17 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     }
 
     private void showLoadedFile(ImageView imageView, String s) {
-        File file = new File(s);
-        if (file.length() < 300) {
+        if (s==null) {
             Glide.with(context).load(R.drawable.sheeshopa).apply(RequestOptions.circleCropTransform()).into(imageView);
         } else {
-            Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
-            Glide.with(context).load(bitmap).apply(RequestOptions.circleCropTransform()).into(imageView);
+            File file = new File(s);
+            if (file.length() < 300) {
+                Glide.with(context).load(R.drawable.sheeshopa).apply(RequestOptions.circleCropTransform()).into(imageView);
+                file.delete();
+            } else {
+                Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
+                Glide.with(context).load(bitmap).apply(RequestOptions.circleCropTransform()).into(imageView);
+            }
         }
     }
 
@@ -544,17 +547,20 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     }
     private void acceptFriend(final int pos) {
         if (friendRequestObjects.size()>0) {
-            long rel_id = friendRequestObjects.get(pos).getUnverified_relation_id();
+            final FriendRequestObject object = friendRequestObjects.get(pos);
+            long rel_id = object.getUnverified_relation_id();
             StringRequest request = new StringRequest(ServerConstants.URL_FRIEND_ACCEPT + rel_id + "&accept=true", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String string) {
                     if (string.equals("OK")) {
-                        friendRequestObjects.remove(pos);
+                        friendRequestObjects.remove(object);
                         adapter2.notifyDataSetChanged();
                         if (numOfRequests==1) {
                             popupWindow.dismiss();
                         }
                         loadRequestInformation();
+                        loadFriendInformation();
+
                     } else {
                         Toast.makeText(context, string, Toast.LENGTH_SHORT);
                     }
@@ -562,7 +568,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
-
+                    Toast.makeText(context,"Some error occured",Toast.LENGTH_SHORT).show();
                 }
             });
             RequestQueue rQueue = Volley.newRequestQueue(getContext());

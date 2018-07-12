@@ -32,7 +32,8 @@ public class SharedPrefConstants {
     public static String FRIEND = "friend";
     public static String F_OFFILNE_JSON = "offline_json";
     public static String F_LAST_CHANGED = "last_changed";
-
-
-
+    public static String F_ALL = "all_friends";
+    public static String F_ALL_CHECKED = "all_checked_friends";
+    public static String F_NUMBER_ALL = "number_of_all_friends";
+    public static String F_NUMBER_ALL_CHECKED = "number_of_all_checked_friends";
 }

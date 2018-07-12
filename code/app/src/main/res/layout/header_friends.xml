@@ -13,12 +13,12 @@
         android:layout_marginStart="16dp"
         android:text="No Friend Requests"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintBottom_toBottomOf="@+id/imgHeader"
+        app:layout_constraintStart_toEndOf="@+id/imgHeader"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imgHeader"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
@@ -34,6 +34,18 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="---"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/imgHeader"
         app:layout_constraintTop_toBottomOf="@+id/tvHeaderTitle" />
+
+    <ImageView
+        android:id="@+id/imgHeaderNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:tint="@color/orangeAccent"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_notification_overlay" />
 </android.support.constraint.ConstraintLayout>

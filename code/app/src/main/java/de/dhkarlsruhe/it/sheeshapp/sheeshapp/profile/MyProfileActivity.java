@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.UUID;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.images.ImageHelper;
@@ -239,6 +240,7 @@ public class MyProfileActivity extends AppCompatActivity{
                         .setType(MultipartBody.FORM)
                         .addFormDataPart("type","image/png")
                         .addFormDataPart("file",filePath.substring(filePath.lastIndexOf("/")+1),fileBody)
+                        .addFormDataPart("iconid", UUID.randomUUID().toString())
                         .build();
                 Request request = new Request.Builder()
                         .url(ServerConstants.URL_UPLOAD)
