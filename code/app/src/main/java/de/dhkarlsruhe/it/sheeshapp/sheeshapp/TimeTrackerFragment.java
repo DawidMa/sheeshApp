@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Random;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -45,7 +46,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
     private String[] friends;
 
-    private List<String> sequence = new ArrayList<>();
+    private List<ChooseFriendObject> sequence = new ArrayList<>();
 
     static String firstFriend;
     private String friendsAsString="", dateStart ="", dateEnd="",totalTime;
@@ -72,7 +73,6 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     private boolean notificationIsActive = false;
     private NotificationManager manager;
     private Thread threadNotification;
-
     private View v;
 
     private History history;
@@ -86,12 +86,12 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         v= rootView;
         init();
         friend = new Friend(getContext());
-        sequence = getChoosenFriendsAsList();
+        sequence = friend.getAllCheckedFriends();
         printFriendsList(sequence);
         Collections.shuffle(sequence);
         //printFriends(friends);
         //sequence = setNewSequence();
-        firstFriend = sequence.get(0);
+        firstFriend = sequence.get(0).getName();
         return rootView;
     }
 
@@ -145,7 +145,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
             threadsRunning=true;
             runTimeSingle();
         }
-        tiTvInfo.setText("Momentan ist " + sequence.get(actualFriend) + " dran.");
+        tiTvInfo.setText("Momentan ist " + sequence.get(actualFriend).getName() + " dran.");
     }
 
     public static String getFirstFriend() {
@@ -176,13 +176,13 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
     }
 
-    private void printFriendsList(List<String> sequence) {
+    private void printFriendsList(List<ChooseFriendObject> sequence) {
         tiTvChoosenFriends.setText("");
         for(int i = 0; i < sequence.size(); i++) {
             if(i==sequence.size()-1) {
-                tiTvChoosenFriends.append(sequence.get(i)+".");
+                tiTvChoosenFriends.append(sequence.get(i).getName()+".");
             } else {
-                tiTvChoosenFriends.append(sequence.get(i)+", ");
+                tiTvChoosenFriends.append(sequence.get(i).getName()+", ");
             }
         }
     }
@@ -223,7 +223,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         super.onDetach();
     }
 /*
-    private String[] getChoosenFriends() {
+    private String[] getAllCheckedFriends() {
         int numberFriends = pref.getInt("NUMBER_OF_FRIENDS",0);
         int numberChoosenFriends=0;
         for(int i=1; i<=numberFriends; i++) {
@@ -243,7 +243,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         }
         return choosenFriends;
     }*/
-
+/*
     private List<String> getChoosenFriendsAsList() {
         int numberFriends = friend.getNumberOfFriends();
         System.out.println("Friends:"+numberFriends);
@@ -257,7 +257,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         //choosenFriends.add(pref.getString("savedUsername","noUser"));
         return choosenFriends;
     }
-
+*/
     private void runTimeTotal() {
         threadTotal = new Thread() {
             @Override
@@ -302,7 +302,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
                                     if(actualFriend>=sequence.size()) {
                                         actualFriend=0;
                                     }
-                                    tiTvInfo.setText("Momentan ist " + sequence.get(actualFriend) + " dran.");
+                                    tiTvInfo.setText("Momentan ist " + sequence.get(actualFriend).getName() + " dran.");
                                 }
                                 tiTvSingle.setText("Restliche Zugzeit: "+timerSingle.getSingleTimeAsString());
                             }
@@ -374,7 +374,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         threadsRunning=true;
         runTimeTotal();
         runTimeSingle();
-        tiTvInfo.setText("Momentan ist " + sequence.get(actualFriend) + " dran.");
+        tiTvInfo.setText("Momentan ist " + sequence.get(actualFriend).getName() + " dran.");
     }
 
     public void endPositiv() {
@@ -482,7 +482,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         System.out.println("CONFIGURATION");
         notification.setSmallIcon(R.mipmap.icon_setup_white);
         notification.setWhen(System.currentTimeMillis());
-        notification.setTicker(sequence.get(actualFriend) + " ist dran.");
+        notification.setTicker(sequence.get(actualFriend).getName() + " ist dran.");
         notification.setContentTitle(tiTvInfo.getText());
         notification.setContentText(timerSingle.getSingleTimeAsString() + " verbleibend");
         notification.setOngoing(true);
@@ -502,7 +502,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
                             @Override
                             public void run() {
                                 System.out.println("INNER THREAD");
-                                notification.setTicker(sequence.get(actualFriend) + " ist dran.");
+                                notification.setTicker(sequence.get(actualFriend).getName() + " ist dran.");
                                 notification.setContentTitle(tiTvInfo.getText());
                                 notification.setContentText(timerSingle.getSingleTimeAsString() + " verbleibend");
                                 manager.notify(uniqueID,notification.build());

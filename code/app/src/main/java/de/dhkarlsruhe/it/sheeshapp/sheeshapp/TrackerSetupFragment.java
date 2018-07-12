@@ -1,29 +1,24 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
-import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.ListViewAutoScrollHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
 
 /**
  * Created by d0272129 on 14.04.17.
@@ -110,8 +105,8 @@ public class TrackerSetupFragment extends Fragment{
 
     private static boolean checkChoosenFriends() {
         boolean check = false;
-        int numberFriends = friend.getNumberOfFriends();
-        int sumChoosen=0;
+        int numberFriends = friend.getNumberOfAllCheckedFriends();
+       /* int sumChoosen=0;
         for(int i=1; i<=numberFriends; i++) {
             boolean choosen =friend.getChecked(i+"");
             if(choosen) {
@@ -120,8 +115,8 @@ public class TrackerSetupFragment extends Fragment{
                 numShishas++;
                 editor.putInt("FRIENDS_NUM_SHISHAS_"+i,numShishas);
             }
-        }
-        if(sumChoosen>=2) {
+        }*/
+        if(numberFriends>=2) {
             check = true;
             editor.commit();
         }

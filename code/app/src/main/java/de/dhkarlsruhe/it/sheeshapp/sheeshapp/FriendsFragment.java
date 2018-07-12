@@ -162,21 +162,23 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         friendRequestObjects = json.fromJson(string, listType);
         numOfRequests = friendRequestObjects.size();
         setHeaderInfo();
-
     }
 
     private void setHeaderInfo() {
         TextView tvTitle = header.findViewById(R.id.tvHeaderTitle);
         TextView tvInfo = header.findViewById(R.id.tvHeaderInfo);
+        ImageView imgNotification = header.findViewById(R.id.imgHeaderNotification);
         String formattedTitle = "You have " + "<i>"+numOfRequests+"</i>" + " new Friend Requests";
         if (numOfRequests>0) {
             tvTitle.setText(Html.fromHtml(formattedTitle));
             tvInfo.setText("Click to open");
             header.setBackgroundColor(Color.WHITE);
+            imgNotification.setVisibility(View.VISIBLE);
             } else {
             tvTitle.setText("No Friend Requests");
             tvInfo.setText("---");
             header.setBackgroundColor(Color.LTGRAY);
+            imgNotification.setVisibility(View.GONE);
         }
 
     }
@@ -245,6 +247,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
 
         if (friendlistObject != null && adapter!=null) {
             prepareProgressDialog();
+            loadRequestInformation();
             adapter.notifyDataSetChanged();
         } else {
             numOfFriends = 0;
@@ -544,17 +547,20 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     }
     private void acceptFriend(final int pos) {
         if (friendRequestObjects.size()>0) {
-            long rel_id = friendRequestObjects.get(pos).getUnverified_relation_id();
+            final FriendRequestObject object = friendRequestObjects.get(pos);
+            long rel_id = object.getUnverified_relation_id();
             StringRequest request = new StringRequest(ServerConstants.URL_FRIEND_ACCEPT + rel_id + "&accept=true", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String string) {
                     if (string.equals("OK")) {
-                        friendRequestObjects.remove(pos);
+                        friendRequestObjects.remove(object);
                         adapter2.notifyDataSetChanged();
                         if (numOfRequests==1) {
                             popupWindow.dismiss();
                         }
                         loadRequestInformation();
+                        loadFriendInformation();
+
                     } else {
                         Toast.makeText(context, string, Toast.LENGTH_SHORT);
                     }
@@ -562,7 +568,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
-
+                    Toast.makeText(context,"Some error occured",Toast.LENGTH_SHORT).show();
                 }
             });
             RequestQueue rQueue = Volley.newRequestQueue(getContext());
