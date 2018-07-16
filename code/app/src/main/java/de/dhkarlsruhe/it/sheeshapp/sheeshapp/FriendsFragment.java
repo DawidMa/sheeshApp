@@ -244,7 +244,6 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     }
 
     public void reloadListView() {
-
         if (friendlistObject != null && adapter!=null) {
             prepareProgressDialog();
             loadRequestInformation();
@@ -351,6 +350,12 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             TextView tvTitle = (TextView) row.findViewById(R.id.liFriendName);
             TextView tvDescription = (TextView) row.findViewById(R.id.liFriendNumOfShishas);
             final ImageView imgFriends = row.findViewById(R.id.liFriendImage);
+            imgFriends.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openFriendsImagePopUp(imgFriends,position);
+                }
+            });
             long friendid = actualObject.getFriend_id();
             tvTitle.setText(actualObject.getName());
             tvDescription.setText(friendid+"");
@@ -403,6 +408,26 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
                 }
             }
         }
+    }
+
+    private void openFriendsImagePopUp(ImageView imgFriends, int position) {
+        View popupView = getLayoutInflater().inflate(R.layout.popup_profileimage, null);
+        popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setAnimationStyle(R.style.popupAnimation);
+        popupWindow.setFocusable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.LTGRAY));
+        ImageView imgProfile = popupView.findViewById(R.id.imgPopupProfileimage);
+        TextView tvName = popupView.findViewById(R.id.tvPopupProfileName);
+        imgProfile.setImageDrawable(imgFriends.getDrawable());
+        tvName.setText(friendlistObject.get(position).getName());
+        // Get the View's(the one that was clicked in the Fragment) location
+        // Using location, the PopupWindow will be displayed right under anchorView
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        popupWindow.showAtLocation(imgFriends, Gravity.NO_GRAVITY, (size.x/2)-(imgFriends.getWidth()*2), (size.y/2) - (imgFriends.getHeight()/2));
+
     }
 
     private void openFriendsProfile(int i) {
@@ -529,7 +554,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             btnAccept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    acceptFriend(position);
+                    acceptFriend(position,true);
                     Toast.makeText(context,"Accepted",Toast.LENGTH_SHORT).show();
                 }
 
@@ -537,7 +562,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             btnDenie.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                  //  denieFriend(tvName.getText());
+                    acceptFriend(position,false);
                     Toast.makeText(context,"Denied",Toast.LENGTH_SHORT).show();
                 }
             });
@@ -545,14 +570,15 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         }
 
     }
-    private void acceptFriend(final int pos) {
+
+    private void acceptFriend(final int pos, boolean accept) {
         if (friendRequestObjects.size()>0) {
             final FriendRequestObject object = friendRequestObjects.get(pos);
             long rel_id = object.getUnverified_relation_id();
-            StringRequest request = new StringRequest(ServerConstants.URL_FRIEND_ACCEPT + rel_id + "&accept=true", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(ServerConstants.URL_FRIEND_ACCEPT + rel_id + "&accept="+accept, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String string) {
-                    if (string.equals("OK")) {
+                    if (string.equals("OK") || string.equals("deleted")) {
                         friendRequestObjects.remove(object);
                         adapter2.notifyDataSetChanged();
                         if (numOfRequests==1) {
@@ -560,7 +586,6 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
                         }
                         loadRequestInformation();
                         loadFriendInformation();
-
                     } else {
                         Toast.makeText(context, string, Toast.LENGTH_SHORT);
                     }
