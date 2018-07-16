@@ -131,4 +131,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
+    <de.dhkarlsruhe.it.sheeshapp.sheeshapp.circle.MyCircle
+        android:id="@+id/animatedCircle"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/tiTvTotal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tiTvSingle" />
+
 </android.support.constraint.ConstraintLayout>

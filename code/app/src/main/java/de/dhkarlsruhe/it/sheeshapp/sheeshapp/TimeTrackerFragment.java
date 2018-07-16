@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.circle.CircleAnimation;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.circle.MyCircle;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
 
@@ -77,6 +80,9 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
     private History history;
 
+    private CircleAnimation circleAnimation;
+    private MyCircle circle;
+
     public TimeTrackerFragment() {}
 
     @Override
@@ -92,6 +98,11 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         //printFriends(friends);
         //sequence = setNewSequence();
         firstFriend = sequence.get(0).getName();
+        circle = (MyCircle) rootView.findViewById(R.id.animatedCircle);
+        circleAnimation = new CircleAnimation(circle, 360);
+        circleAnimation.setDuration(100);
+        circleAnimation.setRepeatMode(Animation.INFINITE);
+        circle.startAnimation(circleAnimation);
         return rootView;
     }
 
@@ -189,7 +200,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
     private void randomColeChanger() {
         int numFriends = sequence.size();
-        tiTvInfo.setText(sequence.get(rnd.nextInt(numFriends)) + " muss die Kohle drehen!");
+        tiTvInfo.setText(sequence.get(rnd.nextInt(numFriends)).getName() + " muss die Kohle drehen!");
     }
 
     public void fragmentPressedEnd(View view) {
@@ -284,18 +295,22 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         threadSingle = new Thread() {
             @Override
             public void run() {
+                final int standardTime = pref.getInt("TIME_IN_SECONDS",0);
                 try {
+                    //circleAnimation.setRepeatMode(Animation.INFINITE);
+                    //circle.startAnimation(circleAnimation);
                     while (threadsRunning) {
-                        Thread.sleep(1000);
+                        final int step = 10;
+                        Thread.sleep(step);
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                timerSingle.decSeconds();
+                                timerSingle.decMillis(step);
                                 if(!timeToChange&&timerSingle.getSeconds()<=5 && timerSingle.getMinutes()==0) {
                                     timeToChange = true;
                                     showThatTimeToChange();
                                 }
-                                if(timerSingle.getSeconds()==0 && timerSingle.getMinutes()==0) {
+                                if(timerSingle.getSeconds()==0 && timerSingle.getMinutes()==0 && timerSingle.getMillis()==0) {
                                     actualFriend++;
                                     timeToChange=false;
                                     vibrateXTimes(3,350);
@@ -305,6 +320,9 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
                                     tiTvInfo.setText("Momentan ist " + sequence.get(actualFriend).getName() + " dran.");
                                 }
                                 tiTvSingle.setText("Restliche Zugzeit: "+timerSingle.getSingleTimeAsString());
+                                float angle = ((timerSingle.getMinutes()*60+timerSingle.getSeconds() + (timerSingle.getMillis())) / ((float)standardTime)) * 360f;
+                                circle.setAngle(angle);
+                                circle.invalidate();
                             }
                         });
                     }

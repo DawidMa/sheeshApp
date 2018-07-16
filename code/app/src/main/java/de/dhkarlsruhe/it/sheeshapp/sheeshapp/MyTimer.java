@@ -5,7 +5,7 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
  */
 
 public class MyTimer {
-    int time, hours=0,minutes=0, seconds=0;
+    int time, hours=0,minutes=0, seconds=0, millis=0;
     boolean forward;
 
     public MyTimer(int time, boolean forward) {
@@ -57,6 +57,18 @@ public class MyTimer {
                 seconds=time%60;
             }
         }
+    }
+
+    public void decMillis(int step){
+        millis-=step;
+        if(millis < 0){
+            millis = 1000;
+            decSeconds();
+        }
+    }
+
+    public float getMillis() {
+        return millis/1000f;
     }
 }
 
