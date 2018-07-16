@@ -19,6 +19,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -426,8 +427,12 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        popupWindow.showAtLocation(imgFriends, Gravity.NO_GRAVITY, (size.x/2)-(imgFriends.getWidth()*2), (size.y/2) - (imgFriends.getHeight()/2));
+        popupWindow.showAtLocation(imgFriends, Gravity.NO_GRAVITY, (size.x/2)-(pxToDp(imgFriends.getWidth())*4), (size.y/2)- (pxToDp(imgFriends.getHeight())*4));
+    }
 
+    public int pxToDp(int px) {
+        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+        return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     private void openFriendsProfile(int i) {
