@@ -25,13 +25,27 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
+        android:id="@+id/tiTvChoosenFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textColor="#fff"
+        android:text="!"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/tiTvTopTitle"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
         android:id="@+id/tiTvTotal"
         android:textColor="#fff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Time Total: "
         android:textSize="15dp"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/tiBtPause"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -41,57 +55,40 @@
 
     <TextView
         android:id="@+id/tiTvSingle"
-        android:textColor="#fff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Time per Friend: "
+        android:textColor="#fff"
         android:textSize="20dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="11dp"
-        app:layout_constraintTop_toBottomOf="@+id/tiTvInfo"
-        app:layout_constraintHorizontal_bias="0.502" />
-
+        app:layout_constraintBottom_toBottomOf="@+id/animatedCircle"
+        app:layout_constraintEnd_toEndOf="@+id/animatedCircle"
+        app:layout_constraintStart_toStartOf="@+id/animatedCircle"
+        app:layout_constraintTop_toTopOf="@+id/animatedCircle" />
 
 
     <TextView
         android:id="@+id/tiTvInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/press_play_text"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textColor="#fff"
-        android:padding="5dp"
-        android:textSize="25dp"
+        android:layout_marginBottom="32dp"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="148dp"
-        app:layout_constraintTop_toBottomOf="@+id/tiTvTopTitle" />
-
-    <TextView
-        android:id="@+id/tiTvChoosenFriends"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="@string/press_play_text"
         android:textColor="#fff"
-        android:text=""
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/tiTvTopTitle"
-        android:layout_marginLeft="16dp"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/animatedCircle"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent" />
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/tiBtStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="45dp"
+        android:layout_marginBottom="32dp"
         android:layout_marginLeft="50dp"
         android:clickable="true"
         android:onClick="pressedStart"
@@ -99,29 +96,29 @@
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:srcCompat="@android:drawable/ic_media_play" />
+        app:srcCompat="@drawable/play_button_1" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/tiBtPause"
-        android:onClick="pressedPause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        app:fabSize="normal"
-        app:srcCompat="@android:drawable/ic_media_pause"
-        app:layout_constraintLeft_toRightOf="@+id/tiBtStart"
+        android:layout_marginBottom="32dp"
         android:layout_marginLeft="8dp"
-        app:layout_constraintRight_toLeftOf="@+id/tiBtEnd"
         android:layout_marginRight="8dp"
+        android:clickable="true"
+        android:onClick="pressedPause"
+        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="46dp"
-        app:layout_constraintHorizontal_bias="0.496" />
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintLeft_toRightOf="@+id/tiBtStart"
+        app:layout_constraintRight_toLeftOf="@+id/tiBtEnd"
+        app:srcCompat="@drawable/pause_1" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/tiBtEnd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="45dp"
+        android:layout_marginBottom="32dp"
         android:layout_marginRight="50dp"
         android:clickable="true"
         android:onClick="pressedEnd"
@@ -129,15 +126,30 @@
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
-
+        app:srcCompat="@drawable/error_1" />
     <de.dhkarlsruhe.it.sheeshapp.sheeshapp.circle.MyCircle
-        android:id="@+id/animatedCircle"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:id="@+id/grayCircle"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:color="#252525"
         app:layout_constraintBottom_toTopOf="@+id/tiTvTotal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tiTvSingle" />
+        app:layout_constraintStart_toStartOf="parent" />
+    <de.dhkarlsruhe.it.sheeshapp.sheeshapp.circle.MyCircle
+        android:id="@+id/animatedCircle"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:color="#123"
+        app:layout_constraintBottom_toTopOf="@+id/tiTvTotal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 
 </android.support.constraint.ConstraintLayout>

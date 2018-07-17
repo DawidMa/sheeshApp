@@ -36,4 +36,6 @@ public class SharedPrefConstants {
     public static String F_ALL_CHECKED = "all_checked_friends";
     public static String F_NUMBER_ALL = "number_of_all_friends";
     public static String F_NUMBER_ALL_CHECKED = "number_of_all_checked_friends";
+    public static String F_NUMBER_ALL_UNCHECKED = "number_of_all_unchecked_friends";
+    public static String F_ALL_UNCHECKED = "all_unchecked_friends";
 }

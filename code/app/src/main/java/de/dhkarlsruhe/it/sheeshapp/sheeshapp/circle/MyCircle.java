@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 /**
@@ -16,26 +17,29 @@ public class MyCircle extends View {
 
     private static final int START_ANGLE_POINT = 90;
 
-    private final Paint paint;
-    private final RectF rect;
+    private Paint paint;
+    private RectF rect;
 
     private float angle;
 
     public MyCircle(Context context, AttributeSet attrs) {
         super(context, attrs);
-        final int strokeWidth = 40;
+        final int strokeWidth = 10;
         paint = new Paint();
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(strokeWidth);
         //Circle color
         paint.setColor(Color.RED);
-
         //size 200x200 example
-        rect = new RectF(strokeWidth, strokeWidth, 200 + strokeWidth, 200 + strokeWidth);
-
+        rect = new RectF(strokeWidth, strokeWidth, 550 + strokeWidth, 550 + strokeWidth);
+        System.out.println("WIDTHX:"+rect.width());
         //Initial Angle (optional, it can be zero)
         angle = 0;
+    }
+    public int pxToDp(int px) {
+        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+        return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     @Override
@@ -50,6 +54,22 @@ public class MyCircle extends View {
 
     public void setAngle(float angle) {
         this.angle = angle;
+    }
+
+    public Paint getPaint() {
+        return paint;
+    }
+
+    public void setPaint(Paint paint) {
+        this.paint = paint;
+    }
+
+    public void setColor(String color) {
+        try {
+            paint.setColor(Color.parseColor(color));
+        } catch (Exception e){
+            paint.setColor(Color.parseColor("#00ff00"));
+        }
     }
 }
 

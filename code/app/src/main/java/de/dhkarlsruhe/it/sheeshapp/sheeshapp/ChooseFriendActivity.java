@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -45,6 +47,7 @@ public class ChooseFriendActivity extends AppCompatActivity {
     private List<ChooseFriendObject> objects = new ArrayList<>();
     private Gson json = new Gson();
     private List<Long> checkedFriendIds = new ArrayList<>();
+    private List<Long> uncheckedFriendIds = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +93,11 @@ public class ChooseFriendActivity extends AppCompatActivity {
             friend.setFriendName(objects.get(i).getId(),objects.get(i).getName());
             friend.setChecked(objects.get(i).getId(),false);
         }
+        for (ChooseFriendObject i:objects) {
+            uncheckedFriendIds.add(i.getId());
+        }
         adapter = new NamesAdapter(ChooseFriendActivity.this,objects);
         list.setAdapter(adapter);
-
     }
 
     class NamesAdapter extends ArrayAdapter<ChooseFriendObject> {
@@ -112,7 +117,7 @@ public class ChooseFriendActivity extends AppCompatActivity {
             TextView myTitle = (TextView)row.findViewById(R.id.liChooseFriendName);
             myTitle.setText(actualObject.getName());
             long tag = actualObject.getId();
-            CheckBox cb = (CheckBox)row.findViewById(R.id.liChooseCb);
+            Switch cb = (Switch) row.findViewById(R.id.switchFriends);
             cb.setTag(tag);
             boolean checked = friend.getChecked(tag);
             cb.setChecked(checked);
@@ -124,9 +129,11 @@ public class ChooseFriendActivity extends AppCompatActivity {
                     if(!checked) {
                        friend.setChecked(tag,true);
                        checkedFriendIds.add(tag);
+                       uncheckedFriendIds.remove(tag);
                     } else {
                         friend.setChecked(tag,false);
                         checkedFriendIds.remove(tag);
+                        uncheckedFriendIds.add(tag);
                     }
                 }
             });
@@ -138,5 +145,6 @@ public class ChooseFriendActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         friend.setAllCheckedFriends(checkedFriendIds);
+        friend.setAllUnchekedFriends(uncheckedFriendIds);
     }
 }

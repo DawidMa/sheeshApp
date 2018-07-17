@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.PowerManager;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
@@ -23,14 +24,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 
-public class TimeTrackerActivity extends AppCompatActivity {
+import java.util.List;
+
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
+
+public class TimeTrackerActivity extends AppCompatActivity implements TrackerFriendsFragment.CheckboxClicked, TimeTrackerFragment.SendFriends{
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     //private Toolbar toolbar;
     private TimeTrackerFragment timeTrackerFragment;
+    private TrackerFriendsFragment trackerFriendsFragment;
     //protected PowerManager.WakeLock mWakeLock;
 
     @Override
@@ -38,7 +45,7 @@ public class TimeTrackerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_tracker);
 
-       // toolbar = (Toolbar) findViewById(R.id.tbTracker);
+        // toolbar = (Toolbar) findViewById(R.id.tbTracker);
         //setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -54,6 +61,7 @@ public class TimeTrackerActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         timeTrackerFragment = new TimeTrackerFragment();
+        trackerFriendsFragment = new TrackerFriendsFragment();
 
     }
 
@@ -77,6 +85,18 @@ public class TimeTrackerActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void send(ChooseFriendObject object, boolean checked) {
+        TimeTrackerFragment frag = (TimeTrackerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.tiLayoutMain);
+        timeTrackerFragment.updateFriends(object,checked);
+    }
+
+    @Override
+    public void sendTrackerFriends(List<ChooseFriendObject> checked, List<ChooseFriendObject> unchecked) {
+        trackerFriendsFragment.getFriendLists(checked,unchecked);
     }
 
     /**
@@ -113,14 +133,15 @@ public class TimeTrackerActivity extends AppCompatActivity {
             return rootView;
         }
     }
+
     public void pressedStart(View view) {
-        timeTrackerFragment.fragmentPressedStart(view);
+        timeTrackerFragment.fragmentPressedStart();
     }
     public void pressedPause(View view) {
-        timeTrackerFragment.fragmentPressedPause(view);
+        timeTrackerFragment.fragmentPressedPause();
     }
     public void pressedEnd(View view) {
-        timeTrackerFragment.fragmentPressedEnd(view);
+        timeTrackerFragment.fragmentPressedEnd();
     }
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -140,7 +161,7 @@ public class TimeTrackerActivity extends AppCompatActivity {
 
             switch (position) {
                 case 1:
-                    return new FriendsFragment();
+                    return trackerFriendsFragment;
                 case 0:
                     return timeTrackerFragment;
             }
@@ -183,7 +204,7 @@ public class TimeTrackerActivity extends AppCompatActivity {
                 builder2.setNegativeButton("Nein!", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        timeTrackerFragment.endNegative();
+                       // timeTrackerFragment.endNegative();
                     }
                 });
                 AlertDialog dialog2 = builder2.create();
