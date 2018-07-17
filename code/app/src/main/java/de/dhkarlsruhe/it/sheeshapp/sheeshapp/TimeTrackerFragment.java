@@ -49,6 +49,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     private FloatingActionButton btStart, btPause, btEnd;
 
     private List<ChooseFriendObject> sequence = new ArrayList<>();
+    private List<ChooseFriendObject> uncheckedFriends = new ArrayList<>();
 
     static String firstFriend;
     private String friendsAsString="", dateStart ="", dateEnd="",totalTime;
@@ -67,23 +68,20 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
     private Calendar calendar = Calendar.getInstance();
 
+    private SendFriends callback;
+
     //Notification Setup
     private NotificationCompat.Builder notification;
     private static final int uniqueID = 111;
     private boolean showNotification = true;
     private boolean notificationIsActive = false;
     private NotificationManagerCompat manager;
-    private Thread threadNotification;
     private View v;
-
     private History history;
-
     private CircleAnimation circleAnimation;
     private MyCircle circle;
     private MyCircle circleGray;
-
     private String myChannelId = "DawidsChannel";
-
     private Window window;
 
     public TimeTrackerFragment() {}
@@ -96,10 +94,12 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         init();
         friend = new Friend(getContext());
         sequence = friend.getAllCheckedFriends();
+        uncheckedFriends = friend.getAllUncheckedFriends();
         Collections.shuffle(sequence);
         printFriendsList(sequence);
         firstFriend = sequence.get(0).getName();
         circle = rootView.findViewById(R.id.animatedCircle);
+        circle.setColor("#00ff00");
         circleGray = rootView.findViewById(R.id.grayCircle);
         circleGray.setAngle(360);
         circleGray.setColor("#383838");
@@ -149,12 +149,29 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         window = getActivity().getWindow();
     }
 
+    public List<ChooseFriendObject> getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(List<ChooseFriendObject> sequence) {
+        this.sequence = sequence;
+    }
+
+    public List<ChooseFriendObject> getUncheckedFriends() {
+        return uncheckedFriends;
+    }
+
+    public void setUncheckedFriends(List<ChooseFriendObject> uncheckedFriends) {
+        this.uncheckedFriends = uncheckedFriends;
+    }
+
     public void fragmentPressedStart() {
         btPause.setEnabled(true);
         btStart.setEnabled(false);
         if(firstStart) {
             firstStart = false;
             getActivity().showDialog(1);
+            callback.sendTrackerFriends(sequence,uncheckedFriends);
         } else {
             timerSingle1.resume();
             if (timerFlash.isPaused()) {
@@ -205,45 +222,11 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         } catch (Exception e) {
 
         }
+        callback= null; // => avoid leaking, thanks @Deepscorn
 
         super.onDetach();
     }
-/*
-    private String[] getAllCheckedFriends() {
-        int numberFriends = pref.getInt("NUMBER_OF_FRIENDS",0);
-        int numberChoosenFriends=0;
-        for(int i=1; i<=numberFriends; i++) {
-            boolean choosen = pref.getBoolean("FRIEND_CHOOSEN_"+i,false);
-            if(choosen) {
-                numberChoosenFriends++;
-            }
-        }
-        String[] choosenFriends = new String[numberChoosenFriends];
-        int friendNumber=0;
-        for(int i=1; i<=numberFriends; i++) {
-            boolean choosen = pref.getBoolean("FRIEND_CHOOSEN_"+i,false);
-            if(choosen) {
-                choosenFriends[friendNumber] = pref.getString("FRIEND_"+i,"FEHLER");
-                friendNumber++;
-            }
-        }
-        return choosenFriends;
-    }*/
-/*
-    private List<String> getChoosenFriendsAsList() {
-        int numberFriends = friend.getNumberOfFriends();
-        System.out.println("Friends:"+numberFriends);
-        List<String> choosenFriends = new ArrayList<>();
-        for (int i=1 ;i<=numberFriends; i++) {
-            boolean choosen = friend.getChecked(i+"");
-            if(choosen) {
-                choosenFriends.add(friend.getFriendName(i+""));
-            }
-        }
-        //choosenFriends.add(pref.getString("savedUsername","noUser"));
-        return choosenFriends;
-    }
-*/
+
     private void runTimeTotal() {
         timerTotal1.setCallback(new FloTimer.TimerCallback() {
             public void action() {
@@ -516,4 +499,36 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
             notificationIsActive = true;
         }
     }
+
+    public void updateFriends(ChooseFriendObject object, boolean checked) {
+        if (!checked) {
+            sequence.add(object);
+            uncheckedFriends.remove(object);
+        } else {
+            sequence.remove(object);
+            uncheckedFriends.add(object);
+        }
+        callback.sendTrackerFriends(sequence,uncheckedFriends);
+        printFriendsList(sequence);
+    }
+
+    public interface SendFriends {
+        public void sendTrackerFriends(List<ChooseFriendObject> checked, List<ChooseFriendObject> unchecked);
+    }
+
+    @Override
+    public void onAttach(Context activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            callback = (SendFriends) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement TextClicked");
+        }
+    }
+
+
 }

@@ -144,6 +144,8 @@ public class Friend  {
         editor.putInt(SharedPrefConstants.F_NUMBER_ALL,0);
         editor.putInt(SharedPrefConstants.F_NUMBER_ALL_CHECKED,0);
         editor.putString(SharedPrefConstants.F_ALL_CHECKED,"");
+        editor.putInt(SharedPrefConstants.F_NUMBER_ALL_UNCHECKED,0);
+        editor.putString(SharedPrefConstants.F_ALL_UNCHECKED,"");
         editor.commit();
     }
 
@@ -153,6 +155,21 @@ public class Friend  {
         String[] allIds;
         if (numOfAll>0) {
             allIds = pref.getString(SharedPrefConstants.F_ALL_CHECKED,null).split(";");
+            for (int i=0; i<numOfAll; i++) {
+                long friendId = Long.parseLong(allIds[i]);
+                String friendName = getFriendName(friendId);
+                objects.add(new ChooseFriendObject(friendName,friendId));
+            }
+        }
+        return objects;
+    }
+
+    public List<ChooseFriendObject> getAllUncheckedFriends() {
+        List<ChooseFriendObject> objects = new ArrayList<>();
+        int numOfAll = getNumberOfAllUncheckedFriends();
+        String[] allIds;
+        if (numOfAll>0) {
+            allIds = pref.getString(SharedPrefConstants.F_ALL_UNCHECKED,null).split(";");
             for (int i=0; i<numOfAll; i++) {
                 long friendId = Long.parseLong(allIds[i]);
                 String friendName = getFriendName(friendId);
@@ -176,5 +193,21 @@ public class Friend  {
 
     public int getNumberOfAllCheckedFriends() {
        return pref.getInt(SharedPrefConstants.F_NUMBER_ALL_CHECKED,0);
+    }
+
+    public void setAllUnchekedFriends(List<Long> uncheckedFriendIds) {
+        String all = "";
+        int num = 0;
+        for (Long i:uncheckedFriendIds) {
+            all+=i+";";
+            num++;
+        }
+        editor.putInt(SharedPrefConstants.F_NUMBER_ALL_UNCHECKED,num);
+        editor.putString(SharedPrefConstants.F_ALL_UNCHECKED,all);
+        editor.commit();
+    }
+
+    public int getNumberOfAllUncheckedFriends() {
+        return pref.getInt(SharedPrefConstants.F_NUMBER_ALL_UNCHECKED,0);
     }
 }

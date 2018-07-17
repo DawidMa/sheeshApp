@@ -313,7 +313,6 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         swipeRefreshLayout.setRefreshing(false);
         adapter = new MyAdapter(context, friendlistObject);
         list.setAdapter(adapter);
-
     }
 
 

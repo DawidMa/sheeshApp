@@ -65,7 +65,11 @@ public class MyCircle extends View {
     }
 
     public void setColor(String color) {
-        paint.setColor(Color.parseColor(color));
+        try {
+            paint.setColor(Color.parseColor(color));
+        } catch (Exception e){
+            paint.setColor(Color.parseColor("#00ff00"));
+        }
     }
 }
 

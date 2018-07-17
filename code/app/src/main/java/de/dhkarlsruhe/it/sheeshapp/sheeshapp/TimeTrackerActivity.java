@@ -27,12 +27,17 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class TimeTrackerActivity extends AppCompatActivity {
+import java.util.List;
+
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
+
+public class TimeTrackerActivity extends AppCompatActivity implements TrackerFriendsFragment.CheckboxClicked, TimeTrackerFragment.SendFriends{
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     //private Toolbar toolbar;
     private TimeTrackerFragment timeTrackerFragment;
+    private TrackerFriendsFragment trackerFriendsFragment;
     //protected PowerManager.WakeLock mWakeLock;
 
     @Override
@@ -56,6 +61,7 @@ public class TimeTrackerActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         timeTrackerFragment = new TimeTrackerFragment();
+        trackerFriendsFragment = new TrackerFriendsFragment();
 
     }
 
@@ -79,6 +85,18 @@ public class TimeTrackerActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void send(ChooseFriendObject object, boolean checked) {
+        TimeTrackerFragment frag = (TimeTrackerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.tiLayoutMain);
+        timeTrackerFragment.updateFriends(object,checked);
+    }
+
+    @Override
+    public void sendTrackerFriends(List<ChooseFriendObject> checked, List<ChooseFriendObject> unchecked) {
+        trackerFriendsFragment.getFriendLists(checked,unchecked);
     }
 
     /**
@@ -143,7 +161,7 @@ public class TimeTrackerActivity extends AppCompatActivity {
 
             switch (position) {
                 case 1:
-                    return new FriendsFragment();
+                    return trackerFriendsFragment;
                 case 0:
                     return timeTrackerFragment;
             }
