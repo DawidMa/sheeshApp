@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -115,7 +117,7 @@ public class ChooseFriendActivity extends AppCompatActivity {
             TextView myTitle = (TextView)row.findViewById(R.id.liChooseFriendName);
             myTitle.setText(actualObject.getName());
             long tag = actualObject.getId();
-            CheckBox cb = (CheckBox)row.findViewById(R.id.liChooseCb);
+            Switch cb = (Switch) row.findViewById(R.id.switchFriends);
             cb.setTag(tag);
             boolean checked = friend.getChecked(tag);
             cb.setChecked(checked);

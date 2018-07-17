@@ -96,7 +96,7 @@
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:srcCompat="@drawable/play_button" />
+        app:srcCompat="@drawable/play_button_1" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/tiBtPause"
@@ -112,7 +112,7 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintLeft_toRightOf="@+id/tiBtStart"
         app:layout_constraintRight_toLeftOf="@+id/tiBtEnd"
-        app:srcCompat="@drawable/pause" />
+        app:srcCompat="@drawable/pause_1" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/tiBtEnd"
@@ -126,7 +126,7 @@
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/cancel" />
+        app:srcCompat="@drawable/error_1" />
     <de.dhkarlsruhe.it.sheeshapp.sheeshapp.circle.MyCircle
         android:id="@+id/grayCircle"
         android:layout_width="200dp"

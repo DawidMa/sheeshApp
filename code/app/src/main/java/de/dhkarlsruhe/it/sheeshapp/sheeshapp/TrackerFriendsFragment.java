@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,7 +108,7 @@ public class TrackerFriendsFragment extends Fragment {
             TextView myTitle = (TextView)row.findViewById(R.id.liChooseFriendName);
             myTitle.setText(actualObject.getName());
             long tag = actualObject.getId();
-            final CheckBox cb = (CheckBox)row.findViewById(R.id.liChooseCb);
+            final Switch cb = (Switch) row.findViewById(R.id.switchFriends);
             cb.setTag(tag);
             if (position<numOfChecked) {
                 cb.setChecked(true);
