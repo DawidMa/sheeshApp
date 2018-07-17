@@ -1,23 +1,25 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -27,8 +29,7 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.circle.CircleAnimation;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.circle.MyCircle;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.timer.FloTimer;
 
 /**
  * Created by Informatik on 28.11.2017.
@@ -41,13 +42,11 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     private Random rnd;
     private ConstraintLayout tiLayoutMain;
     private Vibrator vib;
-    private MyTimer timerTotal, timerSingle;
+    private FloTimer timerTotal1, timerSingle1, timerNextPlayer, timerFlash;
 
     private TextView tiTvChoosenFriends,tiTvTotal,tiTvSingle, tiTvInfo, tiTvTopTitle;
 
     private FloatingActionButton btStart, btPause, btEnd;
-
-    private String[] friends;
 
     private List<ChooseFriendObject> sequence = new ArrayList<>();
 
@@ -56,9 +55,8 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
     private Friend friend;
 
-    private Thread threadTotal, threadSingle, threadTimeToChange, threadVibrator;
+    private Thread threadVibrator;
 
-    private boolean threadsRunning=false;
     private boolean firstStart = true;
     private boolean timeToChange=false;
     private boolean darkBackground = true;
@@ -74,7 +72,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     private static final int uniqueID = 111;
     private boolean showNotification = true;
     private boolean notificationIsActive = false;
-    private NotificationManager manager;
+    private NotificationManagerCompat manager;
     private Thread threadNotification;
     private View v;
 
@@ -82,6 +80,11 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
     private CircleAnimation circleAnimation;
     private MyCircle circle;
+    private MyCircle circleGray;
+
+    private String myChannelId = "DawidsChannel";
+
+    private Window window;
 
     public TimeTrackerFragment() {}
 
@@ -93,31 +96,18 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         init();
         friend = new Friend(getContext());
         sequence = friend.getAllCheckedFriends();
-        printFriendsList(sequence);
         Collections.shuffle(sequence);
-        //printFriends(friends);
-        //sequence = setNewSequence();
+        printFriendsList(sequence);
         firstFriend = sequence.get(0).getName();
-        circle = (MyCircle) rootView.findViewById(R.id.animatedCircle);
+        circle = rootView.findViewById(R.id.animatedCircle);
+        circleGray = rootView.findViewById(R.id.grayCircle);
+        circleGray.setAngle(360);
+        circleGray.setColor("#383838");
         circleAnimation = new CircleAnimation(circle, 360);
-        circleAnimation.setDuration(100);
+        circleAnimation.setDuration(1000);
         circleAnimation.setRepeatMode(Animation.INFINITE);
         circle.startAnimation(circleAnimation);
         return rootView;
-    }
-
-    private List<String> setNewSequence() {
-        String[] newOrder = new String[friends.length];
-        List<String> listOrder = new ArrayList<>();
-        for (int i = 0; i < newOrder.length; i++) {
-            newOrder[i] = friends[i];
-        }
-        Collections.shuffle(Arrays.asList(newOrder));
-        for (int i=0; i<newOrder.length; i++) {
-            listOrder.add(newOrder[i]);
-        }
-        return listOrder;
-
     }
 
     private void init() {
@@ -135,56 +125,59 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         btEnd = (FloatingActionButton)v.findViewById(R.id.tiBtEnd);
         tiLayoutMain = (ConstraintLayout)v.findViewById(R.id.tiLayoutMain);
         vib = (Vibrator) this.getContext().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-        timerTotal = new MyTimer(0,true);
-        timerSingle = new MyTimer(pref.getInt("TIME_IN_SECONDS",0),false);
-        tiTvTotal.setText("Gesamtzeit: "+timerTotal.getTotalTimeAsString());
-        tiTvSingle.setText("Restliche Zugzeit: "+timerSingle.getSingleTimeAsString());
+        timerSingle1 = new FloTimer(pref.getInt("TIME_IN_SECONDS",0));
+        timerSingle1.setResolution(0.01f);
+        timerTotal1 = new FloTimer(0);
+        timerTotal1.setCountMode(false);
+        timerNextPlayer = new FloTimer(5);
+        timerNextPlayer.setResolution(0.01f);
+        timerFlash = new FloTimer(3);
+        timerFlash.setResolution(0.5f);
+        tiTvTotal.setText("Gesamtzeit: "+timerTotal1.getTimeAsString());
+        tiTvSingle.setText(timerSingle1.getTimeAsString());
         rnd = new Random();
         dateStart = setDate();
         //Notification
-        notification = new NotificationCompat.Builder(this.getActivity());
+        createNotificationChannel();
+        notification = new NotificationCompat.Builder(this.getActivity(),myChannelId);
         notification.setAutoCancel(true);
-
+        notification.setSmallIcon(R.mipmap.icon_setup_white);
+        notification.setOngoing(true);
+        notification.setContentIntent(((TimeTrackerActivity)getActivity()).myPendingIntent());
+        notification.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        manager = NotificationManagerCompat.from(getActivity());
+        window = getActivity().getWindow();
     }
-    public void fragmentPressedStart(View view) {
+
+    public void fragmentPressedStart() {
         btPause.setEnabled(true);
         btStart.setEnabled(false);
         if(firstStart) {
             firstStart = false;
             getActivity().showDialog(1);
         } else {
-            threadsRunning=true;
-            runTimeSingle();
+            timerSingle1.resume();
+            if (timerFlash.isPaused()) {
+                timerFlash.resume();
+            }
         }
         tiTvInfo.setText("Momentan ist " + sequence.get(actualFriend).getName() + " dran.");
     }
 
-    public static String getFirstFriend() {
-        return firstFriend;
-    }
-
-    public void fragmentPressedPause(View view) {
+    public void fragmentPressedPause() {
         btPause.setEnabled(false);
         btStart.setEnabled(true);
-        threadsRunning=false;
-       // deleteOneFriend();
+        timerSingle1.pause();
+        if (timerFlash.isRunning()) {
+            timerFlash.pause();
+        }
         randomColeChanger();
         numOfSwitchedCoal++;
     }
 
-    private void deleteOneFriend() {
-        if (sequence.size()>1) {
-            int randomInt = rnd.nextInt(sequence.size());
-            System.out.println(sequence.get(randomInt));
-            sequence.remove(randomInt);
-            if (sequence.size()<actualFriend) {
-                actualFriend = 0;
-            }
-            printFriendsList(sequence);
-        } else {
-            Toast.makeText(getActivity(),"Not enough friends", Toast.LENGTH_SHORT).show();
-        }
-
+    public void fragmentPressedEnd() {
+        getActivity().showDialog(2);
+        totalTime=timerTotal1.getTimeAsString();
     }
 
     private void printFriendsList(List<ChooseFriendObject> sequence) {
@@ -203,30 +196,12 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         tiTvInfo.setText(sequence.get(rnd.nextInt(numFriends)).getName() + " muss die Kohle drehen!");
     }
 
-    public void fragmentPressedEnd(View view) {
-        btPause.setEnabled(false);
-        btStart.setEnabled(true);
-        threadsRunning=false;
-        getActivity().showDialog(2);
-        totalTime=timerTotal.getTotalTimeAsString();
-    }
-    private void printFriends(String[] str) {
-        for(int i = 0; i < str.length; i++) {
-            if(i==str.length-1) {
-                tiTvChoosenFriends.append(str[i]+".");
-                friendsAsString+=(str[i]+".");
-            } else {
-                tiTvChoosenFriends.append(str[i]+", ");
-                friendsAsString+=(str[i]+", ");
-            }
-        }
-    }
-
     @Override
     public void onDetach() {
         try {
-            threadTotal.interrupt();
-            threadSingle.interrupt();
+            timerTotal1.interrupt();
+            timerSingle1.interrupt();
+            timerNextPlayer.interrupt();
         } catch (Exception e) {
 
         }
@@ -270,102 +245,174 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     }
 */
     private void runTimeTotal() {
-        threadTotal = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    while (!isInterrupted()) {
-                        Thread.sleep(1000);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                timerTotal.incSeconds();
-                                tiTvTotal.setText("Gesamtzeit: " +timerTotal.getTotalTimeAsString());
-                            }
-                        });
-                    }
-                } catch (InterruptedException e) {
+        timerTotal1.setCallback(new FloTimer.TimerCallback() {
+            public void action() {
+                if (getActivity()!=null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        public void run() {
+                            tiTvTotal.setText("Gesamtzeit: " + timerTotal1.getTimeAsString());
+                        }
+                    });
                 }
             }
-        };
-        threadTotal.start();
+        });
+        timerTotal1.start();
     }
 
     private void runTimeSingle() {
-        threadSingle = new Thread() {
+        final int standardTime = pref.getInt("TIME_IN_SECONDS",0);
+        circleAnimation.setDuration(100);
+        timerSingle1.setCallback(new FloTimer.TimerCallback() {
             @Override
-            public void run() {
-                final int standardTime = pref.getInt("TIME_IN_SECONDS",0);
-                try {
-                    //circleAnimation.setRepeatMode(Animation.INFINITE);
-                    //circle.startAnimation(circleAnimation);
-                    while (threadsRunning) {
-                        final int step = 10;
-                        Thread.sleep(step);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                timerSingle.decMillis(step);
-                                if(!timeToChange&&timerSingle.getSeconds()<=5 && timerSingle.getMinutes()==0) {
-                                    timeToChange = true;
-                                    showThatTimeToChange();
-                                }
-                                if(timerSingle.getSeconds()==0 && timerSingle.getMinutes()==0 && timerSingle.getMillis()==0) {
-                                    actualFriend++;
-                                    timeToChange=false;
-                                    vibrateXTimes(3,350);
-                                    if(actualFriend>=sequence.size()) {
-                                        actualFriend=0;
-                                    }
-                                    tiTvInfo.setText("Momentan ist " + sequence.get(actualFriend).getName() + " dran.");
-                                }
-                                tiTvSingle.setText("Restliche Zugzeit: "+timerSingle.getSingleTimeAsString());
-                                float angle = ((timerSingle.getMinutes()*60+timerSingle.getSeconds() + (timerSingle.getMillis())) / ((float)standardTime)) * 360f;
-                                circle.setAngle(angle);
-                                circle.invalidate();
+            public void action() {
+                if(!timeToChange&&timerSingle1.getTime()<=3) {
+                    timeToChange = true;
+                    if (timerFlash.isPaused()) {
+                        timerFlash.resume();
+                    } else {
+                        runTimeFlash();
+                    }
+                }
+                if (getActivity()!=null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        public void run() {
+                            tiTvSingle.setText(timerSingle1.getTimeAsString());
+                            float angle = (timerSingle1.getTime() / standardTime) * 360f;
+                            if (notificationIsActive) {
+                                startNotificationThread();
                             }
-                        });
-                    }
-                } catch (InterruptedException e) {
-                }
-            }
-        };
-        threadSingle.start();
-    }
-    private void showThatTimeToChange() {
-        threadTimeToChange = new Thread() {
-
-            @Override
-            public void run() {
-                try {
-                    while (timeToChange) {
-                        Thread.sleep(500);
-                        if (getActivity()!=null) {
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (darkBackground) {
-                                        tiLayoutMain.setBackgroundColor(Color.rgb(0, 1, 99));
-                                        darkBackground = false;
-                                    } else {
-                                        tiLayoutMain.setBackgroundColor(Color.rgb(0, 1, 56));
-                                        darkBackground = true;
-                                    }
-                                }
-                            });
+                            circle.setColor(calculateProgressColor(angle));
+                            circle.setAngle(angle);
+                            circle.invalidate();
                         }
-                    }
-                } catch (InterruptedException e) {
+                    });
+                }
+
+            }
+        });
+        timerSingle1.setFinishCallback(new FloTimer.TimerCallback() {
+            @Override
+            public void action() {
+                timerSingle1.pause();
+                actualFriend++;
+                timeToChange=false;
+                vibrateXTimes(3,350);
+                if(actualFriend>=sequence.size()) {
+                    actualFriend=0;
+                }
+                if (getActivity()!=null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        public void run() {
+                            tiTvInfo.setText("Übergabe an " + sequence.get(actualFriend).getName());
+                            btPause.setEnabled(false);
+                        }
+                    });
+                }
+                if (timerNextPlayer.isPaused()) {
+                    timerNextPlayer.resume();
+                } else {
+                    runTimeNextplayer();
                 }
             }
-        };
-        threadTimeToChange.start();
+        });
+        timerSingle1.start();
+    }
+
+    private void runTimeFlash() {
+        timerFlash.setCallback(new FloTimer.TimerCallback() {
+            @Override
+            public void action() {
+                if (getActivity()!=null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (darkBackground) {
+                                tiLayoutMain.setBackgroundColor(Color.rgb(0, 1, 99));
+                                window.setStatusBarColor(Color.rgb(0, 1, 99));
+                                darkBackground = false;
+                            } else {
+                                tiLayoutMain.setBackgroundColor(Color.rgb(0, 1, 56));
+                                window.setStatusBarColor(Color.rgb(0, 1, 56));
+                                darkBackground = true;
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        timerFlash.setFinishCallback(new FloTimer.TimerCallback() {
+            @Override
+            public void action() {
+                if (getActivity()!=null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            tiLayoutMain.setBackgroundColor(Color.rgb(0, 0, 0));
+                            window.setStatusBarColor(Color.rgb(0, 0, 0));
+                        }
+                    });
+                }
+                timerFlash.pause();
+            }
+        });
+        timerFlash.start();
+    }
+
+    private void runTimeNextplayer() {
+        timerNextPlayer.setCallback(new FloTimer.TimerCallback() {
+            @Override
+            public void action() {
+                if (getActivity()!=null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        public void run() {
+                            tiTvSingle.setText(timerNextPlayer.getTimeAsString());
+                            float angle = ((5-timerNextPlayer.getTime()) / 5) * 360f;
+                            circle.setColor(calculateProgressColor(angle));
+                            circle.setAngle(angle);
+                            circle.invalidate();
+                            if (notificationIsActive) {
+                                startNotificationThread();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        timerNextPlayer.setFinishCallback(new FloTimer.TimerCallback() {
+            @Override
+            public void action() {
+                if (getActivity()!=null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        public void run() {
+                            tiLayoutMain.setBackgroundColor(Color.rgb(0, 1, 56));
+                            window.setStatusBarColor(Color.rgb(0, 1, 56));
+                            tiTvInfo.setText("Momentan ist " + sequence.get(actualFriend).getName() + " dran.");
+                            btPause.setEnabled(true);
+                        }
+                    });
+                }
+                timerNextPlayer.pause();
+                timerSingle1.resume();
+            }
+        });
+        timerNextPlayer.start();
+    }
+
+    private String calculateProgressColor(float angle) {
+        String color = "";
+        if (angle>=180) {
+            int value = (int)(((360f-angle)/180f)*255);
+            color = String.format("#%02x%02x%02x", value, 255, 0);
+        } else if (angle>=0) {
+            int value = (int)(((angle)/180f)*255);
+            color = String.format("#%02x%02x%02x", 255, value, 0);
+        }
+        return color;
     }
 
     private void vibrateXTimes(int often, final int setTtime) {
         times = often;
         threadVibrator = new Thread() {
-
             @Override
             public void run() {
                 try {
@@ -389,79 +436,18 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     }
 
     public void playPositive() {
-        threadsRunning=true;
         runTimeTotal();
         runTimeSingle();
-        tiTvInfo.setText("Momentan ist " + sequence.get(actualFriend).getName() + " dran.");
+        //tiTvInfo.setText("Momentan ist " + sequence.get(actualFriend).getName() + " dran.");
     }
 
     public void endPositiv() {
         dateEnd = setDate();
         saveToStatistics();
         showNotification=false;
-        threadsRunning = false;
-//        threadSingle.interrupt();
-       // threadTotal.interrupt();
-        //threadNotification.interrupt();
         getActivity().finish();
     }
 
-    public void endNegative() {
-        if(!firstStart) {
-            btPause.setEnabled(true);
-            btStart.setEnabled(false);
-            threadsRunning=true;
-            runTimeSingle();
-        }
-    }
-    /*@Override
-    protected Dialog onCreateDialog(int id) {
-        switch(id) {
-            case 1:
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Heute beginnt " + sequence[0] + "!");
-                builder.setCancelable(false);
-                builder.setPositiveButton("OK!", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        threadsRunning=true;
-                        runTimeTotal();
-                        runTimeSingle();
-                        tiTvInfo.setText("Momentan ist " + sequence.get(actualFriend) + " dran.");
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-                break;
-            case 2:
-                AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
-                builder2.setMessage("Willst du wirklich gehen?");
-                builder2.setCancelable(true);
-                builder2.setPositiveButton("Ja und speichern!", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dateEnd = setDate();
-                        saveToStatistics();
-                        showNotification=false;
-                        getActivity().finish();
-                    }
-                });
-                builder2.setNegativeButton("Nein!", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        btPause.setEnabled(true);
-                        btStart.setEnabled(false);
-                        threadsRunning=true;
-                        runTimeSingle();
-                    }
-                });
-                AlertDialog dialog2 = builder2.create();
-                dialog2.show();
-                break;
-        }
-        return super.onCreateDialog(id);
-    }
-*/
     private void saveToStatistics() {
         int numOfSavedEntries = history.getNumOfSavedEntries();
         numOfSavedEntries++;
@@ -496,43 +482,25 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         vib.vibrate(i);
     }
 
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "CHANNEL_NAME";
+            String description = "CHANNEL_DESCRIPTION";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(myChannelId, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getContext().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+
     private void startNotificationThread() {
-        System.out.println("CONFIGURATION");
-        notification.setSmallIcon(R.mipmap.icon_setup_white);
         notification.setWhen(System.currentTimeMillis());
-        notification.setTicker(sequence.get(actualFriend).getName() + " ist dran.");
+        notification.setTicker(tiTvInfo.getText());
         notification.setContentTitle(tiTvInfo.getText());
-        notification.setContentText(timerSingle.getSingleTimeAsString() + " verbleibend");
-        notification.setOngoing(true);
-        notification.setContentIntent(((TimeTrackerActivity)getActivity()).myPendingIntent());
-
-        manager = (NotificationManager)getActivity().getSystemService(NOTIFICATION_SERVICE);
+        notification.setContentText(tiTvSingle.getText());
         manager.notify(uniqueID,notification.build());
-
-        threadNotification = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    while (notificationIsActive) {
-                        System.out.println("THREAD RUNNING");
-                        Thread.sleep(500);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                System.out.println("INNER THREAD");
-                                notification.setTicker(sequence.get(actualFriend).getName() + " ist dran.");
-                                notification.setContentTitle(tiTvInfo.getText());
-                                notification.setContentText(timerSingle.getSingleTimeAsString() + " verbleibend");
-                                manager.notify(uniqueID,notification.build());
-                            }
-                        });
-                    }
-                } catch (InterruptedException e) {
-                    System.out.println("CATCH "+ e);
-                }
-            }
-        };
-        threadNotification.start();
     }
 
     public void myResume() {
@@ -545,7 +513,6 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
     public void myStop() {
         if(showNotification) {
-            startNotificationThread();
             notificationIsActive = true;
         }
     }

@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.PowerManager;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
@@ -23,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 
 public class TimeTrackerActivity extends AppCompatActivity {
@@ -38,7 +40,7 @@ public class TimeTrackerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_tracker);
 
-       // toolbar = (Toolbar) findViewById(R.id.tbTracker);
+        // toolbar = (Toolbar) findViewById(R.id.tbTracker);
         //setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -113,14 +115,15 @@ public class TimeTrackerActivity extends AppCompatActivity {
             return rootView;
         }
     }
+
     public void pressedStart(View view) {
-        timeTrackerFragment.fragmentPressedStart(view);
+        timeTrackerFragment.fragmentPressedStart();
     }
     public void pressedPause(View view) {
-        timeTrackerFragment.fragmentPressedPause(view);
+        timeTrackerFragment.fragmentPressedPause();
     }
     public void pressedEnd(View view) {
-        timeTrackerFragment.fragmentPressedEnd(view);
+        timeTrackerFragment.fragmentPressedEnd();
     }
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -183,7 +186,7 @@ public class TimeTrackerActivity extends AppCompatActivity {
                 builder2.setNegativeButton("Nein!", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        timeTrackerFragment.endNegative();
+                       // timeTrackerFragment.endNegative();
                     }
                 });
                 AlertDialog dialog2 = builder2.create();

@@ -364,6 +364,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
                 prepareProgressDialog();
                 String localURL = Environment.getExternalStorageDirectory() + "/Download/" + friendid + ".png";
                 File localFile = new File(localURL);
+
                 if (localFile.exists()) {
                     showLoadedFile(imgFriends,localURL);
                 } else {
