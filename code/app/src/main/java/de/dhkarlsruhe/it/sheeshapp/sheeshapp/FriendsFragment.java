@@ -359,27 +359,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             long friendid = actualObject.getFriend_id();
             tvTitle.setText(actualObject.getName());
             tvDescription.setText(friendid+"");
-            if (actualObject.isHas_icon()) {
-                prepareProgressDialog();
-                String localURL = Environment.getExternalStorageDirectory() + "/Download/" + friendid + ".png";
-                File localFile = new File(localURL);
-
-                if (localFile.exists()) {
-                    showLoadedFile(imgFriends,localURL);
-                } else {
-                    loadFileFromServer(actualObject.getFriend_id() + "", imgFriends);
-                }
-            } else {
-                showLoadedFile(imgFriends,null);
-            }
-
-            /* imgFriends.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    loadFileFromServer(friendlistObject.get(position).getFriend_id() + "", imgFriends);
-                }
-            });*/
-
+            decideProfileImage(imgFriends, actualObject);
             Button button = (Button) row.findViewById(R.id.liDeleteFriend);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -408,6 +388,23 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
                     Glide.with(context).load(R.drawable.sheeshopa).apply(RequestOptions.circleCropTransform()).into(view);
                 }
             }
+        }
+    }
+
+    private void decideProfileImage(ImageView imgFriends, FriendlistObject object) {
+        long friendid = object.getFriend_id();
+        String imageId = object.getLast_changed_icon_id();
+        if (object.isHas_icon()) {
+            prepareProgressDialog();
+            String localURL = Environment.getExternalStorageDirectory() + "/Download/" + friendid+"_"+imageId + ".png";
+            File localFile = new File(localURL);
+            if (localFile.exists()) {
+                showLoadedFile(imgFriends,localURL);
+            } else {
+                loadFileFromServer(friendid + "", imgFriends, imageId);
+            }
+        } else {
+            showLoadedFile(imgFriends,null);
         }
     }
 
@@ -441,13 +438,13 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         startActivity(intent);
     }
 
-    private void loadFileFromServer(final String userid, final ImageView imageView) {
+    private void loadFileFromServer(final String userid, final ImageView imageView, final String imageId) {
 
         final Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 OkHttpClient client = new OkHttpClient();
-                Request request = new Request.Builder().url(ServerConstants.URL_DOWNLOAD + userid + ".png").build();
+                Request request = new Request.Builder().url(ServerConstants.URL_DOWNLOAD + userid+"_"+imageId + ".png").build();
                 okhttp3.Response response = null;
                 try {
                     response = client.newCall(request).execute();
@@ -455,7 +452,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
                     float fileSize = response.body().contentLength();
                     BufferedInputStream inputStream = new BufferedInputStream(response.body().byteStream());
 
-                    OutputStream outputStream = new FileOutputStream(Environment.getExternalStorageDirectory() + "/Download/" + userid + ".png");
+                    OutputStream outputStream = new FileOutputStream(Environment.getExternalStorageDirectory() + "/Download/" + userid+"_"+imageId + ".png");
                     byte[] data = new byte[8192];
                     float total = 0;
                     int readedBytes = 0;
@@ -478,7 +475,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            showLoadedFile(imageView, Environment.getExternalStorageDirectory() + "/Download/" + userid + ".png");
+                            showLoadedFile(imageView, Environment.getExternalStorageDirectory() + "/Download/" + userid+"_"+imageId + ".png");
                         }
                     });
 

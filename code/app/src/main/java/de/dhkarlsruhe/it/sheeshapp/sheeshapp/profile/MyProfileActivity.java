@@ -205,10 +205,12 @@ public class MyProfileActivity extends AppCompatActivity{
         dialog.setTitle("Uploading");
         dialog.setMessage("Please wait...");
         dialog.show();
+        final String iconid = UUID.randomUUID().toString();
+        final String fileName = userid+"_"+iconid+".png";
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                File f = new File(context.getCacheDir(), userid+".png");
+                File f = new File(context.getCacheDir(), fileName);
                 try {
                     f.createNewFile();
                 } catch (IOException e) {
@@ -232,7 +234,8 @@ public class MyProfileActivity extends AppCompatActivity{
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
-                }                String content_type = getMimeType(f.getPath());
+                }
+                String content_type = getMimeType(f.getPath());
                 String filePath = f.getAbsolutePath();
                 OkHttpClient client = new OkHttpClient();
                 RequestBody fileBody =  RequestBody.create(MediaType.parse(content_type),f);
@@ -240,7 +243,7 @@ public class MyProfileActivity extends AppCompatActivity{
                         .setType(MultipartBody.FORM)
                         .addFormDataPart("type","image/png")
                         .addFormDataPart("file",filePath.substring(filePath.lastIndexOf("/")+1),fileBody)
-                        .addFormDataPart("iconid", UUID.randomUUID().toString())
+                        .addFormDataPart("iconid", iconid)
                         .build();
                 Request request = new Request.Builder()
                         .url(ServerConstants.URL_UPLOAD)
