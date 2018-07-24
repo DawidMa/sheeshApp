@@ -32,7 +32,7 @@ public class Profile {
 
     public void setProfile(FriendlistObject friendlistObject) {
         profileEditor.putString(SharedPrefConstants.P_NAME,friendlistObject.getName());
-        profileEditor.putLong(SharedPrefConstants.P_TOTAL_SESSIONS, friendlistObject.getTotal_sessions());
+       // profileEditor.putLong(SharedPrefConstants.P_TOTAL_SESSIONS, friendlistObject.getTotal_sessions());
         profileEditor.putLong(SharedPrefConstants.P_ID, friendlistObject.getFriend_id());
         profileEditor.commit();
     }

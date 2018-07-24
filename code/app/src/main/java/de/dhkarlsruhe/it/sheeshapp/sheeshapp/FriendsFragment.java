@@ -45,6 +45,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -371,7 +372,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             row.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openFriendsProfile(position);
+                    openFriendsProfile(position,imgFriends);
                 }
             });
             return row;
@@ -432,9 +433,16 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
-    private void openFriendsProfile(int i) {
+    private void openFriendsProfile(int i, ImageView friendImage) {
         Intent intent = new Intent(context, ProfileActivity.class);
         profile.setProfile(friendlistObject.get(i));
+        friendImage.buildDrawingCache();
+        Bitmap bitmap = friendImage.getDrawingCache();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        intent.putExtra("PROFILE_IMAGE",b);
+        intent.putExtra("FRIEND_ID",friendlistObject.get(i).getFriend_id());
         startActivity(intent);
     }
 

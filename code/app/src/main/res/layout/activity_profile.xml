@@ -4,41 +4,149 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+    android:paddingTop="30dp"
+    android:background="@drawable/profile_down_colors">
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/toolbar_colors"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/btnProDelete"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/icon_remove_friend"
+            android:backgroundTint="#fff"
+            android:onClick="deleteFriend"
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imgProImage"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/user_avatar" />
+
+        <TextView
+            android:id="@+id/tvProName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Name"
+            android:textColor="#fff"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgProImage" />
+
+        <TextView
+            android:id="@+id/tvProTobacco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="HQT Tabak"
+            android:textColor="#fff"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvProName" />
+
+        <TextView
+            android:id="@+id/tvProSince"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:paddingBottom="16dp"
+            android:text="Since 01.01.1990"
+            android:textColor="#fff"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvProTobacco" />
+    </android.support.constraint.ConstraintLayout>
+
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guidePro"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"/>
+
+    <ImageView
+        android:id="@+id/imgProIconFriends"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toStartOf="@+id/guidePro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:srcCompat="@drawable/icon_round_user" />
+
+    <ImageView
+        android:id="@+id/imgProIconShishas"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidePro"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:srcCompat="@drawable/icon_amount_shishas" />
 
     <TextView
-        android:id="@+id/tvProName"
+        android:id="@+id/tvProFriends"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="12"
+        android:textStyle="bold"
+        android:textSize="32dp"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toStartOf="@+id/guidePro"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imgProIconFriends" />
 
     <TextView
-        android:id="@+id/tvProSessions"
+        android:id="@+id/tvProShishas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:text="32"
+        android:textStyle="bold"
+        android:textSize="32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvProName" />
+        app:layout_constraintStart_toStartOf="@+id/guidePro"
+        app:layout_constraintTop_toBottomOf="@+id/imgProIconShishas" />
 
-    <TextView
-        android:id="@+id/tvProTobacco"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvProSessions" />
+
 </android.support.constraint.ConstraintLayout>
