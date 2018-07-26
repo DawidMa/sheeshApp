@@ -92,6 +92,10 @@ public class FloTimer {
         return time;
     }
 
+    public long getTimeAsLong() {
+        return (long)time*1000;
+    }
+
     public void setTime(float time) {
         this.time = startTime = time;
     }

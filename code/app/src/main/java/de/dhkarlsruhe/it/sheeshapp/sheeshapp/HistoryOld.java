@@ -12,14 +12,14 @@ import java.util.List;
  * Created by d0272129 on 24.01.18.
  */
 //TODO etwas wird falsch übermittelt
-public class History {
+public class HistoryOld {
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private int numOfSavedEntries;
     private String[] dataAsString;
 
-    public History(Context context) {
+    public HistoryOld(Context context) {
         pref = context.getSharedPreferences("com.preferences.sheeshapp",0);
         editor = pref.edit();
         loadData();
@@ -34,7 +34,7 @@ public class History {
             }
         } else {
             dataAsString = new String[1];
-            dataAsString[0] = "No History available";
+            dataAsString[0] = "No HistoryOld available";
         }
     }
 

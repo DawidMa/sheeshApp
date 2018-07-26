@@ -15,4 +15,6 @@ public class ServerConstants {
     public static final String URL_DOWNLOAD = URL+"file/download/";
     public static final String URL_FRIEND_ACCEPT = URL+"friend/accept?id=";
     public static final String URL_FRIEND_NAMES = URL+"friend/names?userid=";
+    public static final String URL_SAVE_HISTORY = URL+"history/save";
+    public static final String URL_HISTORIES = URL+"history/all?userid=";
 }
