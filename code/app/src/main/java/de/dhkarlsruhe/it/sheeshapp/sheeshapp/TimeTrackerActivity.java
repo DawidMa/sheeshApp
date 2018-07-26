@@ -207,6 +207,12 @@ public class TimeTrackerActivity extends AppCompatActivity implements TrackerFri
                        // timeTrackerFragment.endNegative();
                     }
                 });
+                builder2.setNeutralButton("Ja ohne speichern!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        timeTrackerFragment.endNeutral();
+                    }
+                });
                 AlertDialog dialog2 = builder2.create();
                 dialog2.show();
                 break;

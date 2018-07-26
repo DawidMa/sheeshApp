@@ -1,19 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="55dp"
-    android:orientation="vertical" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/colorPrimary">
 
     <TextView
-        android:id="@+id/stTvChild"
-        android:layout_width="fill_parent"
+        android:id="@+id/stTvChildInfo"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Test"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:layout_toRightOf="@id/imgChildIcon"
+        android:textStyle="bold"
         android:textColor="#fff"
-        android:background="@drawable/btn_roundrect_unfocused"
-        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
+        android:textSize="15dp"
+        />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/stTvChildData"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/stTvChildInfo"
+        android:gravity="right"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="32dp"
+        android:text="TextView"
+        android:textColor="#fff"
+        android:textSize="15dp" />
+
+
+    <ImageView
+        android:id="@+id/imgChildIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="8dp"
+        android:tint="#fff"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_alignParentLeft="true" />
+
+</RelativeLayout>

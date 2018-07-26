@@ -170,17 +170,20 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         TextView tvTitle = header.findViewById(R.id.tvHeaderTitle);
         TextView tvInfo = header.findViewById(R.id.tvHeaderInfo);
         ImageView imgNotification = header.findViewById(R.id.imgHeaderNotification);
+        ImageView imgHeader = header.findViewById(R.id.imgHeader);
         String formattedTitle = "You have " + "<i>"+numOfRequests+"</i>" + " new Friend Requests";
         if (numOfRequests>0) {
             tvTitle.setText(Html.fromHtml(formattedTitle));
             tvInfo.setText("Click to open");
             header.setBackgroundColor(Color.WHITE);
             imgNotification.setVisibility(View.VISIBLE);
+            imgHeader.setColorFilter(Color.BLACK);
             } else {
             tvTitle.setText("No Friend Requests");
             tvInfo.setText("---");
             header.setBackgroundColor(Color.LTGRAY);
             imgNotification.setVisibility(View.GONE);
+            imgHeader.setColorFilter(getResources().getColor(R.color.colorPrimary));
         }
 
     }
@@ -212,7 +215,11 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         // Get the View's(the one that was clicked in the Fragment) location
         anchorView.getLocationOnScreen(location);
         // Using location, the PopupWindow will be displayed right under anchorView
+        final TextView tvInfo = header.findViewById(R.id.tvHeaderInfo);
+
         popupWindow.showAtLocation(anchorView, Gravity.NO_GRAVITY, location[0], location[1] + anchorView.getHeight());
+
+
     }
 
     private void checkPermission() {
@@ -304,8 +311,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
 
     private void positiveResponse(String string) {
         //parse downloaded data
-        Type listType = new TypeToken<List<FriendlistObject>>() {
-        }.getType();
+        Type listType = new TypeToken<List<FriendlistObject>>() {}.getType();
         friendlistObject = json.fromJson(string, listType);
         numOfFriends = friendlistObject.size();
         reloadListView();

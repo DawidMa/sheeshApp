@@ -27,16 +27,14 @@
 
     <ExpandableListView
         android:id="@+id/stExpListView"
+        android:animateLayoutChanges="true"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="0dp" />
+        android:layout_height="wrap_content"
+        android:divider="@drawable/custom_divider"
+        android:dividerHeight="1dp"
+        android:groupIndicator="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
