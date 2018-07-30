@@ -1,10 +1,12 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -26,20 +29,21 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
 
 public class TrackerSetupFragment extends Fragment{
 
-    private TextView tvSeconds, tvMinutes, tvQuestionTime, tvQuestionFriends;
-   // private Typeface slabo;
-    private static NumberPicker pickSeconds, pickMinutes;
-    private Button btStartMeeting;
     private static SharedPreferences pref;
     private static SharedPreferences.Editor editor;
     private static Friend friend;
+    private CustomTimePickerDialog timePickerDialog;
+    private TimePickerDialog.OnTimeSetListener onTimeSetListener;
+    private ConstraintLayout layoutTime, layoutFriends;
+    private int minutes, seconds;
+    private TextView tvTime;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        // slabo = Typeface.createFromAsset(getContext().getAssets(),  "fonts/Slabo.ttf");
         friend = new Friend(getContext());
-        pref = getActivity().getSharedPreferences("EINSTELLUNGEN",0);
+        pref = getActivity().getSharedPreferences(SharedPrefConstants.SETTINGS,0);
         editor = pref.edit();
     }
 
@@ -47,36 +51,71 @@ public class TrackerSetupFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_tracker_setup, container, false);
+
         init(rootView);
-        btStartMeeting = (Button) rootView.findViewById(R.id.seBtChooseFriends);
-        btStartMeeting.setOnClickListener(new View.OnClickListener() {
+        tvTime = rootView.findViewById(R.id.tvSeTimeInfo);
+        updateTvTime();
+
+        onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
-            public void onClick(View view) {
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                editor.putInt(SharedPrefConstants.SECONDS,minute);
+                editor.putInt(SharedPrefConstants.MINUTES,hourOfDay);
+                editor.commit();
+                seconds = minute;
+                minutes = hourOfDay;
+                updateTvTime();
+            }
+        };
+        timePickerDialog = new CustomTimePickerDialog(getContext(), onTimeSetListener,minutes,seconds,true);
+
+        layoutTime = rootView.findViewById(R.id.layoutSeTime);
+        layoutTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timePickerDialog.show();
+            }
+        });
+
+        layoutFriends = rootView.findViewById(R.id.layoutSeFriends);
+        layoutFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ChooseFriendActivity.class);
                 startActivity(intent);
             }
         });
+
         return rootView;
     }
 
+    private void updateTvTime() {
+        minutes = pref.getInt(SharedPrefConstants.MINUTES,0);
+        seconds = pref.getInt(SharedPrefConstants.SECONDS,0);
+
+        if (minutes==0 && seconds == 0) {
+            tvTime.setText("No time selected! Click to select.");
+        } else {
+            String text = "Your Time: ";
+            if (minutes<=9) {
+                text+="0";
+            }
+            text+=minutes+":";
+            if (seconds<=9) {
+                text+="0";
+            }
+            text+=seconds;
+            tvTime.setText(text);
+        }
+    }
+
     private void init(View v) {
-        initPicker(v);
         initTextViews(v);
     }
-    private void initPicker(View v) {
-        pickSeconds = (NumberPicker)v.findViewById(R.id.sePickSeconds);
-        pickMinutes = (NumberPicker)v.findViewById(R.id.sePickMinutes);
-        pickSeconds.setMaxValue(59);
-        pickSeconds.setMinValue(0);
-        pickMinutes.setMaxValue(5);
-        pickMinutes.setMinValue(0);
-    }
+
     private void initTextViews(View v) {
        // tvTitle = (TextView)v.findViewById(R.id.seTvTitle);
-        tvSeconds = (TextView)v.findViewById(R.id.seTvSeconds);
-        tvMinutes = (TextView)v.findViewById(R.id.seTvMinutes);
-        tvQuestionFriends = (TextView)v.findViewById(R.id.seTvQuestionForFriends);
-        tvQuestionTime = (TextView)v.findViewById(R.id.seTvQuestionForTime);
+
 /*
         tvTitle.setTypeface(slabo);
         tvSeconds.setTypeface(slabo);
@@ -86,19 +125,23 @@ public class TrackerSetupFragment extends Fragment{
     }
 
     public static boolean runShisha(Context c) {
-        int seconds = pickSeconds.getValue();
-        int minutes = pickMinutes.getValue();
+
+        int sec = pref.getInt(SharedPrefConstants.SECONDS,0);
+        int min = pref.getInt(SharedPrefConstants.MINUTES,0);
+
         boolean pass=false;
-        seconds+=minutes*60;
-        editor.putInt("TIME_IN_SECONDS",seconds);
-        editor.commit();
-        if(pref.getInt("TIME_IN_SECONDS",0)>0) {
+        sec+=min*60;
+
+        if(sec>30) {
             pass = checkChoosenFriends();
             if(!pass) {
                 Toast.makeText(c,"Wähle mindestens 2 Freunde!",Toast.LENGTH_SHORT).show();
+            } else {
+                editor.putInt(SharedPrefConstants.TIME_IN_SECONDS,sec);
+                editor.commit();
             }
         } else {
-            Toast.makeText(c,"Du hast 0 Sekunden gewählt!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(c,"Du hast weniger als 30 Sekunden gewählt!",Toast.LENGTH_SHORT).show();
         }
         return pass;
     }
