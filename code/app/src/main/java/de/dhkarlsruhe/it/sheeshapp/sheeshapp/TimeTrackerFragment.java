@@ -136,7 +136,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     }
 
     private void init() {
-        pref = this.getActivity().getSharedPreferences("EINSTELLUNGEN", 0);
+        pref = this.getActivity().getSharedPreferences(SharedPrefConstants.SETTINGS, 0);
         editor = pref.edit();
         //historyOld = new HistoryOld(getContext());
         tiTvChoosenFriends = (TextView) v.findViewById(R.id.tiTvChoosenFriends);
@@ -150,7 +150,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         btEnd = (FloatingActionButton)v.findViewById(R.id.tiBtEnd);
         tiLayoutMain = (ConstraintLayout)v.findViewById(R.id.tiLayoutMain);
         vib = (Vibrator) this.getContext().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-        timerSingle1 = new FloTimer(pref.getInt("TIME_IN_SECONDS",0));
+        timerSingle1 = new FloTimer(pref.getInt(SharedPrefConstants.TIME_IN_SECONDS,0));
         timerSingle1.setResolution(0.01f);
         timerTotal1 = new FloTimer(0);
         timerTotal1.setCountMode(false);
@@ -285,7 +285,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     }
 
     private void runTimeSingle() {
-        final int standardTime = pref.getInt("TIME_IN_SECONDS",0);
+        final int standardTime = pref.getInt(SharedPrefConstants.TIME_IN_SECONDS,0);
         circleAnimation.setDuration(100);
         timerSingle1.setCallback(new FloTimer.TimerCallback() {
             @Override

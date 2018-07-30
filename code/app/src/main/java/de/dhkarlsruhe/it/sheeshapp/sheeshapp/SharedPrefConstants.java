@@ -38,4 +38,9 @@ public class SharedPrefConstants {
     public static String F_NUMBER_ALL_CHECKED = "number_of_all_checked_friends";
     public static String F_NUMBER_ALL_UNCHECKED = "number_of_all_unchecked_friends";
     public static String F_ALL_UNCHECKED = "all_unchecked_friends";
+
+    public static String SETTINGS = "settings";
+    public static String SECONDS = "seconds";
+    public static String MINUTES = "minutes";
+    public static String TIME_IN_SECONDS = "time_in_seconds";
 }
