@@ -23,6 +23,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
+import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
+import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,10 +41,12 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 /**
  * Created by User on 23.11.2017.
  */
-public class AddFriendActivity extends AppCompatActivity {
+public class AddFriendActivity extends AppCompatActivity implements RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener{
 
     private TextView tvTitle;
-    private FloatingActionButton fabAdd;
+    private RapidFloatingActionLayout rfaLayout;
+    private RapidFloatingActionButton rfaButton;
+    private RapidFloatingActionHelper rfaHelper;
     private DelayAutoCompleteTextView autoCompleteTextView;
     private Friend friend;
     private String emailOfFriend;
@@ -51,13 +59,51 @@ public class AddFriendActivity extends AppCompatActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(Color.BLACK);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friend);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        initRfa();
+
         friend = new Friend(this);
         setTitle("Add Friend");
         init();
+    }
+
+    private void initRfa() {
+        RapidFloatingActionContentLabelList rfaContent = new RapidFloatingActionContentLabelList(this);
+        rfaLayout = findViewById(R.id.rfabLayoutAddFriend);
+        rfaButton = findViewById(R.id.rfabButtonAddFriend);
+
+        rfaContent.setOnRapidFloatingActionContentLabelListListener(this);
+        List<RFACLabelItem> items = new ArrayList<>();
+        items.add(new RFACLabelItem<Integer>()
+                .setLabel("Cancel")
+                .setResId(R.drawable.cancel)
+                .setIconNormalColor(0xffd84315)
+                .setIconPressedColor(0xffbf360c)
+                .setWrapper(0)
+        );
+        items.add(new RFACLabelItem<Integer>()
+                .setLabel("Add")
+                .setResId(R.mipmap.icon_plus_white)
+                .setIconNormalColor(0xff4e342e)
+                .setIconPressedColor(0xff3e2723)
+                .setLabelSizeSp(14)
+                .setWrapper(1)
+        );
+        rfaContent
+                .setItems(items)
+                .setIconShadowRadius(5)
+                .setIconShadowColor(0xff888888)
+                .setIconShadowDy(5)
+        ;
+        rfaHelper = new RapidFloatingActionHelper(
+                this,
+                rfaLayout,
+                rfaButton,
+                rfaContent
+        ).build();
     }
 
     private void init() {
@@ -83,15 +129,7 @@ public class AddFriendActivity extends AppCompatActivity {
                 nameOfFriend = user.getName();
             }
         });
-        fabAdd = findViewById(R.id.addFabAdd);
-        fabAdd.setImageResource(R.mipmap.icon_plus_white);
-        fabAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                        friend.addFriend(emailOfFriend,nameOfFriend);
-                        finish();
-                }
-        });
+
         btnDelete = findViewById(R.id.btnAddDelete);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,5 +137,33 @@ public class AddFriendActivity extends AppCompatActivity {
                 autoCompleteTextView.setText("");
             }
         });
+    }
+
+    @Override
+    public void onRFACItemLabelClick(int position, RFACLabelItem item) {
+        switch (position) {
+            case 0:
+                rfaHelper.toggleContent();
+                break;
+            case 1:
+                friend.addFriend(emailOfFriend,nameOfFriend);
+                rfaHelper.toggleContent();
+                finish();
+                break;
+        }
+    }
+
+    @Override
+    public void onRFACItemIconClick(int position, RFACLabelItem item) {
+        switch (position) {
+            case 0:
+                rfaHelper.toggleContent();
+                break;
+            case 1:
+                friend.addFriend(emailOfFriend,nameOfFriend);
+                rfaHelper.toggleContent();
+                finish();
+                break;
+        }
     }
 }

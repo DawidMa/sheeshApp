@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
+    android:background="#ffffffff"
     android:layout_height="wrap_content">
 
 
@@ -14,16 +15,22 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPopupProfileName"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/user_avatar" />
 
     <TextView
         android:id="@+id/tvPopupProfileName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:textSize="24dp"
+        android:transitionName="friendname"
+        android:gravity="center"
+        android:background="#55000000"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="@+id/imgPopupProfileimage"
-        app:layout_constraintStart_toStartOf="@+id/imgPopupProfileimage"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="#fff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imgPopupProfileimage" />
+
 
 </android.support.constraint.ConstraintLayout>

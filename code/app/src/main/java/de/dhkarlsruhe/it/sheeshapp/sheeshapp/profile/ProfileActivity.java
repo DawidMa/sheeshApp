@@ -68,17 +68,14 @@ public class ProfileActivity extends AppCompatActivity {
         window = getWindow();
         window.setStatusBarColor(getResources().getColor(R.color.colorAccent));
 
-
-        name = profile.getProfileName();
-        tvName.setText(name);
-
         Bundle extras = getIntent().getExtras();
         byte[] b = extras.getByteArray("PROFILE_IMAGE");
         friendid = extras.getLong("FRIEND_ID");
-
         Bitmap bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
-
         profileImage.setImageBitmap(bmp);
+
+        name = extras.getString("FRIEND_NAME");
+        tvName.setText(name);
     }
 
     public void onlineLoader() {
@@ -144,4 +141,6 @@ public class ProfileActivity extends AppCompatActivity {
         });
         alert.show();
     }
+
+
 }

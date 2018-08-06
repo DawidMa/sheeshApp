@@ -17,6 +17,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
 import android.util.DisplayMetrics;
@@ -54,6 +56,8 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
@@ -313,6 +317,34 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         //parse downloaded data
         Type listType = new TypeToken<List<FriendlistObject>>() {}.getType();
         friendlistObject = json.fromJson(string, listType);
+
+        Collections.sort(friendlistObject, new Comparator<FriendlistObject>() {
+            @Override
+            public int compare(final FriendlistObject object1, final FriendlistObject object2) {
+                int result = 0;
+
+                String name1 = object1.getName().trim().toLowerCase();
+                String name2 = object2.getName().trim().toLowerCase();
+                for(int i = 0; i < name1.length(); i++){
+                    char char1 = name1.charAt(i);
+                    if(i <= name2.length()-1){
+                        char char2 = name2.charAt(i);
+
+                        if((char1 == char2)){
+                            result = 0;
+                        } else {
+                            result = (char1 > char2) ? 1 : -1;
+                            break;
+                        }
+                    } else {
+                        result = 1;
+                        break;
+                    }
+                }
+                return result;
+            }
+        });
+
         numOfFriends = friendlistObject.size();
         reloadListView();
         //Save for offline use
@@ -354,20 +386,9 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             LayoutInflater inflater = (LayoutInflater) getContext().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             FriendlistObject actualObject = getItem(position);
             View row = inflater.inflate(R.layout.row_friends, parent, false);
-            TextView tvTitle = (TextView) row.findViewById(R.id.liFriendName);
+            final TextView tvTitle = (TextView) row.findViewById(R.id.liFriendName);
             TextView tvDescription = (TextView) row.findViewById(R.id.liFriendNumOfShishas);
-            final ImageView imgFriends = row.findViewById(R.id.liFriendImage);
-            imgFriends.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openFriendsImagePopUp(imgFriends,position);
-                }
-            });
-            long friendid = actualObject.getFriend_id();
-            tvTitle.setText(actualObject.getName());
-            tvDescription.setText(friendid+"");
-            decideProfileImage(imgFriends, actualObject);
-            Button button = (Button) row.findViewById(R.id.liDeleteFriend);
+            final Button button = (Button) row.findViewById(R.id.liDeleteFriend);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -375,10 +396,22 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
                 }
 
             });
+            final ImageView imgFriends = row.findViewById(R.id.liFriendImage);
+            imgFriends.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openFriendsImagePopUp(imgFriends,position,tvTitle,button);
+                }
+            });
+            long friendid = actualObject.getFriend_id();
+            tvTitle.setText(actualObject.getName());
+            tvDescription.setText(friendid+"");
+            decideProfileImage(imgFriends, actualObject);
+
             row.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openFriendsProfile(position,imgFriends);
+                    openFriendsProfile(position,imgFriends,tvTitle,button);
                 }
             });
             return row;
@@ -415,15 +448,23 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         }
     }
 
-    private void openFriendsImagePopUp(ImageView imgFriends, int position) {
-        View popupView = getLayoutInflater().inflate(R.layout.popup_profileimage, null);
+    private void openFriendsImagePopUp(final ImageView imgFriends, final int position, final TextView friendName, final Button deleteButton) {
+
+        final View popupView = getLayoutInflater().inflate(R.layout.popup_profileimage, null);
+        final ImageView imgProfile = popupView.findViewById(R.id.imgPopupProfileimage);
+        final TextView tvName = popupView.findViewById(R.id.tvPopupProfileName);
+        popupView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFriendsProfile(position,imgProfile,tvName, deleteButton);
+            }
+        });
         popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setAnimationStyle(R.style.popupAnimation);
         popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.LTGRAY));
-        ImageView imgProfile = popupView.findViewById(R.id.imgPopupProfileimage);
-        TextView tvName = popupView.findViewById(R.id.tvPopupProfileName);
-        imgProfile.setImageDrawable(imgFriends.getDrawable());
+
+        decideProfileImage(imgProfile,friendlistObject.get(position));
         tvName.setText(friendlistObject.get(position).getName());
         // Get the View's(the one that was clicked in the Fragment) location
         // Using location, the PopupWindow will be displayed right under anchorView
@@ -431,6 +472,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
+
         popupWindow.showAtLocation(imgFriends, Gravity.NO_GRAVITY, (size.x/2)-(pxToDp(imgFriends.getWidth())*4), (size.y/2)- (pxToDp(imgFriends.getHeight())*4));
     }
 
@@ -439,17 +481,26 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
-    private void openFriendsProfile(int i, ImageView friendImage) {
+    private void openFriendsProfile(int i, ImageView friendImage, TextView friendName, Button friendDelete) {
+        //Hier wird das Profil von einem Freund geöffnet
         Intent intent = new Intent(context, ProfileActivity.class);
         profile.setProfile(friendlistObject.get(i));
+        Pair<View, String> p1 = Pair.create((View)friendImage, "profileimage");
+        Pair<View, String> p2 = Pair.create((View)friendName, "friendname");
+        Pair<View, String> p3 = Pair.create((View)friendDelete, "deletebutton");
+
         friendImage.buildDrawingCache();
         Bitmap bitmap = friendImage.getDrawingCache();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] b = baos.toByteArray();
         intent.putExtra("PROFILE_IMAGE",b);
+        intent.putExtra("FRIEND_NAME",friendName.getText().toString());
         intent.putExtra("FRIEND_ID",friendlistObject.get(i).getFriend_id());
-        startActivity(intent);
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(getActivity(), p1, p2,p3);
+        startActivity(intent,options.toBundle());
     }
 
     private void loadFileFromServer(final String userid, final ImageView imageView, final String imageId) {

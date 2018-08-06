@@ -14,7 +14,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="SETUP"
+        android:text="TRACKER"
         android:textSize="30dp"
         android:textStyle="bold"
         android:textColor="#fff"
@@ -22,23 +22,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/layoutSeFriends"
-        android:layout_width="match_parent"
+        android:minHeight="100dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/setup_box"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSeTitle"
-        android:background="@drawable/setup_box">
+        app:layout_constraintTop_toBottomOf="@+id/tvSeTitle">
 
         <TextView
             android:id="@+id/tvSeFriendsInfo"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:text="No friends selected! Click to select."
             app:layout_constraintBottom_toBottomOf="parent"
@@ -50,8 +58,8 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginBottom="8dp"
-            android:tint="@color/orangeAccent"
             android:layout_marginStart="8dp"
+            android:tint="@color/orangeAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvSeFriendsTitle"
@@ -73,19 +81,19 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/layoutSeTime"
-        android:layout_width="match_parent"
+        android:minHeight="100dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/setup_box"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutSeFriends">
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/tvSeTitle">
 
         <TextView
             android:id="@+id/tvSeTimeInfo"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
@@ -96,11 +104,11 @@
 
         <ImageView
             android:id="@+id/imgSeIconTime"
-            android:tint="@color/orangeAccent"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
+            android:tint="@color/orangeAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvSeTimeTitle"
@@ -126,11 +134,11 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/setup_box"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutSeTime">
+        app:layout_constraintTop_toBottomOf="@+id/layoutSeFriends">
 
 
         <ImageView
@@ -138,8 +146,8 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginBottom="8dp"
-            android:tint="@color/orangeAccent"
             android:layout_marginStart="8dp"
+            android:tint="@color/orangeAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvSeLocationTitle"
@@ -160,13 +168,11 @@
 
         <EditText
             android:id="@+id/etSeLocation"
-            style="@style/etStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
             android:ems="10"
-            android:inputType="textPersonName"
             android:hint="Shishas Location.."
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imgSeIconLocation"
@@ -179,7 +185,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/setup_box"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -212,15 +218,14 @@
 
         <EditText
             android:id="@+id/etSeComment"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
             android:ems="10"
-            android:inputType="textPersonName"
             android:hint="Your Comment.."
-            style="@style/etStyle"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/imgSeIconComment"
             app:layout_constraintStart_toEndOf="@+id/imgSeIconComment"
             app:layout_constraintTop_toBottomOf="@+id/tvSeCommentTitle" />
 

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -109,6 +110,9 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
     private HashSet<ChooseFriendObject> allFriendsUnique = new HashSet<>();
 
+    private MediaPlayer soundTimeUp;
+
+
     public TimeTrackerFragment() {}
 
     @Override
@@ -172,6 +176,14 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         notification.setPriority(NotificationCompat.PRIORITY_DEFAULT);
         manager = NotificationManagerCompat.from(getActivity());
         window = getActivity().getWindow();
+        soundTimeUp = MediaPlayer.create(getContext(), R.raw.time_up_sound);
+        soundTimeUp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                stopPlaying(mp);
+                soundTimeUp = MediaPlayer.create(getContext(), R.raw.time_up_sound);
+            }
+        });
     }
 
     public List<ChooseFriendObject> getSequence() {
@@ -292,6 +304,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
             public void action() {
                 if(!timeToChange&&timerSingle1.getTime()<=3) {
                     timeToChange = true;
+                    soundTimeUp.start();
                     if (timerFlash.isPaused()) {
                         timerFlash.resume();
                     } else {
@@ -474,6 +487,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         dateEnd = setDate();
         saveToStatistics();
         showNotification=false;
+        stopPlaying(soundTimeUp);
         //getActivity().finish();
     }
 
@@ -603,6 +617,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
     public void endNeutral() {
         showNotification=false;
+        stopPlaying(soundTimeUp);
         getActivity().finish();
     }
 
@@ -624,5 +639,12 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         }
     }
 
+    private void stopPlaying(MediaPlayer mp) {
+        if (mp != null) {
+            mp.stop();
+            mp.release();
+            mp = null;
+        }
+    }
 
 }

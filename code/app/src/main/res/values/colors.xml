@@ -3,6 +3,7 @@
     <color name="colorPrimary">#727272</color>
     <color name="colorPrimaryDark">#3a3a3a</color>
     <color name="colorAccent">#2b7f7e</color>
+    <color name="colorAccentDark">#216362</color>
     <color name="RedFocused">#ff2d34</color>
     <color name="RedPressed">#ff0008</color>
     <color name="orangeAccent">#ff6100</color>

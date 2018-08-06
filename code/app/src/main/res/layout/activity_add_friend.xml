@@ -6,19 +6,36 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_menus">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addFabAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:clickable="true"
-        app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@mipmap/icon_plus_white" />
+    <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout
+        android:id="@+id/rfabLayoutAddFriend"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:rfal_frame_alpha="0.5"
+        >
+
+        <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rfabButtonAddFriend"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+            android:padding="8dp"
+            app:rfab_size="normal"
+            app:rfab_drawable="@mipmap/icon_plus_white"
+            app:rfab_color_normal="@color/colorAccent"
+            app:rfab_color_pressed="@color/colorAccentDark"
+            app:rfab_shadow_radius="7dp"
+            app:rfab_shadow_color="#000"
+            app:rfab_shadow_dx="0dp"
+            app:rfab_shadow_dy="5dp"
+            >
+
+        </com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton>
+
+
+    </com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout>
+
 
 </android.support.constraint.ConstraintLayout>
