@@ -1,11 +1,14 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp.history;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -23,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.SharedPrefConstants;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 
@@ -37,14 +41,13 @@ public class HistoryFragment extends Fragment {
     private List<String> listDataHeader;
     private HashMap<String, List<String>> listDataChild;
     private int lastExpandedPosition = -1;
-
-
     private View rootView;
-
     private List<History> histories;
-
     private UserSessionObject session;
     private Gson json = new Gson();
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+    private TextView tvInfo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,19 +55,46 @@ public class HistoryFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_statistics, container, false);
         session = new UserSessionObject(getActivity());
-        // preparing list data
-        getOnlineData();
-
-       //listAdapter.notifyDataSetChanged();
+        preferences = getContext().getSharedPreferences(SharedPrefConstants.HISTORY, Context.MODE_PRIVATE);
+        editor = preferences.edit();
+        tvInfo = rootView.findViewById(R.id.tvHitoryInfo);
+        histories = new ArrayList<>();
+        offlineData();
+        onlineData();
         return rootView;
     }
 
-    private void getOnlineData() {
+    private void offlineData() {
+        List<History> offlineHistories = getHistoryOfflineData();
+        if (!offlineHistories.isEmpty()) {
+            histories = offlineHistories;
+        } else {
+            Toast.makeText(getContext(),"No offline histories",Toast.LENGTH_LONG).show();
+        }
+        showList();
+    }
+
+    private void onlineData() {
         long id = session.getUser_id();
-        StringRequest request = new StringRequest(ServerConstants.URL_HISTORIES + id, new Response.Listener<String>() {
+        long lastid;
+        if (!histories.isEmpty()) {
+            lastid = histories.get(histories.size()-1).getHistoryId();
+        } else {
+            lastid = 0;
+        }
+        StringRequest request = new StringRequest(ServerConstants.URL_HISTORIES + id+"&lastid="+lastid, new Response.Listener<String>() {
             @Override
             public void onResponse(String string) {
-                positiveResponse(string);
+                List<History> onlineHistories = jsonToList(string);
+                if (!onlineHistories.isEmpty()) {
+                    histories.addAll(onlineHistories);
+                    newAdapter.notifyDataSetChanged();
+                    addNewToOffline(string);
+                    Toast.makeText(getContext(),"Added "+onlineHistories.size() +" new online Histories",Toast.LENGTH_SHORT).show();
+                    //showList();
+                } else {
+                    Toast.makeText(getContext(),"No new histories",Toast.LENGTH_SHORT).show();
+                }
                 showList();
             }
         }, new Response.ErrorListener() {
@@ -75,12 +105,22 @@ public class HistoryFragment extends Fragment {
         });
         RequestQueue rQueue = Volley.newRequestQueue(getContext());
         rQueue.add(request);
+
     }
 
-    private void positiveResponse(String string) {
-        Type listType = new TypeToken<List<History>>() {}.getType();
-        histories = json.fromJson(string, listType);
+    private void addNewToOffline(String string) {
+        List<History> offlineHistories = getHistoryOfflineData();
+        List<History> newHistories = jsonToList(string);
+
+        if (offlineHistories.isEmpty()) {
+            editor.putString(SharedPrefConstants.H_OFFLINE_JSON,string);
+        } else {
+            offlineHistories.addAll(newHistories);
+            editor.putString(SharedPrefConstants.H_OFFLINE_JSON,json.toJson(offlineHistories));
+        }
+        editor.commit();
     }
+
 
     private void showList() {
         expListView = rootView.findViewById(R.id.stExpListView);
@@ -93,19 +133,22 @@ public class HistoryFragment extends Fragment {
                 lastExpandedPosition = groupPosition;
             }
         });
-
         prepareListData();
+
         newAdapter = new ExpandableListAdapter(getContext(),listDataHeader,listDataChild);
-        // setting list adapter
         expListView.setAdapter(newAdapter);
     }
-
 
     private void prepareListData() {
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
         // Adding header data
         // Adding child data
+        if (histories.size()>0) {
+            tvInfo.setVisibility(View.VISIBLE);
+        } else {
+            tvInfo.setVisibility(View.GONE);
+        }
         for(int i=0; i<histories.size(); i++) {
             listDataHeader.add(histories.get(i).getDate());
             List<String> pimbloktos = new ArrayList<>();
@@ -116,8 +159,24 @@ public class HistoryFragment extends Fragment {
             pimbloktos.add(histories.get(i).getTotalShishas()+"");
             listDataChild.put(listDataHeader.get(i), pimbloktos);
         }
-
     }
+
+    public List<History> getHistoryOfflineData() {
+        String histories = preferences.getString(SharedPrefConstants.H_OFFLINE_JSON,null);
+        if (histories == null) {
+            List<History> empty = new ArrayList<>();
+            return empty;
+        } else {
+            return jsonToList(histories);
+        }
+    }
+
+    private List<History> jsonToList(String string) {
+        Type listType = new TypeToken<List<History>>() {}.getType();
+        return json.fromJson(string, listType);
+    }
+
+
 
     @Override
     public void onResume() {

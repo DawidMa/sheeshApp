@@ -72,4 +72,8 @@ public class History {
     public long getTotalShishas() {
         return totalShishas;
     }
+
+    public long getHistoryId() {
+        return historyId;
+    }
 }

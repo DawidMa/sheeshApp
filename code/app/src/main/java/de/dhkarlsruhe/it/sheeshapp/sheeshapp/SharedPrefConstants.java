@@ -43,4 +43,7 @@ public class SharedPrefConstants {
     public static String SECONDS = "seconds";
     public static String MINUTES = "minutes";
     public static String TIME_IN_SECONDS = "time_in_seconds";
+
+    public static String HISTORY = "history";
+    public static String H_OFFLINE_JSON = "history_json";
 }

@@ -331,6 +331,10 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
+            SharedPreferences pref = getSharedPreferences(SharedPrefConstants.HISTORY,MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.remove(SharedPrefConstants.H_OFFLINE_JSON);
+            editor.apply();
             this.finish();
         }
 
