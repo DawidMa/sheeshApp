@@ -99,7 +99,6 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     private boolean notificationIsActive = false;
     private NotificationManagerCompat manager;
     private View v;
-    //private HistoryOld historyOld;
     private List<History> histories = new ArrayList<>();
     private CircleAnimation circleAnimation;
     private MyCircle circle;
@@ -142,7 +141,6 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     private void init() {
         pref = this.getActivity().getSharedPreferences(SharedPrefConstants.SETTINGS, 0);
         editor = pref.edit();
-        //historyOld = new HistoryOld(getContext());
         tiTvChoosenFriends = (TextView) v.findViewById(R.id.tiTvChoosenFriends);
         tiTvTopTitle = (TextView)v.findViewById(R.id.tiTvTopTitle);
         tiTvTotal = (TextView) v.findViewById(R.id.tiTvTotal);
