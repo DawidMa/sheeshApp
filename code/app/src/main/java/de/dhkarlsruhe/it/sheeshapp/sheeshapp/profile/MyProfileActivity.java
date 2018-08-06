@@ -70,7 +70,6 @@ public class MyProfileActivity extends AppCompatActivity{
     private static final long  MEGABYTE = 1024L * 1024L;
 
 
-
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

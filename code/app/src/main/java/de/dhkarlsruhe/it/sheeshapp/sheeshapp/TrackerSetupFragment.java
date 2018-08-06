@@ -132,7 +132,7 @@ public class TrackerSetupFragment extends Fragment{
         boolean pass=false;
         sec+=min*60;
 
-        if(sec>30) {
+        if(sec>4) {
             pass = checkChoosenFriends();
             if(!pass) {
                 Toast.makeText(c,"Wähle mindestens 2 Freunde!",Toast.LENGTH_SHORT).show();
@@ -141,7 +141,7 @@ public class TrackerSetupFragment extends Fragment{
                 editor.commit();
             }
         } else {
-            Toast.makeText(c,"Du hast weniger als 30 Sekunden gewählt!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(c,"Du hast weniger als 4 Sekunden gewählt!",Toast.LENGTH_SHORT).show();
         }
         return pass;
     }

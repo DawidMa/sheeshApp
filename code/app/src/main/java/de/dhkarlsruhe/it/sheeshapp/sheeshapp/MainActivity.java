@@ -29,6 +29,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -38,6 +39,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
+import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
+import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem;
+import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.history.HistoryFragment;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.images.ImageHelper;
@@ -45,7 +54,7 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.profile.MyProfileActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
 
     private SharedPreferences pref;
     private TextView tvUsername, tvEmail;
@@ -57,12 +66,16 @@ public class MainActivity extends AppCompatActivity
     private NavigationView navigationView;
     private View header;
     private TabLayout tabLayout;
-    private FloatingActionButton fab;
+    private RapidFloatingActionLayout rfaLayout;
+    private RapidFloatingActionButton rfaButton;
+    private RapidFloatingActionHelper rfaHelper;
+    private RapidFloatingActionContentLabelList rfaContent;
     private MenuItem refreshFriendItem;
     private UserSessionObject session;
     private ImageView imgUser;
     private LinearLayout linearLayout;
     private ImageHelper imageHelper;
+    private String actualTab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +132,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         imageHelper = new ImageHelper(this);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        initRfa();
         changeFabToAddFriend();
         int[] icons = {
                 R.drawable.tab_friends_selector,
@@ -145,6 +158,15 @@ public class MainActivity extends AppCompatActivity
                 animateIntent(v);
             }
         });
+
+    }
+
+    private void initRfa() {
+            rfaContent = new RapidFloatingActionContentLabelList(this);
+        rfaContent.setOnRapidFloatingActionContentLabelListListener(this);
+
+        rfaLayout = findViewById(R.id.rfabLayoutMain);
+            rfaButton = findViewById(R.id.rfabButtonMain);
 
     }
 
@@ -177,38 +199,81 @@ public class MainActivity extends AppCompatActivity
                 );
         //intent.putExtra("image",byteArray);
         System.out.println("BEFORE STARTING");
-        ActivityCompat.startActivity(this, intent, options.toBundle());
+        startActivity(intent, options.toBundle());
     }
 
     public void changeFabToAddFriend() {
-        fab.setVisibility(View.VISIBLE);
-        fab.setImageResource(R.mipmap.icon_plus_white);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddFriendActivity.class);
-                startActivity(intent);
-            }
-        });
+        actualTab = "friend";
+        List<RFACLabelItem> items = new ArrayList<>();
+        items.add(new RFACLabelItem<Integer>()
+                .setLabel("Add friend")
+                .setResId(R.mipmap.icon_plus_white)
+                .setIconNormalColor(R.color.orangeAccent)
+                .setIconPressedColor(R.color.RedPressed)
+                .setWrapper(0)
+        );
+        items.add(new RFACLabelItem<Integer>()
+                .setLabel("Plan Session")
+                .setResId(R.drawable.icon_comment)
+                .setIconNormalColor(Color.BLUE)
+                .setIconPressedColor(Color.LTGRAY)
+                .setLabelSizeSp(14)
+                .setWrapper(1)
+        );
+        rfaContent
+                .setItems(items)
+                .setIconShadowRadius(5)
+                .setIconShadowColor(0xff888888)
+                .setIconShadowDy(5)
+        ;
+        rfaHelper = new RapidFloatingActionHelper(
+                this,
+                rfaLayout,
+                rfaButton,
+                rfaContent
+        ).build();
+        rfaButton.setVisibility(View.VISIBLE);
 
     }
 
     public void changeFabToSetup() {
-        fab.setVisibility(View.VISIBLE);
-        fab.setImageResource(R.mipmap.icon_setup_white);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(TrackerSetupFragment.runShisha(getApplicationContext())) {
-                    Intent intent = new Intent(MainActivity.this, TimeTrackerActivity.class);
-                    startActivity(intent);
-                }
-            }
-        });
+        actualTab = "setup";
+
+        List<RFACLabelItem> items = new ArrayList<>();
+        items.add(new RFACLabelItem<Integer>()
+                .setLabel("Start Tracker")
+                .setResId(R.mipmap.icon_setup_white)
+                .setIconNormalColor(R.color.orangeAccent)
+                .setIconPressedColor(R.color.RedPressed)
+                .setWrapper(0)
+        );
+        items.add(new RFACLabelItem<Integer>()
+                .setLabel("Cancel")
+                .setResId(R.drawable.error_1)
+                .setIconNormalColor(Color.BLUE)
+                .setIconPressedColor(Color.LTGRAY)
+                .setLabelSizeSp(14)
+                .setWrapper(1)
+        );
+        rfaContent
+                .setItems(items)
+                .setIconShadowRadius(5)
+                .setIconShadowColor(0xff888888)
+                .setIconShadowDy(5)
+        ;
+        rfaHelper = new RapidFloatingActionHelper(
+                this,
+                rfaLayout,
+                rfaButton,
+                rfaContent
+        ).build();
+        rfaButton.setVisibility(View.VISIBLE);
     }
 
     public void changeFabToStatistics() {
-        fab.setVisibility(View.INVISIBLE);
+        actualTab = "history";
+
+        rfaButton.setVisibility(View.GONE);
     }
 
     @Override
@@ -272,6 +337,52 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onRFACItemLabelClick(int position, RFACLabelItem item) {
+        System.out.println("XXX"+actualTab);
+        if (actualTab.equals("friend")) {
+            if (position==0) {
+                Intent intent = new Intent(MainActivity.this, AddFriendActivity.class);
+                startActivity(intent);
+            } else if (position==1) {
+                Toast.makeText(this,"Starting Session",Toast.LENGTH_SHORT).show();
+            }
+        } else if(actualTab.equals("setup")) {
+            if (position==0) {
+                if(TrackerSetupFragment.runShisha(getApplicationContext())) {
+                    Intent intent = new Intent(MainActivity.this, TimeTrackerActivity.class);
+                    startActivity(intent);
+                }
+            } else if (position==1) {
+                Toast.makeText(this,"Canceling",Toast.LENGTH_SHORT).show();
+            }
+        }
+        rfaHelper.toggleContent();
+    }
+
+    @Override
+    public void onRFACItemIconClick(int position, RFACLabelItem item) {
+        if (actualTab.equals("friend")) {
+            if (position==0) {
+                Intent intent = new Intent(MainActivity.this, AddFriendActivity.class);
+                startActivity(intent);
+            } else if (position==1) {
+                Toast.makeText(this,"Starting Session",Toast.LENGTH_SHORT).show();
+            }
+            rfaHelper.toggleContent();
+        } else if(actualTab.equals("setup")) {
+            if (position==0) {
+                if(TrackerSetupFragment.runShisha(getApplicationContext())) {
+                    Intent intent = new Intent(MainActivity.this, TimeTrackerActivity.class);
+                    startActivity(intent);
+                }
+            } else if (position==1) {
+                Toast.makeText(this,"Canceling",Toast.LENGTH_SHORT).show();
+            }
+            rfaHelper.toggleContent();
+        }
     }
 
 

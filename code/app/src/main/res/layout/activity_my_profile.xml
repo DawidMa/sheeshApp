@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:transitionName="@string/transition_string"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layoutMyProfile"
     android:background="@android:color/transparent"
@@ -16,6 +15,7 @@
         android:layout_height="wrap_content"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
+        android:transitionName="@string/transition_string"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

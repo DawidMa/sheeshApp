@@ -32,16 +32,36 @@
             app:tabMode="fixed"
             app:tabGravity="fill"
             />
+
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_main" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout
+        android:id="@+id/rfabLayoutMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:rfal_frame_alpha="0.3">
+
+    <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:layout_margin="@dimen/fab_margin"
-         />
+        android:id="@+id/rfabButtonMain"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:padding="8dp"
+        app:rfab_size="normal"
+        app:rfab_drawable="@drawable/icon_dots"
+        app:rfab_color_normal="@color/colorAccent"
+        app:rfab_color_pressed="@color/colorAccentDark"
+        app:rfab_shadow_radius="7dp"
+        app:rfab_shadow_color="#000"
+        app:rfab_shadow_dx="0dp"
+        app:rfab_shadow_dy="5dp">
+
+    </com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton>
+    </com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout>
 
 </android.support.design.widget.CoordinatorLayout>

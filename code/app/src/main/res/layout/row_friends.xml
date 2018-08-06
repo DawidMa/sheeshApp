@@ -16,8 +16,9 @@
         android:layout_marginTop="16dp"
         android:text="Name"
         android:textColor="#000"
-        android:textSize="20dp"
+        android:textSize="24dp"
         android:textStyle="bold"
+        android:transitionName="friendname"
         app:layout_constraintStart_toEndOf="@+id/liFriendImage"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,6 +40,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/icon_remove_friend"
+        android:transitionName="deletebutton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -50,6 +52,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="26dp"
         android:layout_marginTop="8dp"
+        android:transitionName="profileimage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
