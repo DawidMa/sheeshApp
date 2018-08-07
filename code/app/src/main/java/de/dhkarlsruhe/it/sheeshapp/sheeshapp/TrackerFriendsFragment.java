@@ -14,6 +14,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.transitionseverywhere.ChangeBounds;
+import com.transitionseverywhere.TransitionManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +38,8 @@ public class TrackerFriendsFragment extends Fragment {
     private List<ChooseFriendObject> checked = new ArrayList<>();
     private List<ChooseFriendObject> unchecked = new ArrayList<>();
     private List<ChooseFriendObject> objects = new ArrayList<>();
+    private int numOfChecked = 0;
+    private ViewGroup transGroup = null;
 
 
     public interface CheckboxClicked {
@@ -59,7 +64,8 @@ public class TrackerFriendsFragment extends Fragment {
         context = this.getActivity();
         friend = new Friend(context);
         listView = rootView.findViewById(R.id.lvFragTrackerFriends);
-        adapter = new TrackerFriendsAdapter(getActivity(),objects, checked.size());
+        numOfChecked = checked.size();
+        adapter = new TrackerFriendsAdapter(getActivity(),objects, numOfChecked);
         listView.setAdapter(adapter);
         return rootView;
     }
@@ -67,6 +73,8 @@ public class TrackerFriendsFragment extends Fragment {
     public void getFriendLists(List<ChooseFriendObject> checked, List<ChooseFriendObject> unchecked) {
         this.checked = checked;
         this.unchecked = unchecked;
+        if (transGroup!=null)
+            TransitionManager.beginDelayedTransition(transGroup, new ChangeBounds());
         fillList();
     }
 
@@ -74,6 +82,7 @@ public class TrackerFriendsFragment extends Fragment {
         objects.clear();
         objects.addAll(checked);
         objects.addAll(unchecked);
+        numOfChecked = checked.size();
         adapter = new TrackerFriendsAdapter(getActivity(),objects, checked.size());
         listView.setAdapter(adapter);
 
@@ -101,14 +110,16 @@ public class TrackerFriendsFragment extends Fragment {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, final ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater)getContext().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View row = inflater.inflate(R.layout.row_choose_friend,parent,false);
             final ChooseFriendObject actualObject = getItem(position);
             TextView myTitle = (TextView)row.findViewById(R.id.liChooseFriendName);
             myTitle.setText(actualObject.getName());
+            TransitionManager.setTransitionName(row, actualObject.getId()+"");
             long tag = actualObject.getId();
             final Switch cb = (Switch) row.findViewById(R.id.switchFriends);
+            transGroup = parent;
             cb.setTag(tag);
             if (position<numOfChecked) {
                 cb.setChecked(true);
@@ -128,5 +139,6 @@ public class TrackerFriendsFragment extends Fragment {
             return row;
         }
     }
+
 
 }
