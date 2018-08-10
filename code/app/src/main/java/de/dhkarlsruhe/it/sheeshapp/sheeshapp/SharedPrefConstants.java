@@ -18,6 +18,8 @@ public class SharedPrefConstants {
     public static String S_FAV_TOBACCO = "fav_tobacco";
     public static String S_HAS_ICON = "has_icon";
     public static String S_IMAGE = "profile_image" ;
+    public static  String S_LAST_CHANGED_ICON_ID = "last_changed_icon_id" ;
+
 
     public static String PROFILE = "profile";
     public static String P_NAME = "name";
@@ -28,6 +30,8 @@ public class SharedPrefConstants {
     public static String IMAGES = "images";
     public static String I_NR = "image_";
     public static String I_NR_CHANGED = "changed_image_";
+    public static final String I_PATH = "images_path";
+
 
     public static String FRIEND = "friend";
     public static String F_OFFILNE_JSON = "offline_json";
@@ -46,4 +50,5 @@ public class SharedPrefConstants {
 
     public static String HISTORY = "history";
     public static String H_OFFLINE_JSON = "history_json";
+
 }

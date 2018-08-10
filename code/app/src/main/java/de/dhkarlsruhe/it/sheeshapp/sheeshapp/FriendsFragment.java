@@ -97,8 +97,6 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     private Context context;
     private Profile profile;
     private ImageHelper imageHelper;
-    private Handler handler;
-    private ProgressDialog progressDialog;
     private boolean permissionGranted;
 
     private PopupWindow popupWindow;
@@ -258,22 +256,13 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
 
     public void reloadListView() {
         if (friendlistObject != null && adapter!=null) {
-            prepareProgressDialog();
+            //prepareProgressDialog();
             loadRequestInformation();
             adapter.notifyDataSetChanged();
         } else {
             numOfFriends = 0;
         }
         checkAmountFriends();
-    }
-
-    private void prepareProgressDialog() {
-        handler = new Handler();
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setTitle("Downloading...");
-        progressDialog.setMax(100);
-        progressDialog.setCancelable(false);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
     }
 
     public void updateFriendlist() {
@@ -304,7 +293,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         if (!offlineData.equals("empty") && friend.actualInformationAvailable()) {
             Type listType = new TypeToken<List<FriendlistObject>>() {
             }.getType();
-            friendlistObject = json.fromJson(friend.getOfflineData(), listType);
+            friendlistObject = json.fromJson(offlineData, listType);
             numOfFriends = friendlistObject.size();
         } else {
             friendlistObject.clear();
@@ -348,7 +337,8 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         numOfFriends = friendlistObject.size();
         reloadListView();
         //Save for offline use
-        friend.saveOfflineInformation(string);
+        String sortedFriends = json.toJson(friendlistObject);
+        friend.saveOfflineInformation(sortedFriends);
         swipeRefreshLayout.setRefreshing(false);
         adapter = new MyAdapter(context, friendlistObject);
         list.setAdapter(adapter);
@@ -417,34 +407,25 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             return row;
         }
 
-        private void loadRoundedImage(ImageView view, int id) {
-            final String user_id = friendlistObject.get(id).getFriend_id() + "";
-            Bitmap bitmap = imageHelper.loadImageFromStorage(user_id);
-            if (1 == 2) {
-                Bitmap thumbnail = imageHelper.getThumbnailOfBitmap(bitmap, 200, 200);
-                Glide.with(context).load(thumbnail).apply(RequestOptions.circleCropTransform()).into(view);
-            } else {
-                if (view != null) {
-                    Glide.with(context).load(R.drawable.sheeshopa).apply(RequestOptions.circleCropTransform()).into(view);
-                }
-            }
-        }
     }
 
     private void decideProfileImage(ImageView imgFriends, FriendlistObject object) {
         long friendid = object.getFriend_id();
         String imageId = object.getLast_changed_icon_id();
         if (object.isHas_icon()) {
-            prepareProgressDialog();
-            String localURL = Environment.getExternalStorageDirectory() + "/Download/" + friendid+"_"+imageId + ".png";
-            File localFile = new File(localURL);
-            if (localFile.exists()) {
-                showLoadedFile(imgFriends,localURL);
-            } else {
-                loadFileFromServer(friendid + "", imgFriends, imageId);
-            }
+            //prepareProgressDialog();
+                if (imageHelper.getIconId(friendid).equals(imageId)) {
+                    Bitmap bitmap = imageHelper.loadImageFromStorage(friendid+"");
+                    if (bitmap!=null) {
+                        imageHelper.setRoundImageWithBitmap(imgFriends,bitmap);
+                    } else {
+                        imageHelper.loadFileFromServer(friendid,imgFriends,imageId);
+                    }
+                } else {
+                    imageHelper.loadFileFromServer(friendid,imgFriends,imageId);
+                }
         } else {
-            showLoadedFile(imgFriends,null);
+            imageHelper.setRoundImageDefault(imgFriends);
         }
     }
 
@@ -459,12 +440,12 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
                 openFriendsProfile(position,imgProfile,tvName, deleteButton);
             }
         });
+        popupView.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setAnimationStyle(R.style.popupAnimation);
         popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.LTGRAY));
-
-        decideProfileImage(imgProfile,friendlistObject.get(position));
+        imageHelper.setRectImage(friendlistObject.get(position).getFriend_id()+"",imgProfile);
         tvName.setText(friendlistObject.get(position).getName());
         // Get the View's(the one that was clicked in the Fragment) location
         // Using location, the PopupWindow will be displayed right under anchorView
@@ -489,12 +470,6 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         Pair<View, String> p2 = Pair.create((View)friendName, "friendname");
         Pair<View, String> p3 = Pair.create((View)friendDelete, "deletebutton");
 
-        friendImage.buildDrawingCache();
-        Bitmap bitmap = friendImage.getDrawingCache();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] b = baos.toByteArray();
-        intent.putExtra("PROFILE_IMAGE",b);
         intent.putExtra("FRIEND_NAME",friendName.getText().toString());
         intent.putExtra("FRIEND_ID",friendlistObject.get(i).getFriend_id());
 
@@ -503,55 +478,6 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         startActivity(intent,options.toBundle());
     }
 
-    private void loadFileFromServer(final String userid, final ImageView imageView, final String imageId) {
-
-        final Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                OkHttpClient client = new OkHttpClient();
-                Request request = new Request.Builder().url(ServerConstants.URL_DOWNLOAD + userid+"_"+imageId + ".png").build();
-                okhttp3.Response response = null;
-                try {
-                    response = client.newCall(request).execute();
-                    //String fileName = response.body().toString();
-                    float fileSize = response.body().contentLength();
-                    BufferedInputStream inputStream = new BufferedInputStream(response.body().byteStream());
-
-                    OutputStream outputStream = new FileOutputStream(Environment.getExternalStorageDirectory() + "/Download/" + userid+"_"+imageId + ".png");
-                    byte[] data = new byte[8192];
-                    float total = 0;
-                    int readedBytes = 0;
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressDialog.show();
-                        }
-                    });
-
-                    while ((readedBytes = inputStream.read(data)) != -1) {
-                        total = total + readedBytes;
-                        outputStream.write(data, 0, readedBytes);
-                        progressDialog.setProgress((int) ((total / fileSize) * 100));
-                    }
-                    progressDialog.dismiss();
-                    outputStream.flush();
-                    outputStream.close();
-                    response.body().close();
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            showLoadedFile(imageView, Environment.getExternalStorageDirectory() + "/Download/" + userid+"_"+imageId + ".png");
-                        }
-                    });
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        t.start();
-
-    }
 
     private void showLoadedFile(ImageView imageView, String s) {
         if (s==null) {

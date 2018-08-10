@@ -23,6 +23,9 @@ import java.util.List;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by d0272129 on 14.04.17.
  */
@@ -36,7 +39,7 @@ public class TrackerSetupFragment extends Fragment{
     private TimePickerDialog.OnTimeSetListener onTimeSetListener;
     private ConstraintLayout layoutTime, layoutFriends;
     private int minutes, seconds;
-    private TextView tvTime;
+    private TextView tvTime, tvFriends;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class TrackerSetupFragment extends Fragment{
 
         init(rootView);
         tvTime = rootView.findViewById(R.id.tvSeTimeInfo);
+        tvFriends = rootView.findViewById(R.id.tvSeFriendsInfo);
         updateTvTime();
 
         onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
@@ -82,10 +86,9 @@ public class TrackerSetupFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ChooseFriendActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,11);
             }
         });
-
         return rootView;
     }
 

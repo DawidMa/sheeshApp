@@ -47,10 +47,12 @@ import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloating
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.history.HistoryFragment;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.images.ImageHelper;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.profile.MyProfileActivity;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 
 public class MainActivity extends AppCompatActivity
@@ -151,7 +153,8 @@ public class MainActivity extends AppCompatActivity
         tvEmail.setText(session.getEmail());
 
         imgUser = header.findViewById(R.id.imgHeader);
-        setImgUser();
+        decideProfileImage(imgUser);
+       // setImgUser();
         imgUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,6 +175,7 @@ public class MainActivity extends AppCompatActivity
 
     private void setImgUser() {
         String user = session.getUser_id()+"";
+
         Bitmap bitmap = imageHelper.loadImageFromStorage(user);
         if (bitmap == null) {
             if (imgUser != null) {
@@ -437,6 +441,7 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         if (imageHelper.getChanged(session.getUser_id()+"")) {
             setImgUser();
+            imageHelper.setChanged(false,session.getUser_id()+"");
         }
     }
 
@@ -477,6 +482,28 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    private void decideProfileImage(ImageView imgFriends) {
+        long userid = session.getUser_id();
+        String imageId = session.getLast_changed_icon_id();
+        if (session.isHas_icon()) {
+            //prepareProgressDialog();
+            if (imageHelper.getIconId(userid).equals(imageId)) {
+                Bitmap bitmap = imageHelper.loadImageFromStorage(userid+"");
+                if (bitmap!=null) {
+                    imageHelper.setRoundImageWithBitmap(imgFriends,bitmap);
+                } else {
+                    imageHelper.loadFileFromServer(userid,imgFriends,imageId);
+                }
+            } else {
+                imageHelper.loadFileFromServer(userid,imgFriends,imageId);
+                imageHelper.setNewIconId(userid,imageId);
+               // session.setLast_changed_icon_id(imageHelper.getIconId(userid));
+            }
+        } else {
+            imageHelper.setRoundImageDefault(imgFriends);
+        }
     }
 
 }
