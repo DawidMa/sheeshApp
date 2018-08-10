@@ -600,16 +600,18 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     }
 
     private void registerNewHistory(ChooseFriendObject object) {
-        if (allFriendsUnique.add(object)) {
-            History history = new History();
-            history.setDuration(timerTotal1.getTimeAsLong());
-            history.setLocation("In Dawids Garage");
-            history.setParticipants("");
-            history.setSessionName("Kam später dazu");
-            history.setTotalShishas(numOfSwitchedCoal);
-            history.setUserId(object.getId());
-            history.setDate(dateStart);
-            histories.add(history);
+        if (object.getId()>0) {
+            if (allFriendsUnique.add(object)) {
+                History history = new History();
+                history.setDuration(timerTotal1.getTimeAsLong());
+                history.setLocation("In Dawids Garage");
+                history.setParticipants("");
+                history.setSessionName("Kam später dazu");
+                history.setTotalShishas(numOfSwitchedCoal);
+                history.setUserId(object.getId());
+                history.setDate(dateStart);
+                histories.add(history);
+            }
         }
     }
 

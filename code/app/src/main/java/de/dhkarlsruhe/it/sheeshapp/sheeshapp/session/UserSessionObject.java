@@ -16,6 +16,7 @@ public class UserSessionObject {
     private String email;
     private String fav_tobacco;
     private boolean has_icon;
+    private String last_changed_icon_id;
     private Context c;
 
     private SharedPreferences pref;
@@ -39,6 +40,7 @@ public class UserSessionObject {
         editor.putString(SharedPrefConstants.S_EMAIL,email);
         editor.putString(SharedPrefConstants.S_FAV_TOBACCO,fav_tobacco);
         editor.putBoolean(SharedPrefConstants.S_HAS_ICON,has_icon);
+        editor.putString(SharedPrefConstants.S_LAST_CHANGED_ICON_ID,last_changed_icon_id);
         editor.commit();
     }
 
@@ -68,6 +70,15 @@ public class UserSessionObject {
 
     public void setImage(String image) {
         editor.putString(SharedPrefConstants.S_IMAGE,image);
+        editor.commit();
+    }
+
+    public String getLast_changed_icon_id() {
+        return pref.getString(SharedPrefConstants.S_LAST_CHANGED_ICON_ID,"noid");
+    }
+
+    public void setLast_changed_icon_id(String last_changed_icon_id) {
+        editor.putString(SharedPrefConstants.S_LAST_CHANGED_ICON_ID,last_changed_icon_id);
         editor.commit();
     }
 }

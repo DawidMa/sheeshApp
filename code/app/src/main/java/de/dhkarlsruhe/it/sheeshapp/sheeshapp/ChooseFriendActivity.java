@@ -1,6 +1,7 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -30,6 +33,7 @@ import java.util.List;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendRequestObject;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 
@@ -49,6 +53,10 @@ public class ChooseFriendActivity extends AppCompatActivity {
     private List<Long> checkedFriendIds = new ArrayList<>();
     private List<Long> uncheckedFriendIds = new ArrayList<>();
 
+    private Button btnAdd;
+    private EditText etLocalName;
+    private int addedLocals = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +65,24 @@ public class ChooseFriendActivity extends AppCompatActivity {
         session = new UserSessionObject(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Choose Friends");
+        btnAdd = findViewById(R.id.btnChooseAddLocal);
+        etLocalName = findViewById(R.id.etChooseLocalFriend);
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = etLocalName.getText().toString();
+                if (name.length()>0) {
+                    addedLocals++;
+                    long id = addedLocals*(-1);
+                    friend.setFriendName(id,name);
+                    friend.setChecked(id,false);
+                    objects.add(new ChooseFriendObject(name,id));
+                    adapter.notifyDataSetChanged();
+                    etLocalName.setText("");
+                }
+            }
+        });
         chFabAccept = (FloatingActionButton)findViewById(R.id.chFabAccept);
         chFabAccept.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,10 +91,38 @@ public class ChooseFriendActivity extends AppCompatActivity {
             }
         });
         list = (ListView)findViewById(R.id.liChooseList);
-        getOnlineData();
+
+
+        getOfflineData();
+    }
+
+    private void getOfflineData() {
+        if (friend.actualInformationAvailable()) {
+            String offlineData = friend.getOfflineData();
+            Type listType = new TypeToken<List<FriendlistObject>>() {}.getType();
+            List<FriendlistObject> friendlistObject = json.fromJson(offlineData, listType);
+            for (FriendlistObject o: friendlistObject) {
+                objects.add(new ChooseFriendObject(o.getName(),o.getFriend_id()));
+            }
+            fillList();
+        }
+    }
+
+    private void fillList() {
+        friend.dropAllFriends();
+        for (int i=0; i<objects.size(); i++) {
+            friend.setFriendName(objects.get(i).getId(),objects.get(i).getName());
+            friend.setChecked(objects.get(i).getId(),false);
+        }
+        for (ChooseFriendObject i:objects) {
+            uncheckedFriendIds.add(i.getId());
+        }
+        adapter = new NamesAdapter(ChooseFriendActivity.this,objects);
+        list.setAdapter(adapter);
     }
 
     private void getOnlineData() {
+        /*
         long id = session.getUser_id();
         StringRequest request =  new StringRequest(ServerConstants.URL_FRIEND_NAMES+id, new Response.Listener<String>() {
             @Override
@@ -82,7 +136,8 @@ public class ChooseFriendActivity extends AppCompatActivity {
             }
         });
         RequestQueue rQueue = Volley.newRequestQueue(getApplicationContext());
-        rQueue.add(request);
+        rQueue.add(request);*/
+
     }
 
     private void fillData(String string) {
@@ -146,5 +201,17 @@ public class ChooseFriendActivity extends AppCompatActivity {
         super.onDestroy();
         friend.setAllCheckedFriends(checkedFriendIds);
         friend.setAllUnchekedFriends(uncheckedFriendIds);
+    }
+
+    private String printFriendsList() {
+        String ok = "";
+        for(int i = 0; i < checkedFriendIds.size(); i++) {
+            if(i==checkedFriendIds.size()-1) {
+                ok+=(objects.get(i).getName()+".");
+            } else {
+                ok+=(objects.get(i).getName()+", ");
+            }
+        }
+        return ok;
     }
 }

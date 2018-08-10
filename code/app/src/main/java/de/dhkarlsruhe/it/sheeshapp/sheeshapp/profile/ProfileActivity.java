@@ -29,6 +29,7 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.MyAlert;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.SharedPrefConstants;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.images.ImageHelper;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendRequestObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
 
@@ -45,6 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Window window;
     private long friendid;
 
+    private ImageHelper imageHelper;
     private Profile profile;
     private Friend friend;
 
@@ -59,6 +61,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void init() {
         profile = new Profile(this);
         friend = new Friend(this);
+        imageHelper = new ImageHelper(this);
         tvName = findViewById(R.id.tvProName);
         tvNumberShishas = findViewById(R.id.tvProShishas);
         tvTobacco = findViewById(R.id.tvProTobacco);
@@ -69,10 +72,8 @@ public class ProfileActivity extends AppCompatActivity {
         window.setStatusBarColor(getResources().getColor(R.color.colorAccent));
 
         Bundle extras = getIntent().getExtras();
-        byte[] b = extras.getByteArray("PROFILE_IMAGE");
         friendid = extras.getLong("FRIEND_ID");
-        Bitmap bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
-        profileImage.setImageBitmap(bmp);
+        imageHelper.setRectImage(friendid+"",profileImage);
 
         name = extras.getString("FRIEND_NAME");
         tvName.setText(name);

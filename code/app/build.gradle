@@ -78,6 +78,9 @@ dependencies {
     implementation ('com.github.wangjiegulu:rfab:2.0.0'){
         exclude group: "com.android.support"
     }
+    compile 'com.soundcloud.android:android-crop:1.0.1@aar'
+    implementation 'com.github.chrisbanes:PhotoView:1.2.6'
+
 
 }
 apply plugin: 'com.google.gms.google-services'

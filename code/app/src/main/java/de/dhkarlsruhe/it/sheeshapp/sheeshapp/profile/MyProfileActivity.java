@@ -2,10 +2,12 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp.profile;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
@@ -17,18 +19,32 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
+import com.soundcloud.android.crop.Crop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -37,6 +53,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.FriendsFragment;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.images.ImageHelper;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
@@ -47,6 +64,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import uk.co.senab.photoview.PhotoView;
 
 /**
  * Created by d0272129 on 15.05.18.
@@ -54,11 +72,9 @@ import okhttp3.Response;
 
 public class MyProfileActivity extends AppCompatActivity{
 
-    private ImageView img;
+    private PhotoView img;
     private final int IMG_REQUEST = 1;
     private Bitmap bitmap;
-    private Button btEdit;
-    private boolean changedImage = false;
     private ConstraintLayout mainLayout;
     private ConstraintLayout saveLayout;
     private UserSessionObject session;
@@ -66,9 +82,7 @@ public class MyProfileActivity extends AppCompatActivity{
     private String userid;
     private Context context;
     private ProgressDialog dialog;
-    private Intent dataIntent;
-    private static final long  MEGABYTE = 1024L * 1024L;
-
+    private MenuItem editMenu;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -76,29 +90,27 @@ public class MyProfileActivity extends AppCompatActivity{
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
+        window.setStatusBarColor(Color.rgb(0,0,0));
         this.setContentView(R.layout.activity_my_profile);
         context = this;
         session = new UserSessionObject(this);
         imageHelper = new ImageHelper(this);
+        setTitle("Profile Image");
+        ActionBar bar = getSupportActionBar();
+        bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#000000")));
         mainLayout = findViewById(R.id.layoutMyProfile);
         saveLayout = findViewById(R.id.layoutMyProfileSave);
         ColorDrawable[] color = {new ColorDrawable(Color.GRAY), new ColorDrawable(Color.BLACK)};
         TransitionDrawable trans = new TransitionDrawable(color);
         mainLayout.setBackground(trans);
         trans.startTransition(500);
-        img = findViewById(R.id.imgMyProfile);
         userid = session.getUser_id()+"";
-        btEdit = findViewById(R.id.btMyProfileEdit);
+        img = findViewById(R.id.imgMyProfile);
+       /* btEdit = findViewById(R.id.btMyProfileEdit);
         btEdit.setAnimation(AnimationUtils.loadAnimation(this,android.R.anim.fade_in));
-        btEdit.animate();
-        setImage(imageHelper.loadImageFromStorage(userid));
+        btEdit.animate();*/
+        imageHelper.setRectImage(userid,img);
         imageHelper.setChanged(false,userid);
-        checkPerms();
-    }
-
-    public static long bytesToMeg(long bytes) {
-        return bytes / MEGABYTE ;
     }
 
     private void checkPerms() {
@@ -112,27 +124,87 @@ public class MyProfileActivity extends AppCompatActivity{
     }
 
     private void enableButton() {
+
+        editMenu.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                editMenu.setVisible(false);
+                openPopup(img);
+                setTitle("Edit");
+                return false;
+            }
+        });
+/*
         btEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectImage();
-//                new MaterialFilePicker()
-//                        .withActivity(MyProfileActivity.this)
-//                        .withRequestCode(99)
-//                        .withFilter(Pattern.compile("(.*/)*.+\\.(png|jpg|gif|jpeg|PNG|JPG|GIF)$"))
-//                        .start();
+                btEdit.setVisibility(View.GONE);
+                openPopup(img);
+                setTitle("Edit");
             }
-        });
+        });*/
         saveLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveAndUploadImage();
+                uploadFile();
             }
         });
+
     }
 
-    private void saveAndUploadImage() {
-        uploadFile();
+    private void openPopup(View anchor) {
+        View popupView = getLayoutInflater().inflate(R.layout.popup_image_edit, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+       // popupWindow.setAnimationStyle(R.style.popupAnimation);
+        popupWindow.setFocusable(true);
+        ConstraintLayout layoutGallery = popupView.findViewById(R.id.layoutPopupGallery);
+        ConstraintLayout layoutDelete= popupView.findViewById(R.id.layoutPopupDelete);
+
+        layoutDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StringRequest request = new StringRequest(ServerConstants.URL_DELTE + userid+".png", new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String string) {
+                        if (string.equals("OK")) {
+                            if (imageHelper.deleteFromStorage(userid)) {
+                                Toast.makeText(context,"Deleted",Toast.LENGTH_SHORT).show();
+                                imageHelper.setChanged(true,userid);
+                                popupWindow.dismiss();
+                            } else {
+                                Toast.makeText(context,"Couldnt delete offline",Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(context,"Couldnt delete online",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Toast.makeText(context,"Error",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                RequestQueue rQueue = Volley.newRequestQueue(MyProfileActivity.this);
+                rQueue.add(request);
+            }
+        });
+
+        layoutGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Crop.pickImage(MyProfileActivity.this);
+                popupWindow.dismiss();
+            }
+        });
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                editMenu.setVisible(true);
+               // btEdit.setVisibility(View.VISIBLE);
+                setTitle("Profile Image");
+            }
+        });
+        popupWindow.showAsDropDown(anchor);
     }
 
     @Override
@@ -146,16 +218,6 @@ public class MyProfileActivity extends AppCompatActivity{
         }
     }
 
-    private void setImage(Bitmap image) {
-        if (image == null) {
-            if (img != null) {
-                Glide.with(getApplicationContext()).load(R.drawable.sheeshopa).into(img);
-            }
-        } else  {
-            img.setImageBitmap(image);
-        }
-    }
-
     private void selectImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -163,12 +225,12 @@ public class MyProfileActivity extends AppCompatActivity{
         startActivityForResult(intent, IMG_REQUEST);
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IMG_REQUEST && resultCode==RESULT_OK && data!=null) {
-            Uri path = data.getData();
+        if (resultCode==RESULT_OK) {
+            if (requestCode == Crop.REQUEST_PICK && data != null) {
+            /*Uri path = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),path);
                 bitmap = imageHelper.scaleBitmap(bitmap);
@@ -178,35 +240,45 @@ public class MyProfileActivity extends AppCompatActivity{
             bitmap = imageHelper.getThumbnailOfBitmap(bitmap,(int)(bitmap.getWidth()*0.3),(int)(bitmap.getHeight()*0.3));
             img.setImageBitmap(bitmap);
             //dataIntent = data;
+            saveLayout.setVisibility(View.VISIBLE);*/
+            Uri path = data.getData();
+            Uri destination = Uri.fromFile(new File(getCacheDir(), "cropped"));
+                Crop.of(path, destination).asSquare().start(this);
+                img.setImageURI(Crop.getOutput(data));
+                //File f = new File(data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH));
+            } else if (requestCode == Crop.REQUEST_CROP) {
+                handleCrop(resultCode,data);
+            }
+        }
+    }
+
+    private void handleCrop(int resultCode, Intent data) {
+        if (resultCode==RESULT_OK) {
+            img.setImageURI(Crop.getOutput(data));
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),Crop.getOutput(data));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             saveLayout.setVisibility(View.VISIBLE);
-            //File f = new File(data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH));
-        }
-    }
+            //btEdit.setVisibility(View.GONE);
+            editMenu.setVisible(false);
+            setTitle("Save Image?");
+        } else if(resultCode == Crop.RESULT_ERROR) {
 
-    private String getMimeType(String path) {
-        String extension = MimeTypeMap.getFileExtensionFromUrl(path);
-        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-    }
-
-    private void saveBitmap() {
-        String response;
-        if(imageHelper.saveBitmapToStorage(bitmap,userid)) {
-            response = "Saved & Uploaded";
-        } else {
-            response = "Error saving picture";
         }
-        Snackbar.make(mainLayout,response,Snackbar.LENGTH_LONG).show();
-        dialog.dismiss();
     }
 
     private void uploadFile() {
         dialog = new ProgressDialog(context);
         dialog.setTitle("Uploading");
         dialog.setMessage("Please wait...");
+        dialog.setCancelable(true);
         dialog.show();
+
         final String iconid = UUID.randomUUID().toString();
-        final String fileName = userid+"_"+iconid+".png";
-        Thread t = new Thread(new Runnable() {
+        final String fileName = userid+".png";
+        final Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 File f = new File(context.getCacheDir(), fileName);
@@ -254,7 +326,7 @@ public class MyProfileActivity extends AppCompatActivity{
                         Snackbar.make(mainLayout,"ERROR",Snackbar.LENGTH_LONG).show();
                         throw new IOException("Error" + response);
                     } else {
-                        saveBitmap();
+                        saveBitmap(iconid);
                     }
                     response.body().close();
                 } catch (IOException e) {
@@ -263,6 +335,31 @@ public class MyProfileActivity extends AppCompatActivity{
             }
         });
         t.start();
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                t.interrupt();
+            }
+        });
+    }
+    private String getMimeType(String path) {
+        String extension = MimeTypeMap.getFileExtensionFromUrl(path);
+        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+    }
+
+    private void saveBitmap(String iconid) {
+        String response;
+        if(imageHelper.saveBitmapToStorage(bitmap,userid,iconid)) {
+            response = "Saved & Uploaded";
+        } else {
+            response = "Error saving picture";
+        }
+        Snackbar.make(mainLayout,response,Snackbar.LENGTH_LONG).show();
+        dialog.dismiss();
+       // btEdit.setVisibility(View.VISIBLE);
+        editMenu.setVisible(true);
+        setTitle("Profile Image");
+        saveLayout.setVisibility(View.GONE);
     }
 
     private File getFileFromBitmap(String format) {
@@ -291,5 +388,16 @@ public class MyProfileActivity extends AppCompatActivity{
             e.printStackTrace();
         }
         return f;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_myprofile, menu);
+        editMenu = menu.getItem(0);
+        checkPerms();
+
+        return true;
     }
 }
