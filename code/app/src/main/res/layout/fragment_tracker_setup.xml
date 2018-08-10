@@ -14,7 +14,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="TRACKER"
+        android:text="@string/tracker_title"
         android:textSize="30dp"
         android:textStyle="bold"
         android:textColor="#fff"
@@ -48,7 +48,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:text="No friends selected! Click to select."
+            android:text="@string/no_friends_selected_click_to_select"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imgSeIconFriends"
             app:layout_constraintTop_toBottomOf="@+id/tvSeFriendsTitle" />
@@ -72,7 +72,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Friends"
+            android:text="@string/friends_text"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -97,7 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
-            android:text="No time selected! Click to select."
+            android:text="@string/no_time_selected_click_to_select"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imgSeIconTime"
             app:layout_constraintTop_toBottomOf="@+id/tvSeTimeTitle" />
@@ -121,7 +121,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Time"
+            android:text="@string/time_text"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -160,7 +160,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Location"
+            android:text="@string/location_text"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -173,7 +173,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
             android:ems="10"
-            android:hint="Shishas Location.."
+            android:hint="@string/shishas_location_hint"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imgSeIconLocation"
             app:layout_constraintTop_toBottomOf="@+id/tvSeLocationTitle" />
@@ -210,7 +210,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Comment"
+            android:text="@string/comment_text"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -223,7 +223,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
             android:ems="10"
-            android:hint="Your Comment.."
+            android:hint="@string/your_comment_hint"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/imgSeIconComment"
             app:layout_constraintStart_toEndOf="@+id/imgSeIconComment"
@@ -231,9 +231,5 @@
 
 
     </android.support.constraint.ConstraintLayout>
-
-
-
-
 
 </android.support.constraint.ConstraintLayout>

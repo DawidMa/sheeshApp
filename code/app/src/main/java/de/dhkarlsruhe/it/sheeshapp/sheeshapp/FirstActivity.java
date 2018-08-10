@@ -3,7 +3,9 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -21,6 +23,9 @@ public class FirstActivity extends AppCompatActivity{
     public ImageView logo;
     public Animation fadeInAnimation;
     public TextView tvSplash;
+    private ConstraintLayout layout;
+    private Handler handler = new Handler();
+    private Runnable runnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,22 +35,34 @@ public class FirstActivity extends AppCompatActivity{
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         logo = findViewById(R.id.logoSplash);
         tvSplash = findViewById(R.id.tvSplash);
+        layout = findViewById(R.id.layoutFirst);
         fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fadein);
         activateAnimation();
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        runnable = new Runnable() {
             @Override
             public void run() {
                 startNextActivity();
             }
-        }, 4000);
+        };
+        handler.postDelayed(runnable,4000);
+        setListener();
 
     }
 
+    private void setListener() {
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handler.removeCallbacks(runnable);
+                startNextActivity();
+            }
+        });
+    }
+
     private void startNextActivity() {
-        this.finish();
         Intent intent = new Intent(this,WelcomeActivity.class);
         startActivity(intent);
+        this.finish();
     }
 
     private void activateAnimation()  {
@@ -55,7 +72,6 @@ public class FirstActivity extends AppCompatActivity{
         //animation.addAnimation(fadeOutAnimation);
         logo.setAnimation(fadeInAnimation);
         tvSplash.setAnimation(fadeInAnimation);
-
 
     }
 

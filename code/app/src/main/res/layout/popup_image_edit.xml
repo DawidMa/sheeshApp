@@ -34,7 +34,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:textColor="#fff"
-            android:text="Open Gallery"
+            android:text="@string/open_gallery_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -70,7 +70,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:textColor="#fff"
-            android:text="Delete"
+            android:text="@string/delete_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

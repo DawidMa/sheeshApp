@@ -97,9 +97,9 @@ public class TrackerSetupFragment extends Fragment{
         seconds = pref.getInt(SharedPrefConstants.SECONDS,0);
 
         if (minutes==0 && seconds == 0) {
-            tvTime.setText("No time selected! Click to select.");
+            tvTime.setText(getString(R.string.no_time_selected_click_to_select));
         } else {
-            String text = "Your Time: ";
+            String text = getString(R.string.your_time_text);
             if (minutes<=9) {
                 text+="0";
             }
@@ -135,16 +135,16 @@ public class TrackerSetupFragment extends Fragment{
         boolean pass=false;
         sec+=min*60;
 
-        if(sec>4) {
+        if(sec>=5) {
             pass = checkChoosenFriends();
             if(!pass) {
-                Toast.makeText(c,"Wähle mindestens 2 Freunde!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(c, R.string.choose_at_least_one_friend,Toast.LENGTH_SHORT).show();
             } else {
                 editor.putInt(SharedPrefConstants.TIME_IN_SECONDS,sec);
                 editor.commit();
             }
         } else {
-            Toast.makeText(c,"Du hast weniger als 4 Sekunden gewählt!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(c, R.string.choose_more_than_5_seconds,Toast.LENGTH_SHORT).show();
         }
         return pass;
     }
@@ -162,7 +162,7 @@ public class TrackerSetupFragment extends Fragment{
                 editor.putInt("FRIENDS_NUM_SHISHAS_"+i,numShishas);
             }
         }*/
-        if(numberFriends>=2) {
+        if(numberFriends>=1) {
             check = true;
             editor.commit();
         }

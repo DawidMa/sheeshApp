@@ -95,7 +95,7 @@ public class MyProfileActivity extends AppCompatActivity{
         context = this;
         session = new UserSessionObject(this);
         imageHelper = new ImageHelper(this);
-        setTitle("Profile Image");
+        setTitle(getString(R.string.profile_image_text));
         ActionBar bar = getSupportActionBar();
         bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#000000")));
         mainLayout = findViewById(R.id.layoutMyProfile);
@@ -130,7 +130,7 @@ public class MyProfileActivity extends AppCompatActivity{
             public boolean onMenuItemClick(MenuItem item) {
                 editMenu.setVisible(false);
                 openPopup(img);
-                setTitle("Edit");
+                setTitle(getString(R.string.edit_text));
                 return false;
             }
         });
@@ -168,7 +168,7 @@ public class MyProfileActivity extends AppCompatActivity{
                     public void onResponse(String string) {
                         if (string.equals("OK")) {
                             if (imageHelper.deleteFromStorage(userid)) {
-                                Toast.makeText(context,"Deleted",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, R.string.deleted_text,Toast.LENGTH_SHORT).show();
                                 imageHelper.setChanged(true,userid);
                                 popupWindow.dismiss();
                             } else {
@@ -181,7 +181,7 @@ public class MyProfileActivity extends AppCompatActivity{
                 }, new com.android.volley.Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Toast.makeText(context,"Error",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.error_text,Toast.LENGTH_SHORT).show();
                     }
                 });
                 RequestQueue rQueue = Volley.newRequestQueue(MyProfileActivity.this);
@@ -201,7 +201,7 @@ public class MyProfileActivity extends AppCompatActivity{
             public void onDismiss() {
                 editMenu.setVisible(true);
                // btEdit.setVisibility(View.VISIBLE);
-                setTitle("Profile Image");
+                setTitle(getString(R.string.profile_image_text));
             }
         });
         popupWindow.showAsDropDown(anchor);
@@ -263,7 +263,7 @@ public class MyProfileActivity extends AppCompatActivity{
             saveLayout.setVisibility(View.VISIBLE);
             //btEdit.setVisibility(View.GONE);
             editMenu.setVisible(false);
-            setTitle("Save Image?");
+            setTitle(getString(R.string.save_image_question));
         } else if(resultCode == Crop.RESULT_ERROR) {
 
         }
@@ -271,8 +271,8 @@ public class MyProfileActivity extends AppCompatActivity{
 
     private void uploadFile() {
         dialog = new ProgressDialog(context);
-        dialog.setTitle("Uploading");
-        dialog.setMessage("Please wait...");
+        dialog.setTitle(getString(R.string.uploading_text));
+        dialog.setMessage(getString(R.string.please_wait_text));
         dialog.setCancelable(true);
         dialog.show();
 
@@ -323,7 +323,7 @@ public class MyProfileActivity extends AppCompatActivity{
                 try {
                     Response response = client.newCall(request).execute();
                     if (!response.isSuccessful()) {
-                        Snackbar.make(mainLayout,"ERROR",Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(mainLayout,getString(R.string.error_text),Snackbar.LENGTH_LONG).show();
                         throw new IOException("Error" + response);
                     } else {
                         saveBitmap(iconid);
@@ -350,15 +350,15 @@ public class MyProfileActivity extends AppCompatActivity{
     private void saveBitmap(String iconid) {
         String response;
         if(imageHelper.saveBitmapToStorage(bitmap,userid,iconid)) {
-            response = "Saved & Uploaded";
+            response = getString(R.string.saved_uploaded_text);
         } else {
-            response = "Error saving picture";
+            response = getString(R.string.error_save_picture);
         }
         Snackbar.make(mainLayout,response,Snackbar.LENGTH_LONG).show();
         dialog.dismiss();
        // btEdit.setVisibility(View.VISIBLE);
         editMenu.setVisible(true);
-        setTitle("Profile Image");
+        setTitle(getString(R.string.profile_image_text));
         saveLayout.setVisibility(View.GONE);
     }
 

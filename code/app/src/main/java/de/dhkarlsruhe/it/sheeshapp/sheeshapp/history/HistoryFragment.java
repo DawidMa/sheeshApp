@@ -69,7 +69,7 @@ public class HistoryFragment extends Fragment {
         if (!offlineHistories.isEmpty()) {
             histories = offlineHistories;
         } else {
-            Toast.makeText(getContext(),"No offline histories",Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), R.string.no_saved_history,Toast.LENGTH_LONG).show();
         }
         showList();
     }
@@ -90,17 +90,15 @@ public class HistoryFragment extends Fragment {
                     histories.addAll(onlineHistories);
                     newAdapter.notifyDataSetChanged();
                     addNewToOffline(string);
-                    Toast.makeText(getContext(),"Added "+onlineHistories.size() +" new online Histories",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), String.format(getString(R.string.added_n_new_histories), onlineHistories.size()),Toast.LENGTH_SHORT).show();
                     //showList();
-                } else {
-                    Toast.makeText(getContext(),"No new histories",Toast.LENGTH_SHORT).show();
                 }
                 showList();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(getContext(),"Error loading History",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.error_loading_history,Toast.LENGTH_SHORT).show();
             }
         });
         RequestQueue rQueue = Volley.newRequestQueue(getContext());

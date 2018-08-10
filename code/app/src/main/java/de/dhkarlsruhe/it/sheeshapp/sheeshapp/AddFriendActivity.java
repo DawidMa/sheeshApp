@@ -66,7 +66,7 @@ public class AddFriendActivity extends AppCompatActivity implements RapidFloatin
         initRfa();
 
         friend = new Friend(this);
-        setTitle("Add Friend");
+        setTitle(getString(R.string.add_friend_text));
         init();
     }
 
@@ -78,17 +78,17 @@ public class AddFriendActivity extends AppCompatActivity implements RapidFloatin
         rfaContent.setOnRapidFloatingActionContentLabelListListener(this);
         List<RFACLabelItem> items = new ArrayList<>();
         items.add(new RFACLabelItem<Integer>()
-                .setLabel("Cancel")
-                .setResId(R.drawable.cancel)
-                .setIconNormalColor(0xffd84315)
-                .setIconPressedColor(0xffbf360c)
+                .setLabel(getString(R.string.cancel_text))
+                .setResId(R.drawable.icon_cancel_white)
+                .setIconNormalColor(getResources().getColor(R.color.firstIconNormal))
+                .setIconPressedColor(getResources().getColor(R.color.firstIconPressed))
                 .setWrapper(0)
         );
         items.add(new RFACLabelItem<Integer>()
-                .setLabel("Add")
+                .setLabel(getString(R.string.add_text))
                 .setResId(R.mipmap.icon_plus_white)
-                .setIconNormalColor(0xff4e342e)
-                .setIconPressedColor(0xff3e2723)
+                .setIconNormalColor(getResources().getColor(R.color.secondIconNormal))
+                .setIconPressedColor(getResources().getColor(R.color.secondIconPressed))
                 .setLabelSizeSp(14)
                 .setWrapper(1)
         );

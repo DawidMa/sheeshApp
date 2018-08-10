@@ -9,7 +9,7 @@
         android:id="@+id/autoAddName"
         style="@style/etStyle"
         android:layout_width="270dp"
-        android:hint="Search friend"
+        android:hint="@string/search_friend_hint"
         android:layout_height="40dp"
         android:paddingLeft="25dp"
         android:imeOptions="flagNoExtractUi|actionSearch"
