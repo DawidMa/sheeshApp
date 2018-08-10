@@ -82,7 +82,7 @@
     <string name="added_n_new_histories">Es wurden %d neue Verlauf-Einträge hinzugefügt</string>
     <string name="error_loading_history">Fehler beim Laden des Verlaufs</string>
     <string name="duration_text">Dauer</string>
-    <string name="num_of_shishahs_text">Anzahl an Shishas</string>
+    <string name="num_of_shishas_text">Anzahl an Shishas</string>
     <string name="add_text">Hinzufügen</string>
     <string name="search_friend_hint">Freund suchen</string>
     <string name="friend_without_sheeshapp_hint">Freund ohne SheeshApp</string>
