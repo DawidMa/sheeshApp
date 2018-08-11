@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -25,20 +27,27 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.transitionseverywhere.Rotate;
+import com.transitionseverywhere.TransitionManager;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
@@ -49,11 +58,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.history.HistoryFragment;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.images.ImageHelper;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete.DelayAutoCompleteTextView;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete.FriendAutoCompleteAdapter;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete.UserSearchObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.profile.MyProfileActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
@@ -77,11 +91,12 @@ public class MainActivity extends AppCompatActivity
     private LinearLayout linearLayout;
     private ImageHelper imageHelper;
     private String actualTab;
+    private Window window;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Window window = getWindow();
+        window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(Color.BLACK);
@@ -130,7 +145,9 @@ public class MainActivity extends AppCompatActivity
         });
 
         imageHelper = new ImageHelper(this);
+
         initRfa();
+
         changeFabToAddFriend();
         int[] icons = {
                 R.drawable.tab_friends_selector,
@@ -287,7 +304,8 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+
+            return true;
     }
 
     @Override
@@ -344,8 +362,10 @@ public class MainActivity extends AppCompatActivity
     public void onRFACItemLabelClick(int position, RFACLabelItem item) {
         if (actualTab.equals("friend")) {
             if (position==0) {
-                Intent intent = new Intent(MainActivity.this, AddFriendActivity.class);
-                startActivity(intent);
+                MyUtilities.openAddFriendPopUp(this,tabLayout);
+
+               // Intent intent = new Intent(MainActivity.this, AddFriendActivity.class);
+                //startActivity(intent);
             } else if (position==1) {
                 Toast.makeText(this, R.string.starting_session_text,Toast.LENGTH_SHORT).show();
             }
@@ -366,8 +386,7 @@ public class MainActivity extends AppCompatActivity
     public void onRFACItemIconClick(int position, RFACLabelItem item) {
         if (actualTab.equals("friend")) {
             if (position==0) {
-                Intent intent = new Intent(MainActivity.this, AddFriendActivity.class);
-                startActivity(intent);
+                MyUtilities.openAddFriendPopUp(this,tabLayout);
             } else if (position==1) {
                 Toast.makeText(this,getString(R.string.starting_session_text),Toast.LENGTH_SHORT).show();
             }

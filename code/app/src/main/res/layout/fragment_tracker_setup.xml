@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#8c8c8c">
+    android:background="#ccc">
 
     <TextView
         android:id="@+id/tvSeTitle"
-        android:layout_width="wrap_content"
+        android:shadowColor="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:gravity="center"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/tracker_title"
-        android:textSize="30dp"
-        android:textStyle="bold"
         android:textColor="#fff"
+        android:shadowDx="10"
+        android:shadowDy="10"
+        android:shadowRadius="80"
+        android:textSize="32dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,13 +35,16 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/layoutSeFriends"
-        android:minHeight="100dp"
-        android:layout_width="150dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/setup_box"
+        android:elevation="10dp"
+        android:minHeight="120dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSeTitle">
 
@@ -81,14 +88,17 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/layoutSeTime"
-        android:minHeight="100dp"
-        android:layout_width="150dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/setup_box"
+        android:elevation="10dp"
+        android:minHeight="120dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/tvSeTitle">
 
         <TextView
@@ -130,12 +140,14 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/layoutSeLocation"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/setup_box"
+        android:elevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutSeFriends">
@@ -168,13 +180,15 @@
 
         <EditText
             android:id="@+id/etSeLocation"
-            android:layout_width="300dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:ems="10"
             android:hint="@string/shishas_location_hint"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imgSeIconLocation"
             app:layout_constraintTop_toBottomOf="@+id/tvSeLocationTitle" />
     </android.support.constraint.ConstraintLayout>
@@ -183,10 +197,11 @@
         android:id="@+id/layoutSeComment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/setup_box"
+        android:elevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutSeLocation">
@@ -218,14 +233,15 @@
 
         <EditText
             android:id="@+id/etSeComment"
-            android:layout_width="300dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:ems="10"
             android:hint="@string/your_comment_hint"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/imgSeIconComment"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imgSeIconComment"
             app:layout_constraintTop_toBottomOf="@+id/tvSeCommentTitle" />
 

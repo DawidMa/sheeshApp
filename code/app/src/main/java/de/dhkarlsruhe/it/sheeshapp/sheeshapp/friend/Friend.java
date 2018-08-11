@@ -2,6 +2,7 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -36,6 +37,7 @@ public class Friend  {
     private boolean sorted;
     private Context c;
     private UserSessionObject session;
+    private PopupWindow popupWindow;
 
     public Friend(Context context) {
         pref = context.getSharedPreferences(SharedPrefConstants.FRIEND,0);
@@ -45,7 +47,8 @@ public class Friend  {
         session = new UserSessionObject(c);
     }
 
-    public void addFriend(String newFriend, final String friendName) {
+    public void addFriend(String newFriend, final String friendName, PopupWindow popupWindow) {
+        this.popupWindow = popupWindow;
         long id = session.getUser_id();
         StringRequest request =  new StringRequest(ServerConstants.URL_ADD_FRIEND+id+"&friendmail="+newFriend, new Response.Listener<String>() {
             @Override
@@ -68,6 +71,9 @@ public class Friend  {
 
     private void positiveResponse(String string, String friendName) {
         Toast.makeText(c, string,Toast.LENGTH_SHORT).show();
+        if (string.equals("OK") && popupWindow!=null) {
+            popupWindow.dismiss();
+        }
     }
 
     public void deleteFriendOnline(final long friendid) {
