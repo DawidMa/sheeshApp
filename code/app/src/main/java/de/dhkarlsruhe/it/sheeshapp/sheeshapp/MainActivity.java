@@ -46,6 +46,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.transitionseverywhere.Rotate;
 import com.transitionseverywhere.TransitionManager;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
@@ -92,6 +95,9 @@ public class MainActivity extends AppCompatActivity
     private ImageHelper imageHelper;
     private String actualTab;
     private Window window;
+    private final static String AD_APP_ID = "ca-app-pub-4355529827581242~4147435635";
+    private final static String AD_BANNER_ID = "ca-app-pub-4355529827581242/7220321532";
+    private InterstitialAd ad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +109,12 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         session = new UserSessionObject(this);
         initStart();
+
+        MobileAds.initialize(this,AD_APP_ID);
+        ad = new InterstitialAd(this);
+        ad.setAdUnitId(AD_BANNER_ID);
+        ad.loadAd(new AdRequest.Builder().build());
+
     }
 
     private void initStart() {
@@ -372,6 +384,9 @@ public class MainActivity extends AppCompatActivity
         } else if(actualTab.equals("setup")) {
             if (position==0) {
                 if(TrackerSetupFragment.runShisha(getApplicationContext())) {
+                    if (ad.isLoaded()) {
+                        ad.show();
+                    }
                     Intent intent = new Intent(MainActivity.this, TimeTrackerActivity.class);
                     startActivity(intent);
                 }
@@ -394,6 +409,9 @@ public class MainActivity extends AppCompatActivity
         } else if(actualTab.equals("setup")) {
             if (position==0) {
                 if(TrackerSetupFragment.runShisha(getApplicationContext())) {
+                    if (ad.isLoaded()) {
+                        ad.show();
+                    }
                     Intent intent = new Intent(MainActivity.this, TimeTrackerActivity.class);
                     startActivity(intent);
                 }
