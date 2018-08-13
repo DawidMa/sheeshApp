@@ -37,7 +37,7 @@ public class MyCircle extends View {
         //Initial Angle (optional, it can be zero)
         angle = 0;
     }
-    
+
     public float convertDpToPx(float dp) {
         return dp * getContext().getResources().getDisplayMetrics().density;
     }
