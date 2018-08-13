@@ -36,10 +36,13 @@ public class MyUtilities {
         return ok;
     }
 
-    public static void openAddFriendPopUp(Activity context, TabLayout tabLayout) {
+    public static void openAddFriendPopUp(Activity context, TabLayout tabLayout, PopupWindow popupWindow) {
 
-        View popupView = context.getLayoutInflater().inflate(R.layout.auto_et_with_icons, null);
-        final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        View popupView = context.getLayoutInflater().inflate(R.layout.auto_et_with_icons,null);
+
+        popupWindow.setContentView(popupView);
+        popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setFocusable(true);
         popupWindow.setAnimationStyle(R.style.popupAnimation);
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {

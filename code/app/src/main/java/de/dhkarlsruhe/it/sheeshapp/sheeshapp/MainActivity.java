@@ -374,7 +374,7 @@ public class MainActivity extends AppCompatActivity
     public void onRFACItemLabelClick(int position, RFACLabelItem item) {
         if (actualTab.equals("friend")) {
             if (position==0) {
-                MyUtilities.openAddFriendPopUp(this,tabLayout);
+                MyUtilities.openAddFriendPopUp(this,tabLayout, new PopupWindow(MainActivity.this));
 
                // Intent intent = new Intent(MainActivity.this, AddFriendActivity.class);
                 //startActivity(intent);
@@ -401,7 +401,7 @@ public class MainActivity extends AppCompatActivity
     public void onRFACItemIconClick(int position, RFACLabelItem item) {
         if (actualTab.equals("friend")) {
             if (position==0) {
-                MyUtilities.openAddFriendPopUp(this,tabLayout);
+                MyUtilities.openAddFriendPopUp(this,tabLayout, new PopupWindow(this));
             } else if (position==1) {
                 Toast.makeText(this,getString(R.string.starting_session_text),Toast.LENGTH_SHORT).show();
             }
