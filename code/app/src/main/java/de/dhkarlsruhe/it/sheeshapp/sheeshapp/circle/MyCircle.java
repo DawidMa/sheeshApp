@@ -19,8 +19,8 @@ public class MyCircle extends View {
 
     private Paint paint;
     private RectF rect;
-
     private float angle;
+
 
     public MyCircle(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -32,14 +32,14 @@ public class MyCircle extends View {
         //Circle color
         paint.setColor(Color.RED);
         //size 200x200 example
-        rect = new RectF(strokeWidth, strokeWidth, 550 + strokeWidth, 550 + strokeWidth);
+        rect = new RectF(strokeWidth, strokeWidth, convertDpToPx(200 - strokeWidth), convertDpToPx(200 - strokeWidth));
         System.out.println("WIDTHX:"+rect.width());
         //Initial Angle (optional, it can be zero)
         angle = 0;
     }
-    public int pxToDp(int px) {
-        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-        return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    
+    public float convertDpToPx(float dp) {
+        return dp * getContext().getResources().getDisplayMetrics().density;
     }
 
     @Override

@@ -2,6 +2,7 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
@@ -10,9 +11,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.List;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.MainActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete.DelayAutoCompleteTextView;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete.FriendAutoCompleteAdapter;
@@ -66,5 +69,25 @@ public class MyUtilities {
         b.show();
         b.getWindow().setAttributes(lp);
         b.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+    }
+
+    public static void openLeaveDialog(final Activity context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(context.getString(R.string.leave_question));
+        builder.setCancelable(true);
+        builder.setPositiveButton(context.getString(R.string.yes_text), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                context.finish();
+            }
+        });
+        builder.setNegativeButton(context.getString(R.string.no_text), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(context, context.getString(R.string.sheeeesh_text), Toast.LENGTH_SHORT).show();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

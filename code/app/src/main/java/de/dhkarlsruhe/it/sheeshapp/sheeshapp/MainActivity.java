@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity
 
         MobileAds.initialize(this, AD_APP_ID);
         ad = new InterstitialAd(this);
-        ad.setAdUnitId(AD_BANNER_ID);
+        ad.setAdUnitId(AD_BANNER_ID_TEST);
         ad.loadAd(new AdRequest.Builder().build());
         ad.setAdListener(new AdListener() {
             @Override
@@ -479,36 +479,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    //Dialog when pressed back
-    @Override
-    public Dialog onCreateDialog(int id) {
-        switch (id) {
-            case 1:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(R.string.leave_question);
-                builder.setCancelable(true);
-                builder.setPositiveButton(getString(R.string.yes_text), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        MainActivity.this.finish();
-                    }
-                });
-                builder.setNegativeButton(getString(R.string.no_text), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.sheeeesh_text), Toast.LENGTH_SHORT).show();
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-                break;
-        }
-        return super.onCreateDialog(id);
-    }
-
     public boolean onKeyDown(int KeyCode, KeyEvent event) {
         if (KeyCode == KeyEvent.KEYCODE_BACK) {
-            showDialog(1);
+            MyUtilities.openLeaveDialog(this);
             return true;
         }
         return super.onKeyDown(KeyCode, event);
