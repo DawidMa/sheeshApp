@@ -65,11 +65,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         switch (childPosition) {
             case 0:
                 imgIcon.setImageResource(R.drawable.icon_location);
-                tvInfo.setText("Location");
+                tvInfo.setText(context.getString(R.string.location_text));
                 break;
             case 1:
                 imgIcon.setImageResource(R.drawable.icon_friends);
-                tvInfo.setText("Friends");
+                tvInfo.setText(context.getString(R.string.friends_text));
                 tvData.setText("");
                 String[] friends = childText.split(";");
                 for(int i = 0; i < friends.length; i++) {
@@ -82,19 +82,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 break;
             case 2:
                 imgIcon.setImageResource(R.drawable.icon_comment);
-                tvInfo.setText("Comment");
+                tvInfo.setText(context.getString(R.string.comment_text));
                 break;
             case 3:
                 imgIcon.setImageResource(R.drawable.icon_stopwatch);
-                tvInfo.setText("Duration");
+                tvInfo.setText(R.string.duration_text);
                 break;
             case 4:
                 imgIcon.setImageResource(R.drawable.icon_number);
-                tvInfo.setText("Number of Shishas");
+                tvInfo.setText(R.string.num_of_shishas_text);
                 break;
             default:
                 imgIcon.setImageResource(R.drawable.error_1);
-                tvInfo.setText("Error");
+                tvInfo.setText(context.getString(R.string.error_text));
         }
 
         return convertView;

@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:compat="http://schemas.android.com/tools">
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:title="@string/settings_text"
+        android:icon="@drawable/icon_settings2"
+        compat:actionViewClass="android.widget.ImageView"
+        app:showAsAction="always" />
 
-    <item android:id="@+id/menuRefreshFriends"
-        app:showAsAction="never"
-        android:visible="false"
-        android:title="@string/action_refresh_friends" ></item>
 </menu>

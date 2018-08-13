@@ -8,20 +8,20 @@
         <item
             android:id="@+id/nav_friends"
             android:icon="@mipmap/icon_friends_white"
-            android:title="Friends" />
+            android:title="@string/friends_text" />
         <item
             android:id="@+id/nav_tracker"
             android:icon="@mipmap/icon_setup_white"
-            android:title="Tracker" />
+            android:title="@string/tracker" />
         <item
             android:id="@+id/nav_history"
             android:icon="@mipmap/icon_statistic_white"
-            android:title="History" />
+            android:title="@string/history_text" />
 
         <item
             android:id="@+id/nav_discord"
             android:icon="@drawable/ic_discord"
-            android:title="Join Discord" />
+            android:title="@string/join_discord_text" />
     </group>
 
     <item android:title="Menu">
@@ -29,11 +29,11 @@
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_manage"
-                android:title="Settings" />
+                android:title="@string/settings_text" />
             <item
                 android:id="@+id/nav_send"
                 android:icon="@android:drawable/ic_lock_power_off"
-                android:title="Logout" />
+                android:title="@string/logout_text" />
         </menu>
     </item>
 

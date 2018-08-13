@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -78,6 +79,10 @@ public class LogInActivity extends AppCompatActivity {
             Toast.makeText(this,"Check input", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
         }
+    }
+
+    public void cancelLogin(View view) {
+        this.finish();
     }
 
     private boolean checkInput() {

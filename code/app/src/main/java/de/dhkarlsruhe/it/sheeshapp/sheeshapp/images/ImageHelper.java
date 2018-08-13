@@ -158,7 +158,8 @@ public class ImageHelper {
     }
 
     public void setRoundImageWithBitmap(ImageView imgFriends, Bitmap bitmap) {
-        Glide.with(c).load(bitmap).apply(RequestOptions.circleCropTransform()).into(imgFriends);
+        Bitmap scaled = getThumbnailOfBitmap(bitmap,300,300);
+        Glide.with(c).load(scaled).apply(RequestOptions.circleCropTransform()).into(imgFriends);
     }
 
     public void setRoundImageDefault(ImageView imgFriends) {

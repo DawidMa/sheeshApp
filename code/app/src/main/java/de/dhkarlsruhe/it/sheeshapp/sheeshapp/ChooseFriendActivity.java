@@ -2,12 +2,16 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -36,6 +40,7 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendRequestObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
 
 /**
  * Created by d0272129 on 18.04.17.
@@ -52,6 +57,8 @@ public class ChooseFriendActivity extends AppCompatActivity {
     private Gson json = new Gson();
     private List<Long> checkedFriendIds = new ArrayList<>();
     private List<Long> uncheckedFriendIds = new ArrayList<>();
+    private TextView tvFriends;
+    private List<ChooseFriendObject> friendNames= new ArrayList<>();
 
     private Button btnAdd;
     private EditText etLocalName;
@@ -63,8 +70,14 @@ public class ChooseFriendActivity extends AppCompatActivity {
         setContentView(R.layout.activity_choose_friend);
         friend = new Friend(this);
         session = new UserSessionObject(this);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Choose Friends");
+        tvFriends = findViewById(R.id.tvChooseTitle);
+        Window window = getWindow();
+        window.setStatusBarColor(Color.rgb(0,0,0));
+        ActionBar bar = getSupportActionBar();
+        bar.setBackgroundDrawable(getDrawable(R.drawable.toolbar_colors));
+        bar.setDisplayHomeAsUpEnabled(true);
+        bar.setElevation(0);
+        setTitle(getString(R.string.choose_friend_title));
         btnAdd = findViewById(R.id.btnChooseAddLocal);
         etLocalName = findViewById(R.id.etChooseLocalFriend);
 
@@ -168,7 +181,7 @@ public class ChooseFriendActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater)getContext().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View row = inflater.inflate(R.layout.row_choose_friend,parent,false);
-            ChooseFriendObject actualObject = getItem(position);
+            final ChooseFriendObject actualObject = getItem(position);
             TextView myTitle = (TextView)row.findViewById(R.id.liChooseFriendName);
             myTitle.setText(actualObject.getName());
             long tag = actualObject.getId();
@@ -185,10 +198,17 @@ public class ChooseFriendActivity extends AppCompatActivity {
                        friend.setChecked(tag,true);
                        checkedFriendIds.add(tag);
                        uncheckedFriendIds.remove(tag);
+                       friendNames.add(actualObject);
                     } else {
                         friend.setChecked(tag,false);
                         checkedFriendIds.remove(tag);
                         uncheckedFriendIds.add(tag);
+                        friendNames.remove(actualObject);
+                    }
+                    if (friendNames.isEmpty()) {
+                        tvFriends.setText(getString(R.string.no_selected_friends_text));
+                    } else {
+                        tvFriends.setText(MyUtilities.getChooseFriendsAsString(friendNames));
                     }
                 }
             });
@@ -201,17 +221,5 @@ public class ChooseFriendActivity extends AppCompatActivity {
         super.onDestroy();
         friend.setAllCheckedFriends(checkedFriendIds);
         friend.setAllUnchekedFriends(uncheckedFriendIds);
-    }
-
-    private String printFriendsList() {
-        String ok = "";
-        for(int i = 0; i < checkedFriendIds.size(); i++) {
-            if(i==checkedFriendIds.size()-1) {
-                ok+=(objects.get(i).getName()+".");
-            } else {
-                ok+=(objects.get(i).getName()+", ");
-            }
-        }
-        return ok;
     }
 }

@@ -7,6 +7,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.MainActivity;
 
 /**
  * Created by d0272129 on 09.05.18.
@@ -55,6 +58,7 @@ public class DelayAutoCompleteTextView extends AutoCompleteTextView {
             mLoadingIndicator.setVisibility(View.GONE);
         }
         super.onFilterComplete(count);
+
     }
 
 }

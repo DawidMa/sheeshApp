@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.MainActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.myvolley.VolleyCallback;
@@ -43,12 +45,20 @@ public class FriendAutoCompleteAdapter extends BaseAdapter implements Filterable
     private RequestQueue mRequestQueue;
     private Friend friend;
     private String myResult;
+    private PopupWindow popupWindow;
 
 
     public FriendAutoCompleteAdapter(Context context) {
         this.context = context;
         mRequestQueue = getRequestQueue();
         friend = new Friend(context);
+    }
+
+    public FriendAutoCompleteAdapter(Context context, PopupWindow popupWindow) {
+        this.context = context;
+        mRequestQueue = getRequestQueue();
+        friend = new Friend(context);
+        this.popupWindow = popupWindow;
     }
 
     public static synchronized FriendAutoCompleteAdapter getInstance() {
@@ -95,8 +105,7 @@ public class FriendAutoCompleteAdapter extends BaseAdapter implements Filterable
         ((Button) convertView.findViewById(R.id.dropdownButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                friend.addFriend(getItem(position).getEmail(),getItem(position).getName());
-                ((AppCompatActivity)context).finish();
+                friend.addFriend(getItem(position).getEmail(),getItem(position).getName(),popupWindow);
             }
         });
         return convertView;

@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -25,20 +27,30 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.transitionseverywhere.Rotate;
+import com.transitionseverywhere.TransitionManager;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
@@ -49,11 +61,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.history.HistoryFragment;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.images.ImageHelper;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete.DelayAutoCompleteTextView;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete.FriendAutoCompleteAdapter;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete.UserSearchObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.profile.MyProfileActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
@@ -72,23 +89,32 @@ public class MainActivity extends AppCompatActivity
     private RapidFloatingActionButton rfaButton;
     private RapidFloatingActionHelper rfaHelper;
     private RapidFloatingActionContentLabelList rfaContent;
-    private MenuItem refreshFriendItem;
     private UserSessionObject session;
     private ImageView imgUser;
     private LinearLayout linearLayout;
     private ImageHelper imageHelper;
     private String actualTab;
+    private Window window;
+    private final static String AD_APP_ID = "ca-app-pub-4355529827581242~4147435635";
+    private final static String AD_BANNER_ID = "ca-app-pub-4355529827581242/7220321532";
+    private InterstitialAd ad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Window window = getWindow();
+        window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(Color.BLACK);
         setContentView(R.layout.activity_main);
         session = new UserSessionObject(this);
         initStart();
+
+        MobileAds.initialize(this,AD_APP_ID);
+        ad = new InterstitialAd(this);
+        ad.setAdUnitId(AD_BANNER_ID);
+        ad.loadAd(new AdRequest.Builder().build());
+
     }
 
     private void initStart() {
@@ -108,25 +134,22 @@ public class MainActivity extends AppCompatActivity
         header = navigationView.getHeaderView(0);
         tabLayout = (TabLayout) findViewById(R.id.tbl_pages);
         tabLayout.setupWithViewPager(viewPager);
-        toolbar.setTitle("Friends");
+        toolbar.setTitle(getString(R.string.friends_text));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
                         changeFabToAddFriend();
-                        toolbar.setTitle("Friends");
-                        refreshFriendItem.setVisible(true);
+                        toolbar.setTitle(getString(R.string.friends_text));
                         break;
                     case 1:
                         changeFabToSetup();
-                        toolbar.setTitle("Let's Sheesh");
-                        refreshFriendItem.setVisible(false);
+                        toolbar.setTitle(R.string.lets_sheesh_text);
                         break;
                     case 2:
                         changeFabToStatistics();
-                        toolbar.setTitle("History");
-                        refreshFriendItem.setVisible(false);
+                        toolbar.setTitle(getString(R.string.history_text));
                         break;
                 }
                 super.onTabSelected(tab);
@@ -134,7 +157,9 @@ public class MainActivity extends AppCompatActivity
         });
 
         imageHelper = new ImageHelper(this);
+
         initRfa();
+
         changeFabToAddFriend();
         int[] icons = {
                 R.drawable.tab_friends_selector,
@@ -189,7 +214,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void animateIntent(View view) {
-        System.out.println("ANIMATING");
        // Bitmap bitmap = ((BitmapDrawable)imgUser.getDrawable()).getBitmap();
       //  ByteArrayOutputStream stream = new ByteArrayOutputStream();
        // bitmap.compress(Bitmap.CompressFormat.PNG, 10, stream);
@@ -202,7 +226,6 @@ public class MainActivity extends AppCompatActivity
                         transitionName    // The String
                 );
         //intent.putExtra("image",byteArray);
-        System.out.println("BEFORE STARTING");
         startActivity(intent, options.toBundle());
     }
 
@@ -210,17 +233,17 @@ public class MainActivity extends AppCompatActivity
         actualTab = "friend";
         List<RFACLabelItem> items = new ArrayList<>();
         items.add(new RFACLabelItem<Integer>()
-                .setLabel("Add friend")
+                .setLabel(getString(R.string.add_friend_text))
                 .setResId(R.mipmap.icon_plus_white)
-                .setIconNormalColor(R.color.orangeAccent)
-                .setIconPressedColor(R.color.RedPressed)
+                .setIconNormalColor(getResources().getColor(R.color.firstIconNormal))
+                .setIconPressedColor(getResources().getColor(R.color.firstIconPressed))
                 .setWrapper(0)
         );
         items.add(new RFACLabelItem<Integer>()
-                .setLabel("Plan Session")
-                .setResId(R.drawable.icon_comment)
-                .setIconNormalColor(Color.BLUE)
-                .setIconPressedColor(Color.LTGRAY)
+                .setLabel(getString(R.string.plan_session_text))
+                .setResId(R.drawable.icon_comment_white)
+                .setIconNormalColor(getResources().getColor(R.color.secondIconNormal))
+                .setIconPressedColor(getResources().getColor(R.color.secondIconPressed))
                 .setLabelSizeSp(14)
                 .setWrapper(1)
         );
@@ -245,17 +268,17 @@ public class MainActivity extends AppCompatActivity
 
         List<RFACLabelItem> items = new ArrayList<>();
         items.add(new RFACLabelItem<Integer>()
-                .setLabel("Start Tracker")
+                .setLabel(getString(R.string.start_tracker_text))
                 .setResId(R.mipmap.icon_setup_white)
-                .setIconNormalColor(R.color.orangeAccent)
-                .setIconPressedColor(R.color.RedPressed)
+                .setIconNormalColor(getResources().getColor(R.color.firstIconNormal))
+                .setIconPressedColor(getResources().getColor(R.color.firstIconPressed))
                 .setWrapper(0)
         );
         items.add(new RFACLabelItem<Integer>()
-                .setLabel("Cancel")
-                .setResId(R.drawable.error_1)
-                .setIconNormalColor(Color.BLUE)
-                .setIconPressedColor(Color.LTGRAY)
+                .setLabel(getString(R.string.cancel_text))
+                .setResId(R.drawable.icon_cancel_white)
+                .setIconNormalColor(getResources().getColor(R.color.secondIconNormal))
+                .setIconPressedColor(getResources().getColor(R.color.secondIconPressed))
                 .setLabelSizeSp(14)
                 .setWrapper(1)
         );
@@ -276,7 +299,6 @@ public class MainActivity extends AppCompatActivity
 
     public void changeFabToStatistics() {
         actualTab = "history";
-
         rfaButton.setVisibility(View.GONE);
     }
 
@@ -294,8 +316,8 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        refreshFriendItem = menu.findItem(R.id.menuRefreshFriends);
-        return true;
+
+            return true;
     }
 
     @Override
@@ -333,7 +355,8 @@ public class MainActivity extends AppCompatActivity
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/GqX6SzK"));
             startActivity(browserIntent);
         } else if (id == R.id.nav_share) {
-
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_send) {
             SharedPreferences pref = getSharedPreferences(SharedPrefConstants.HISTORY,MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
@@ -349,22 +372,26 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onRFACItemLabelClick(int position, RFACLabelItem item) {
-        System.out.println("XXX"+actualTab);
         if (actualTab.equals("friend")) {
             if (position==0) {
-                Intent intent = new Intent(MainActivity.this, AddFriendActivity.class);
-                startActivity(intent);
+                MyUtilities.openAddFriendPopUp(this,tabLayout, new PopupWindow(MainActivity.this));
+
+               // Intent intent = new Intent(MainActivity.this, AddFriendActivity.class);
+                //startActivity(intent);
             } else if (position==1) {
-                Toast.makeText(this,"Starting Session",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.starting_session_text,Toast.LENGTH_SHORT).show();
             }
         } else if(actualTab.equals("setup")) {
             if (position==0) {
                 if(TrackerSetupFragment.runShisha(getApplicationContext())) {
+                    if (ad.isLoaded()) {
+                        ad.show();
+                    }
                     Intent intent = new Intent(MainActivity.this, TimeTrackerActivity.class);
                     startActivity(intent);
                 }
             } else if (position==1) {
-                Toast.makeText(this,"Canceling",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.canceled_text,Toast.LENGTH_SHORT).show();
             }
         }
         rfaHelper.toggleContent();
@@ -374,20 +401,22 @@ public class MainActivity extends AppCompatActivity
     public void onRFACItemIconClick(int position, RFACLabelItem item) {
         if (actualTab.equals("friend")) {
             if (position==0) {
-                Intent intent = new Intent(MainActivity.this, AddFriendActivity.class);
-                startActivity(intent);
+                MyUtilities.openAddFriendPopUp(this,tabLayout, new PopupWindow(this));
             } else if (position==1) {
-                Toast.makeText(this,"Starting Session",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,getString(R.string.starting_session_text),Toast.LENGTH_SHORT).show();
             }
             rfaHelper.toggleContent();
         } else if(actualTab.equals("setup")) {
             if (position==0) {
                 if(TrackerSetupFragment.runShisha(getApplicationContext())) {
+                    if (ad.isLoaded()) {
+                        ad.show();
+                    }
                     Intent intent = new Intent(MainActivity.this, TimeTrackerActivity.class);
                     startActivity(intent);
                 }
             } else if (position==1) {
-                Toast.makeText(this,"Canceling",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,getString(R.string.canceled_text),Toast.LENGTH_SHORT).show();
             }
             rfaHelper.toggleContent();
         }
@@ -451,18 +480,18 @@ public class MainActivity extends AppCompatActivity
         switch(id) {
             case 1:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Willst du gehen?");
+                builder.setMessage(R.string.leave_question);
                 builder.setCancelable(true);
-                builder.setPositiveButton("Ja!", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(getString(R.string.yes_text), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         MainActivity.this.finish();
                     }
                 });
-                builder.setNegativeButton("Nein!", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(getString(R.string.no_text), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(),"Weiter gehts!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),getString(R.string.sheeeesh_text),Toast.LENGTH_SHORT).show();
                     }
                 });
                 AlertDialog dialog = builder.create();

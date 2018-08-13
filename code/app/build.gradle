@@ -7,8 +7,8 @@ android {
         applicationId "de.dhkarlsruhe.it.sheeshapp.sheeshapp"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "1.0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         //pfade anpassen....
@@ -80,6 +80,7 @@ dependencies {
     }
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
     implementation 'com.github.chrisbanes:PhotoView:1.2.6'
+    implementation 'com.google.android.gms:play-services-ads:15.0.0'
 
 
 }

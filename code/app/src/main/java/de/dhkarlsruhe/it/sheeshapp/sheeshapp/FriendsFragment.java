@@ -81,7 +81,6 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     private View header;
     private ListView listRequests;
     private int numOfRequests = 0;
-
     private TextView frTvNoFriends;
     private Friend friend;
     private ImageView friendImage;
@@ -136,7 +135,6 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
                 }
             }
         });
-
         checkAmountFriends();
         loadFriendInformation();
         loadRequestInformation();
@@ -173,15 +171,15 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         TextView tvInfo = header.findViewById(R.id.tvHeaderInfo);
         ImageView imgNotification = header.findViewById(R.id.imgHeaderNotification);
         ImageView imgHeader = header.findViewById(R.id.imgHeader);
-        String formattedTitle = "You have " + "<i>"+numOfRequests+"</i>" + " new Friend Requests";
+        String formattedTitle = String.format(getString(R.string.friend_requests_formatted_text), numOfRequests);
         if (numOfRequests>0) {
             tvTitle.setText(Html.fromHtml(formattedTitle));
-            tvInfo.setText("Click to open");
+            tvInfo.setText(R.string.click_to_open);
             header.setBackgroundColor(Color.WHITE);
             imgNotification.setVisibility(View.VISIBLE);
             imgHeader.setColorFilter(Color.BLACK);
             } else {
-            tvTitle.setText("No Friend Requests");
+            tvTitle.setText(getString(R.string.no_friend_requests_text));
             tvInfo.setText("---");
             header.setBackgroundColor(Color.LTGRAY);
             imgNotification.setVisibility(View.GONE);
@@ -496,14 +494,14 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
 
     private void removeFriend(int i) {
         final int id = i;
-        MyAlert alert = new MyAlert(context, "Löschen", "Bist du sicher dass du " + friendlistObject.get(id).getName() + " löschen willst?");
-        alert.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+        MyAlert alert = new MyAlert(context, getString(R.string.delete_text), String.format(getString(R.string.friend_delete_formatted_text), friendlistObject.get(id).getName()));
+        alert.setNegativeButton(getString(R.string.no_text), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
-        alert.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(getString(R.string.yes_text), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 try {
@@ -548,7 +546,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
                 @Override
                 public void onClick(View v) {
                     acceptFriend(position,true);
-                    Toast.makeText(context,"Accepted",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.accepted_text,Toast.LENGTH_SHORT).show();
                 }
 
             });
@@ -556,7 +554,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
                 @Override
                 public void onClick(View v) {
                     acceptFriend(position,false);
-                    Toast.makeText(context,"Denied",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.denied_text,Toast.LENGTH_SHORT).show();
                 }
             });
             return row;
@@ -586,7 +584,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
-                    Toast.makeText(context,"Some error occured",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.some_error_occured_text,Toast.LENGTH_SHORT).show();
                 }
             });
             RequestQueue rQueue = Volley.newRequestQueue(getContext());

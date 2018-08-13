@@ -7,4 +7,8 @@
     <color name="RedFocused">#ff2d34</color>
     <color name="RedPressed">#ff0008</color>
     <color name="orangeAccent">#ff6100</color>
+    <color name="firstIconNormal">#42c4c2</color>
+    <color name="firstIconPressed">#3ab2b0</color>
+    <color name="secondIconNormal">#39a8a6</color>
+    <color name="secondIconPressed">#339694</color>
 </resources>

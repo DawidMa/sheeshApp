@@ -11,12 +11,11 @@
         android:id="@+id/liFriendName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Name"
         android:textColor="#000"
-        android:textSize="24dp"
+        android:textSize="18dp"
         android:textStyle="bold"
         android:transitionName="friendname"
         app:layout_constraintStart_toEndOf="@+id/liFriendImage"
@@ -29,13 +28,14 @@
         android:layout_marginTop="8dp"
         android:text="Shishas"
         android:textColor="#000"
+        android:textSize="16dp"
         app:layout_constraintStart_toEndOf="@+id/imgFriendIcon"
         app:layout_constraintTop_toBottomOf="@+id/liFriendName" />
 
     <Button
         android:id="@+id/liDeleteFriend"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
@@ -47,11 +47,11 @@
 
     <ImageView
         android:id="@+id/liFriendImage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:transitionName="profileimage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,14 +60,12 @@
 
     <ImageView
         android:id="@+id/imgFriendIcon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:src="@mipmap/icon_setup_white"
         android:tint="#000"
-        app:layout_constraintBottom_toBottomOf="@+id/liFriendNumOfShishas"
         app:layout_constraintStart_toEndOf="@+id/liFriendImage"
         app:layout_constraintTop_toBottomOf="@+id/liFriendName" />
 

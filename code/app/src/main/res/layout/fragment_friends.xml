@@ -29,14 +29,16 @@
         android:id="@+id/swipeFragFri"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <ListView
+        <ListView
         android:id="@+id/lvFragFriList"
         android:divider="@drawable/custom_divider"
+
         android:dividerHeight="1dp"
         android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
         android:overScrollFooter="@android:color/transparent"
         android:layout_width="match_parent"
-        android:paddingBottom="80dp"
+        android:paddingBottom="100dp"
         android:clipToPadding="false"
         android:layout_height="match_parent" />
     </android.support.v4.widget.SwipeRefreshLayout>
