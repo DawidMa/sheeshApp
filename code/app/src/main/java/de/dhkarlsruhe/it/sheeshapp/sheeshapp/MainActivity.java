@@ -1,6 +1,5 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,14 +7,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -28,21 +23,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,8 +40,6 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
-import com.transitionseverywhere.Rotate;
-import com.transitionseverywhere.TransitionManager;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
@@ -62,16 +48,11 @@ import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloating
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.history.HistoryFragment;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.images.ImageHelper;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete.DelayAutoCompleteTextView;
-import de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete.FriendAutoCompleteAdapter;
-import de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete.UserSearchObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.profile.MyProfileActivity;
-import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
 
@@ -100,7 +81,7 @@ public class MainActivity extends AppCompatActivity
     private Window window;
     private final static String AD_APP_ID = "ca-app-pub-4355529827581242~4147435635";
     private final static String AD_BANNER_ID = "ca-app-pub-4355529827581242/7220321532";
-    private final static String AD_BANNER_ID_TEST ="ca-app-pub-3940256099942544/1033173712";
+    private final static String AD_BANNER_ID_TEST = "ca-app-pub-3940256099942544/1033173712";
     private InterstitialAd ad;
     private DelayAutoCompleteTextView autoCompleteTextView;
     private FriendsFragment friendsFragment;
@@ -121,7 +102,7 @@ public class MainActivity extends AppCompatActivity
         session = new UserSessionObject(this);
         initStart();
 
-        MobileAds.initialize(this,AD_APP_ID);
+        MobileAds.initialize(this, AD_APP_ID);
         ad = new InterstitialAd(this);
         ad.setAdUnitId(AD_BANNER_ID);
         ad.loadAd(new AdRequest.Builder().build());
@@ -197,7 +178,7 @@ public class MainActivity extends AppCompatActivity
 
         imgUser = header.findViewById(R.id.imgHeader);
         decideProfileImage(imgUser);
-       // setImgUser();
+        // setImgUser();
         imgUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -208,16 +189,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initRfa() {
-            rfaContent = new RapidFloatingActionContentLabelList(this);
+        rfaContent = new RapidFloatingActionContentLabelList(this);
         rfaContent.setOnRapidFloatingActionContentLabelListListener(this);
 
         rfaLayout = findViewById(R.id.rfabLayoutMain);
-            rfaButton = findViewById(R.id.rfabButtonMain);
+        rfaButton = findViewById(R.id.rfabButtonMain);
 
     }
 
     private void setImgUser() {
-        String user = session.getUser_id()+"";
+        String user = session.getUser_id() + "";
 
         Bitmap bitmap = imageHelper.loadImageFromStorage(user);
         if (bitmap == null) {
@@ -225,16 +206,16 @@ public class MainActivity extends AppCompatActivity
                 Glide.with(getApplicationContext()).load(R.drawable.sheeshopa).apply(RequestOptions.circleCropTransform()).into(imgUser);
             }
         } else {
-            Bitmap thumbnail = imageHelper.getThumbnailOfBitmap(bitmap,200,200);
+            Bitmap thumbnail = imageHelper.getThumbnailOfBitmap(bitmap, 200, 200);
             Glide.with(getApplicationContext()).load(thumbnail).apply(RequestOptions.circleCropTransform()).into(imgUser);
             //imgUser.setImageDrawable(imageHelper.getRoundedBitmap(thumbnail));
         }
     }
 
     public void animateIntent(View view) {
-       // Bitmap bitmap = ((BitmapDrawable)imgUser.getDrawable()).getBitmap();
-      //  ByteArrayOutputStream stream = new ByteArrayOutputStream();
-       // bitmap.compress(Bitmap.CompressFormat.PNG, 10, stream);
+        // Bitmap bitmap = ((BitmapDrawable)imgUser.getDrawable()).getBitmap();
+        //  ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        // bitmap.compress(Bitmap.CompressFormat.PNG, 10, stream);
         //byte[] byteArray = stream.toByteArray();
         Intent intent = new Intent(this, MyProfileActivity.class);
         String transitionName = getString(R.string.transition_string);
@@ -335,7 +316,7 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
-            return true;
+        return true;
     }
 
     @Override
@@ -376,7 +357,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_send) {
-            SharedPreferences pref = getSharedPreferences(SharedPrefConstants.HISTORY,MODE_PRIVATE);
+            SharedPreferences pref = getSharedPreferences(SharedPrefConstants.HISTORY, MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
             editor.remove(SharedPrefConstants.H_OFFLINE_JSON);
             editor.apply();
@@ -391,17 +372,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRFACItemLabelClick(int position, RFACLabelItem item) {
         if (actualTab.equals("friend")) {
-            if (position==0) {
-                openAddFriendPopUp();
+            if (position == 0) {
+                MyUtilities.openAddFriendPopUp(this);
 
-               // Intent intent = new Intent(MainActivity.this, AddFriendActivity.class);
+                // Intent intent = new Intent(MainActivity.this, AddFriendActivity.class);
                 //startActivity(intent);
-            } else if (position==1) {
-                Toast.makeText(this, R.string.starting_session_text,Toast.LENGTH_SHORT).show();
+            } else if (position == 1) {
+                Toast.makeText(this, R.string.starting_session_text, Toast.LENGTH_SHORT).show();
             }
-        } else if(actualTab.equals("setup")) {
-            if (position==0) {
-                if(TrackerSetupFragment.runShisha(getApplicationContext())) {
+        } else if (actualTab.equals("setup")) {
+            if (position == 0) {
+                if (TrackerSetupFragment.runShisha(getApplicationContext())) {
                     if (ad.isLoaded()) {
                         ad.show();
                     } else {
@@ -411,8 +392,8 @@ public class MainActivity extends AppCompatActivity
                     }
 
                 }
-            } else if (position==1) {
-                Toast.makeText(this, R.string.canceled_text,Toast.LENGTH_SHORT).show();
+            } else if (position == 1) {
+                Toast.makeText(this, R.string.canceled_text, Toast.LENGTH_SHORT).show();
             }
         }
         rfaHelper.toggleContent();
@@ -421,15 +402,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRFACItemIconClick(int position, RFACLabelItem item) {
         if (actualTab.equals("friend")) {
-            if (position==0) {
-                openAddFriendPopUp();
-            } else if (position==1) {
-                Toast.makeText(this,getString(R.string.starting_session_text),Toast.LENGTH_SHORT).show();
+            if (position == 0) {
+                MyUtilities.openAddFriendPopUp(this);
+            } else if (position == 1) {
+                Toast.makeText(this, getString(R.string.starting_session_text), Toast.LENGTH_SHORT).show();
             }
             rfaHelper.toggleContent();
-        } else if(actualTab.equals("setup")) {
-            if (position==0) {
-                if(TrackerSetupFragment.runShisha(getApplicationContext())) {
+        } else if (actualTab.equals("setup")) {
+            if (position == 0) {
+                if (TrackerSetupFragment.runShisha(getApplicationContext())) {
                     if (ad.isLoaded()) {
                         ad.show();
                     } else {
@@ -438,8 +419,8 @@ public class MainActivity extends AppCompatActivity
                         ad.loadAd(new AdRequest.Builder().build());
                     }
                 }
-            } else if (position==1) {
-                Toast.makeText(this,getString(R.string.canceled_text),Toast.LENGTH_SHORT).show();
+            } else if (position == 1) {
+                Toast.makeText(this, getString(R.string.canceled_text), Toast.LENGTH_SHORT).show();
             }
             rfaHelper.toggleContent();
         }
@@ -455,7 +436,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public Fragment getItem(int position) {
-            switch (position){
+            switch (position) {
                 case 0:
                     return friendsFragment;
                 case 1:
@@ -482,7 +463,8 @@ public class MainActivity extends AppCompatActivity
                 case 1:return "Search";
                 case 2: return "Contacts";
                 default:
-                */return null;
+                */
+            return null;
 
         }
 
@@ -491,16 +473,16 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (imageHelper.getChanged(session.getUser_id()+"")) {
+        if (imageHelper.getChanged(session.getUser_id() + "")) {
             setImgUser();
-            imageHelper.setChanged(false,session.getUser_id()+"");
+            imageHelper.setChanged(false, session.getUser_id() + "");
         }
     }
 
     //Dialog when pressed back
     @Override
     public Dialog onCreateDialog(int id) {
-        switch(id) {
+        switch (id) {
             case 1:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage(R.string.leave_question);
@@ -514,7 +496,7 @@ public class MainActivity extends AppCompatActivity
                 builder.setNegativeButton(getString(R.string.no_text), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(),getString(R.string.sheeeesh_text),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.sheeeesh_text), Toast.LENGTH_SHORT).show();
                     }
                 });
                 AlertDialog dialog = builder.create();
@@ -523,12 +505,13 @@ public class MainActivity extends AppCompatActivity
         }
         return super.onCreateDialog(id);
     }
+
     public boolean onKeyDown(int KeyCode, KeyEvent event) {
-        if(KeyCode==KeyEvent.KEYCODE_BACK) {
+        if (KeyCode == KeyEvent.KEYCODE_BACK) {
             showDialog(1);
             return true;
         }
-        return super.onKeyDown(KeyCode,event);
+        return super.onKeyDown(KeyCode, event);
     }
 
     @Override
@@ -542,43 +525,19 @@ public class MainActivity extends AppCompatActivity
         if (session.isHas_icon()) {
             //prepareProgressDialog();
             if (imageHelper.getIconId(userid).equals(imageId)) {
-                Bitmap bitmap = imageHelper.loadImageFromStorage(userid+"");
-                if (bitmap!=null) {
-                    imageHelper.setRoundImageWithBitmap(imgFriends,bitmap);
+                Bitmap bitmap = imageHelper.loadImageFromStorage(userid + "");
+                if (bitmap != null) {
+                    imageHelper.setRoundImageWithBitmap(imgFriends, bitmap);
                 } else {
-                    imageHelper.loadFileFromServer(userid,imgFriends,imageId);
+                    imageHelper.loadFileFromServer(userid, imgFriends, imageId);
                 }
             } else {
-                imageHelper.loadFileFromServer(userid,imgFriends,imageId);
-                imageHelper.setNewIconId(userid,imageId);
-               // session.setLast_changed_icon_id(imageHelper.getIconId(userid));
+                imageHelper.loadFileFromServer(userid, imgFriends, imageId);
+                imageHelper.setNewIconId(userid, imageId);
+                // session.setLast_changed_icon_id(imageHelper.getIconId(userid));
             }
         } else {
             imageHelper.setRoundImageDefault(imgFriends);
         }
     }
-
-
-    public void openAddFriendPopUp() {
-
-        View popupView = getLayoutInflater().inflate(R.layout.auto_et_with_icons,null);
-        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.setFocusable(true);
-        popupWindow.setAnimationStyle(R.style.popupAnimation);
-        Button btnDelete;
-        autoCompleteTextView = popupView.findViewById(R.id.autoAddName);
-        autoCompleteTextView.setThreshold(2);
-        autoCompleteTextView.setAdapter(new FriendAutoCompleteAdapter(this,popupWindow)); // 'this' is Activity instance
-        autoCompleteTextView.setLoadingIndicator((android.widget.ProgressBar) popupView.findViewById(R.id.pb_loading_indicator));
-
-        btnDelete = popupView.findViewById(R.id.btnAddDelete);
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                autoCompleteTextView.setText("");
-            }
-        });
-        popupWindow.showAsDropDown(tabLayout);
-    }
-
 }

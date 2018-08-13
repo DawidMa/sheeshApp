@@ -1,6 +1,8 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,32 +40,25 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
 
 public class FriendAutoCompleteAdapter extends BaseAdapter implements Filterable {
 
-    private static Context context;
+    private static Activity context;
     private List<UserSearchObject> resultList = new ArrayList<>();
     private Gson json = new Gson();
     private static FriendAutoCompleteAdapter instance;
     private RequestQueue mRequestQueue;
     private Friend friend;
     private String myResult;
-    private static PopupWindow popupWindow;
+    private static AlertDialog dialog;
 
-
-    public FriendAutoCompleteAdapter(Context context) {
-        this.context = context;
-        mRequestQueue = getRequestQueue();
-        friend = new Friend(context);
-    }
-
-    public FriendAutoCompleteAdapter(Context context, PopupWindow popupWindow) {
+    public FriendAutoCompleteAdapter(Activity context, AlertDialog dialog) {
         this.context = context;
         mRequestQueue = getRequestQueue();
         friend = new Friend(this.context);
-        this.popupWindow = popupWindow;
+        this.dialog = dialog;
     }
 
     public static synchronized FriendAutoCompleteAdapter getInstance() {
         if (instance == null) {
-            instance = new FriendAutoCompleteAdapter(context, popupWindow);
+            instance = new FriendAutoCompleteAdapter(context, dialog);
         }
         return instance;
     }
@@ -105,7 +100,7 @@ public class FriendAutoCompleteAdapter extends BaseAdapter implements Filterable
         ((Button) convertView.findViewById(R.id.dropdownButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                friend.addFriend(getItem(position).getEmail(),getItem(position).getName(),popupWindow);
+                friend.addFriend(getItem(position).getEmail(),getItem(position).getName(),dialog);
             }
         });
         return convertView;

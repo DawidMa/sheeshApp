@@ -2,13 +2,14 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.PopupWindow;
 
 import java.util.List;
 
@@ -36,34 +37,33 @@ public class MyUtilities {
         return ok;
     }
 
-    public static void openAddFriendPopUp(Activity context, TabLayout tabLayout, PopupWindow popupWindow) {
+    public static void openAddFriendPopUp(Activity context) {
 
-        View popupView = context.getLayoutInflater().inflate(R.layout.auto_et_with_icons,null);
+        View promptView = context.getLayoutInflater().inflate(R.layout.auto_et_with_icons, null);
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setView(promptView);
 
-        popupWindow.setContentView(popupView);
-        popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-        popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.setFocusable(true);
-        popupWindow.setAnimationStyle(R.style.popupAnimation);
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
+        AlertDialog b = alertDialogBuilder.create();
 
-            }
-        });
-        Button btnDelete;
-        autoCompleteTextView = popupView.findViewById(R.id.autoAddName);
+        autoCompleteTextView = promptView.findViewById(R.id.autoAddName);
         autoCompleteTextView.setThreshold(2);
-        autoCompleteTextView.setAdapter(new FriendAutoCompleteAdapter(context,popupWindow)); // 'this' is Activity instance
-        autoCompleteTextView.setLoadingIndicator((android.widget.ProgressBar) popupView.findViewById(R.id.pb_loading_indicator));
-
-        btnDelete = popupView.findViewById(R.id.btnAddDelete);
+        autoCompleteTextView.setAdapter(new FriendAutoCompleteAdapter(context,b)); // 'this' is Activity instance
+        autoCompleteTextView.setLoadingIndicator((android.widget.ProgressBar) promptView.findViewById(R.id.pb_loading_indicator));
+        Button btnDelete = promptView.findViewById(R.id.btnAddDelete);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 autoCompleteTextView.setText("");
             }
         });
-        popupWindow.showAsDropDown(tabLayout);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(b.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.gravity = Gravity.TOP;
+        lp.softInputMode = (WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        lp.windowAnimations = R.style.popupAnimation;
+        b.show();
+        b.getWindow().setAttributes(lp);
     }
 }
