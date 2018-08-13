@@ -1,5 +1,6 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -37,6 +38,7 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,6 +48,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
@@ -97,7 +100,12 @@ public class MainActivity extends AppCompatActivity
     private Window window;
     private final static String AD_APP_ID = "ca-app-pub-4355529827581242~4147435635";
     private final static String AD_BANNER_ID = "ca-app-pub-4355529827581242/7220321532";
+    private final static String AD_BANNER_ID_TEST ="ca-app-pub-3940256099942544/1033173712";
     private InterstitialAd ad;
+    private DelayAutoCompleteTextView autoCompleteTextView;
+    private FriendsFragment friendsFragment;
+    private HistoryFragment historyFragment;
+    private TrackerSetupFragment trackerSetupFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +115,9 @@ public class MainActivity extends AppCompatActivity
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(Color.BLACK);
         setContentView(R.layout.activity_main);
+        friendsFragment = new FriendsFragment();
+        historyFragment = new HistoryFragment();
+        trackerSetupFragment = new TrackerSetupFragment();
         session = new UserSessionObject(this);
         initStart();
 
@@ -114,7 +125,14 @@ public class MainActivity extends AppCompatActivity
         ad = new InterstitialAd(this);
         ad.setAdUnitId(AD_BANNER_ID);
         ad.loadAd(new AdRequest.Builder().build());
-
+        ad.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                Intent intent = new Intent(MainActivity.this, TimeTrackerActivity.class);
+                startActivity(intent);
+                ad.loadAd(new AdRequest.Builder().build());
+            }
+        });
     }
 
     private void initStart() {
@@ -374,7 +392,7 @@ public class MainActivity extends AppCompatActivity
     public void onRFACItemLabelClick(int position, RFACLabelItem item) {
         if (actualTab.equals("friend")) {
             if (position==0) {
-                MyUtilities.openAddFriendPopUp(this,tabLayout, new PopupWindow(MainActivity.this));
+                openAddFriendPopUp();
 
                // Intent intent = new Intent(MainActivity.this, AddFriendActivity.class);
                 //startActivity(intent);
@@ -386,9 +404,12 @@ public class MainActivity extends AppCompatActivity
                 if(TrackerSetupFragment.runShisha(getApplicationContext())) {
                     if (ad.isLoaded()) {
                         ad.show();
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, TimeTrackerActivity.class);
+                        startActivity(intent);
+                        ad.loadAd(new AdRequest.Builder().build());
                     }
-                    Intent intent = new Intent(MainActivity.this, TimeTrackerActivity.class);
-                    startActivity(intent);
+
                 }
             } else if (position==1) {
                 Toast.makeText(this, R.string.canceled_text,Toast.LENGTH_SHORT).show();
@@ -401,7 +422,7 @@ public class MainActivity extends AppCompatActivity
     public void onRFACItemIconClick(int position, RFACLabelItem item) {
         if (actualTab.equals("friend")) {
             if (position==0) {
-                MyUtilities.openAddFriendPopUp(this,tabLayout, new PopupWindow(this));
+                openAddFriendPopUp();
             } else if (position==1) {
                 Toast.makeText(this,getString(R.string.starting_session_text),Toast.LENGTH_SHORT).show();
             }
@@ -411,9 +432,11 @@ public class MainActivity extends AppCompatActivity
                 if(TrackerSetupFragment.runShisha(getApplicationContext())) {
                     if (ad.isLoaded()) {
                         ad.show();
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, TimeTrackerActivity.class);
+                        startActivity(intent);
+                        ad.loadAd(new AdRequest.Builder().build());
                     }
-                    Intent intent = new Intent(MainActivity.this, TimeTrackerActivity.class);
-                    startActivity(intent);
                 }
             } else if (position==1) {
                 Toast.makeText(this,getString(R.string.canceled_text),Toast.LENGTH_SHORT).show();
@@ -434,11 +457,11 @@ public class MainActivity extends AppCompatActivity
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    return new FriendsFragment();
+                    return friendsFragment;
                 case 1:
-                    return new TrackerSetupFragment();
+                    return trackerSetupFragment;
                 case 2:
-                    return new HistoryFragment();
+                    return historyFragment;
             }
             return null;
         }
@@ -533,6 +556,29 @@ public class MainActivity extends AppCompatActivity
         } else {
             imageHelper.setRoundImageDefault(imgFriends);
         }
+    }
+
+
+    public void openAddFriendPopUp() {
+
+        View popupView = getLayoutInflater().inflate(R.layout.auto_et_with_icons,null);
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setFocusable(true);
+        popupWindow.setAnimationStyle(R.style.popupAnimation);
+        Button btnDelete;
+        autoCompleteTextView = popupView.findViewById(R.id.autoAddName);
+        autoCompleteTextView.setThreshold(2);
+        autoCompleteTextView.setAdapter(new FriendAutoCompleteAdapter(this,popupWindow)); // 'this' is Activity instance
+        autoCompleteTextView.setLoadingIndicator((android.widget.ProgressBar) popupView.findViewById(R.id.pb_loading_indicator));
+
+        btnDelete = popupView.findViewById(R.id.btnAddDelete);
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                autoCompleteTextView.setText("");
+            }
+        });
+        popupWindow.showAsDropDown(tabLayout);
     }
 
 }

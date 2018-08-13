@@ -11,6 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.LogInActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.SharedPrefConstants;
@@ -23,6 +24,7 @@ public class Login {
 
     private String email;
     private String password;
+    private String token;
     private Context c;
     private String url;
     private SharedPreferences pref;
@@ -31,12 +33,13 @@ public class Login {
     public Login(Context c){
         this.c = c;
         pref = c.getSharedPreferences(SharedPrefConstants.NAME, Context.MODE_PRIVATE);
+        token = FirebaseInstanceId.getInstance().getToken();
         editor = pref.edit();
     }
 
     public String getUrl() {
         url=ServerConstants.URL;
-        return url+="login?email="+email+"&password="+password;
+        return url+="login?email="+email+"&password="+password+"&token="+token;
     }
 
     public boolean isSaved() {
@@ -77,5 +80,13 @@ public class Login {
     public void setSavedPassword() {
         editor.putString(SharedPrefConstants.PASSWORD,password);
         editor.commit();
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

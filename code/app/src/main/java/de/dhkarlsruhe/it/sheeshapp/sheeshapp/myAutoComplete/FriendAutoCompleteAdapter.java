@@ -45,7 +45,7 @@ public class FriendAutoCompleteAdapter extends BaseAdapter implements Filterable
     private RequestQueue mRequestQueue;
     private Friend friend;
     private String myResult;
-    private PopupWindow popupWindow;
+    private static PopupWindow popupWindow;
 
 
     public FriendAutoCompleteAdapter(Context context) {
@@ -57,13 +57,13 @@ public class FriendAutoCompleteAdapter extends BaseAdapter implements Filterable
     public FriendAutoCompleteAdapter(Context context, PopupWindow popupWindow) {
         this.context = context;
         mRequestQueue = getRequestQueue();
-        friend = new Friend(context);
+        friend = new Friend(this.context);
         this.popupWindow = popupWindow;
     }
 
     public static synchronized FriendAutoCompleteAdapter getInstance() {
         if (instance == null) {
-            instance = new FriendAutoCompleteAdapter(context);
+            instance = new FriendAutoCompleteAdapter(context, popupWindow);
         }
         return instance;
     }
