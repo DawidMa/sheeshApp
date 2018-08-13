@@ -38,7 +38,7 @@ android {
 
 repositories {
     maven {
-        url  "http://dl.bintray.com/lukaville/maven"
+        url "http://dl.bintray.com/lukaville/maven"
     }
 }
 
@@ -59,16 +59,16 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-        implementation ("com.github.bumptech.glide:glide:4.7.1") {
-            exclude group: "com.android.support"
-        }
+    implementation("com.github.bumptech.glide:glide:4.7.1") {
+        exclude group: "com.android.support"
+    }
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
-    implementation ('jp.wasabeef:glide-transformations:3.3.0'){
+    implementation('jp.wasabeef:glide-transformations:3.3.0') {
         exclude group: "com.android.support"
     }
 
     implementation "com.android.support:support-fragment:26.1.0"
-    compile group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
     compile 'com.android.volley:volley:1.0.0'
     implementation 'com.google.firebase:firebase-core:16.0.1'
     compile 'com.google.firebase:firebase-messaging:17.1.0'
@@ -77,7 +77,7 @@ dependencies {
     compile 'com.andkulikov:transitionseverywhere:1.7.9'
     compile 'com.squareup.okhttp3:okhttp:3.1.1'
     compile 'com.nbsp:library:1.8'
-    implementation ('com.github.wangjiegulu:rfab:2.0.0'){
+    implementation('com.github.wangjiegulu:rfab:2.0.0') {
         exclude group: "com.android.support"
     }
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
