@@ -48,6 +48,8 @@ public class FriendAutoCompleteAdapter extends BaseAdapter implements Filterable
     private Friend friend;
     private String myResult;
     private static AlertDialog dialog;
+    List<UserSearchObject> users;
+    Type type;
 
     public FriendAutoCompleteAdapter(Activity context, AlertDialog dialog) {
         this.context = context;
@@ -109,38 +111,36 @@ public class FriendAutoCompleteAdapter extends BaseAdapter implements Filterable
     @Override
     public Filter getFilter() {
         return new Filter() {
+            FilterResults filterResults = new FilterResults();
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                FilterResults filterResults = new FilterResults();
-                if (constraint != null && !constraint.equals(" ")) {
-                    Type type = new TypeToken<List<UserSearchObject>>() {}.getType();
-                    List<UserSearchObject> users;
-                    getResponse(ServerConstants.URL + "user/name?searchFor=" + constraint.toString(), new VolleyCallback() {
-                        @Override
-                        public void onSuccessResponse(String result) {
-                            saveResult(result);
-                        }
-                    });
-                    users = json.fromJson(myResult, type);
-                    filterResults.values = users;
-                    filterResults.count = users.size();
-                    resultList = users;
+                if (constraint!=null) {
+                    String string = constraint.toString();
+                    if (!string.contains(" ")) {
+                        type = new TypeToken<List<UserSearchObject>>() {}.getType();
+                        getResponse(ServerConstants.URL + "user/name?searchFor=" + constraint.toString(), new VolleyCallback() {
+                            @Override
+                            public void onSuccessResponse(String result) {
+                                myResult = result;
+                                users = json.fromJson(myResult, type);
+                                filterResults.values = users;
+                                filterResults.count = users.size();
+                                resultList = users;
+                                if (filterResults != null && filterResults.count > 0) {
+                                    notifyDataSetChanged();
+                                } else {
+                                    notifyDataSetInvalidated();
+                                }                            }
+                        });
+                    }
                 }
                 return filterResults;
             }
-
                 @Override
                 protected void publishResults (CharSequence constraint, FilterResults results){
-                    if (results != null && results.count > 0) {
-                        notifyDataSetChanged();
-                    } else {
-                        notifyDataSetInvalidated();
-                    }
+
                 }
             };
-    }
-    private void saveResult(String result) {
-        myResult = result;
     }
 
     public void getResponse(String url, final VolleyCallback callback) {
