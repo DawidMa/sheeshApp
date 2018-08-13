@@ -65,5 +65,6 @@ public class MyUtilities {
         lp.windowAnimations = R.style.popupAnimation;
         b.show();
         b.getWindow().setAttributes(lp);
+        b.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
     }
 }
