@@ -87,4 +87,7 @@
     <string name="search_friend_hint">Freund suchen</string>
     <string name="friend_without_sheeshapp_hint">Freund ohne SheeshApp</string>
     <string name="no_selected_friends_text">Kein Freunde gewählt</string>
+    <string name="check_your_inout">Prüfe deine Angaben</string>
+    <string name="success">Erfolg!</string>
+    <string name="check_your_emails">Prüfe deine Emails</string>
 </resources>

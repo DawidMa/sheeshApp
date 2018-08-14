@@ -32,7 +32,6 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText etEmail, etPassword, etPasswordRepeat, etUsername;
     private String userName, userPassword, userPasswordRepeat, userEmail;
     private ImageButton imgBtnUsername, imgBtnEmail, imgBtnPassword, imgBtnRepeat;
-    private Button btnCancel, btnSubmit;
     private CheckBox cbSaveLogin;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -55,8 +54,6 @@ public class SignUpActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.edTPassword);
         etPasswordRepeat = findViewById(R.id.edTPasswordRepeat);
 
-        btnCancel = findViewById(R.id.btnSigWelcome);
-        btnSubmit = findViewById(R.id.btnSigHomescreen);
         cbSaveLogin = findViewById(R.id.cbSaveLogin);
 
         imgBtnUsername = findViewById(R.id.imgBtnSigInfoUsername);
@@ -132,7 +129,7 @@ public class SignUpActivity extends AppCompatActivity {
         if (succses == allDataValid.length){
             saveData();
         } else {
-            Toast.makeText(this,"Error",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.check_your_inout,Toast.LENGTH_SHORT).show();
         }
     }
 

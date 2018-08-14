@@ -1,7 +1,9 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp.server;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Toast;
@@ -12,13 +14,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
+
 /**
  * Created by d0272129 on 04.05.18.
  */
 
 public class SignUp {
 
-    private Context c;
+    private Activity c;
     private String name;
     private String email;
     private String password;
@@ -26,7 +30,7 @@ public class SignUp {
     private StringRequest request;
     private ProgressDialog dialog;
 
-    public SignUp(String name, String email, String password, Context c) {
+    public SignUp(String name, String email, String password, Activity c) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -38,13 +42,23 @@ public class SignUp {
 
         dialog = new ProgressDialog(c);
         dialog.setMessage("Loading....");
+        dialog.setTitle("Please Wait");
         dialog.show();
         request = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String string) {
                 String response;
                 if (string.equals("OK")) {
-                    response = "Success! Check your Emails.";
+                    response = c.getString(R.string.check_your_emails);
+                    dialog.setMessage(response);
+                    dialog.setTitle(c.getString(R.string.success));
+                    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            c.finish();
+                        }
+                    });
+                    return;
                 } else if (string.equals("")) {
                     response = "Error connecting to server";
                 } else {

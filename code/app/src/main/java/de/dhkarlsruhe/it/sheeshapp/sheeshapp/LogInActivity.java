@@ -14,6 +14,9 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
@@ -39,6 +42,10 @@ public class LogInActivity extends AppCompatActivity {
     private CheckBox cbSaveLogin;
     private Gson json = new Gson();
     private final String TOPIC = "JavaSampleApproach";
+    private final static String AD_APP_ID = "ca-app-pub-4355529827581242~4147435635";
+    private final static String AD_BANNER_TEST = "ca-app-pub-3940256099942544/6300978111";
+    private final static String AD_BANNER_ID = "ca-app-pub-4355529827581242/7588945055";
+    private AdView adView;
 
 
     @Override
@@ -46,6 +53,10 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        MobileAds.initialize(this, AD_APP_ID);
+        adView = findViewById(R.id.adLogin);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
         etEmail = findViewById(R.id.etLogEmail);
         etPassword = findViewById(R.id.etLogPassword);
         cbSaveLogin = findViewById(R.id.cbLogSaveLogin);
@@ -59,7 +70,6 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void checkAutomaticLogin() {
-        Toast.makeText(this,"automatic",Toast.LENGTH_SHORT).show();
         if(login.isSaved()) {
             email = login.getSavedEmail();
             password = login.getSavedPassword();
