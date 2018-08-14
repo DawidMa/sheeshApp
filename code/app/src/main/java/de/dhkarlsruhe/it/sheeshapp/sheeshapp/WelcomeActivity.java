@@ -2,6 +2,7 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     public void closeWelcome(View view) {
-        this.finish();
+        this.finishAndRemoveTask();
     }
 
     public void openSignUp(View view) {
@@ -51,5 +52,9 @@ public class WelcomeActivity extends AppCompatActivity {
             parent.removeView(child);
             parent.addView(child, 0);
         }
+    }
+
+    public void openGuest(View view) {
+        Snackbar.make(view, R.string.coming_soon_text,Snackbar.LENGTH_SHORT).show();
     }
 }

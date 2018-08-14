@@ -90,4 +90,6 @@
     <string name="check_your_inout">Check your input</string>
     <string name="success">Success!</string>
     <string name="check_your_emails">Check your Emails</string>
+    <string name="guest_text">Guest</string>
+    <string name="coming_soon_text">Coming soon..</string>
 </resources>

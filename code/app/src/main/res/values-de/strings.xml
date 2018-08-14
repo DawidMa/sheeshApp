@@ -90,4 +90,6 @@
     <string name="check_your_inout">Prüfe deine Angaben</string>
     <string name="success">Erfolg!</string>
     <string name="check_your_emails">Prüfe deine Emails</string>
+    <string name="guest_text">Gast</string>
+    <string name="coming_soon_text">Bald verfügbar..</string>
 </resources>

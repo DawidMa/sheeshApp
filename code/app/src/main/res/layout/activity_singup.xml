@@ -24,26 +24,35 @@
         android:id="@+id/btnSigWelcome"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/btn_roundrect_states"
         android:onClick="closeSignUp"
         android:text="@string/cancel_text"
         android:textColor="#fff"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/edTPasswordRepeat"
         app:layout_constraintTop_toBottomOf="@+id/cbSaveLogin" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
     <Button
         android:id="@+id/btnSigHomescreen"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/btn_roundrect_states"
         android:onClick="submitSignUp"
         android:text="@string/submit_text"
         android:textColor="#fff"
-        app:layout_constraintEnd_toStartOf="@+id/imgBtnSigInfoPasswordRepeat"
+        app:layout_constraintEnd_toEndOf="@+id/edTPasswordRepeat"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/cbSaveLogin" />
 
     <EditText
