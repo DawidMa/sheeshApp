@@ -99,7 +99,7 @@ public class FriendAutoCompleteAdapter extends BaseAdapter implements Filterable
         }
         ((TextView) convertView.findViewById(R.id.dropdownTitle)).setText(getItem(position).getName());
         ((TextView) convertView.findViewById(R.id.dropdownText)).setText(getItem(position).getEmail());
-        ((Button) convertView.findViewById(R.id.dropdownButton)).setOnClickListener(new View.OnClickListener() {
+        convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 friend.addFriend(getItem(position).getEmail(),getItem(position).getName(),dialog);

@@ -23,7 +23,6 @@
         app:layout_constraintTop_toTopOf="parent" />
     <ExpandableListView
         android:id="@+id/stExpListView"
-        android:animateLayoutChanges="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:divider="@drawable/custom_divider"

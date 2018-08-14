@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity
 
         MobileAds.initialize(this, AD_APP_ID);
         ad = new InterstitialAd(this);
-        ad.setAdUnitId(AD_BANNER_ID);
+        ad.setAdUnitId(AD_BANNER_ID_TEST);
         ad.loadAd(new AdRequest.Builder().build());
         ad.setAdListener(new AdListener() {
             @Override

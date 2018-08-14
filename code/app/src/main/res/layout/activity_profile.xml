@@ -5,9 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp"
-    android:paddingTop="30dp"
+
     android:background="@drawable/profile_down_colors">
 
 
@@ -33,10 +31,10 @@
             app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <uk.co.senab.photoview.PhotoView
             android:id="@+id/imgProImage"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
@@ -127,13 +125,15 @@
         android:id="@+id/tvProFriends"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="12"
-        android:textStyle="bold"
-        android:textSize="32dp"
         android:textColor="@color/colorPrimary"
+        android:textSize="32dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guidePro"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgProIconFriends" />
@@ -142,12 +142,14 @@
         android:id="@+id/tvProShishas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="32"
-        android:textStyle="bold"
         android:textSize="32dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidePro"
         app:layout_constraintTop_toBottomOf="@+id/imgProIconShishas" />

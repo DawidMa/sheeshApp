@@ -42,7 +42,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/user_avatar" />
 
-    <Button
+    <ImageView
         android:id="@+id/dropdownButton"
         android:layout_width="45dp"
         android:layout_height="45dp"
