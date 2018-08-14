@@ -92,4 +92,6 @@
     <string name="check_your_emails">Check your Emails</string>
     <string name="guest_text">Guest</string>
     <string name="coming_soon_text">Coming soon..</string>
+    <string name="not_available_for_guest">Not available for guest!</string>
+    <string name="no_friends_available">No friends available</string>
 </resources>

@@ -80,6 +80,27 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
 
+        <!-- GUEST -->
+        <activity
+            android:name=".guest.LoginActivityGuest"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".guest.MainActivityGuest"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".guest.ChooseFriendActivityGuest"
+            android:label="@string/app_name"
+            android:parentActivityName=".guest.MainActivityGuest"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".guest.TimeTrackerActivityGuest"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <!-- Firebase Service -->
         <service android:name=".messaging.MyFCMClass">
             <intent-filter>

@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.guest.LoginActivityGuest;
+
 
 /**
  * Created by Informatik on 17.11.2017.
@@ -55,6 +57,7 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     public void openGuest(View view) {
-        Snackbar.make(view, R.string.coming_soon_text,Snackbar.LENGTH_SHORT).show();
+        Intent intent = new Intent(this,LoginActivityGuest.class);
+        startActivity(intent);
     }
 }

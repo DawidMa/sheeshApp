@@ -1,11 +1,8 @@
-package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
+package de.dhkarlsruhe.it.sheeshapp.sheeshapp.guest;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -13,7 +10,6 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.view.LayoutInflater;
@@ -22,45 +18,28 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.circle.CircleAnimation;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.circle.MyCircle;
-import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.history.History;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
-import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.timer.FloTimer;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  * Created by Informatik on 28.11.2017.
  */
 
-public class TimeTrackerFragment extends android.support.v4.app.Fragment {
+public class TimeTrackerFragmentGuest extends android.support.v4.app.Fragment {
 
-    private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
     private Random rnd;
     private ConstraintLayout tiLayoutMain;
     private Vibrator vib;
@@ -71,12 +50,10 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     private FloatingActionButton btStart, btPause, btEnd;
 
     private List<ChooseFriendObject> sequence = new ArrayList<>();
-    private List<ChooseFriendObject> uncheckedFriends = new ArrayList<>();
 
     public static String firstFriend;
-    private String friendsAsString="", dateStart ="", dateEnd="",totalTime;
 
-    private Friend friend;
+    private Guest guest;
 
     private Thread threadVibrator;
 
@@ -89,8 +66,6 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     private int times;
 
     private Calendar calendar = Calendar.getInstance();
-
-    private SendFriends callback;
 
     //Notification Setup
     private NotificationCompat.Builder notification;
@@ -107,22 +82,19 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     private Window window;
     private Gson gson = new Gson();
 
-    private HashSet<ChooseFriendObject> allFriendsUnique = new HashSet<>();
-
     private MediaPlayer soundTimeUp;
 
 
-    public TimeTrackerFragment() {}
+    public TimeTrackerFragmentGuest() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_time_tracker, container, false);
         v= rootView;
+        guest = new Guest(getActivity());
         init();
-        friend = new Friend(getContext());
-        sequence = friend.getAllCheckedFriends();
-        uncheckedFriends = friend.getAllUncheckedFriends();
+        sequence = guest.getFriends();
         Collections.shuffle(sequence);
         printFriendsList(sequence);
         firstFriend = sequence.get(0).getName();
@@ -139,8 +111,6 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     }
 
     private void init() {
-        pref = this.getActivity().getSharedPreferences(SharedPrefConstants.SETTINGS, 0);
-        editor = pref.edit();
         tiTvChoosenFriends = (TextView) v.findViewById(R.id.tiTvChoosenFriends);
         tiTvTopTitle = (TextView)v.findViewById(R.id.tiTvTopTitle);
         tiTvTotal = (TextView) v.findViewById(R.id.tiTvTotal);
@@ -152,7 +122,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         btEnd = (FloatingActionButton)v.findViewById(R.id.tiBtEnd);
         tiLayoutMain = (ConstraintLayout)v.findViewById(R.id.tiLayoutMain);
         vib = (Vibrator) this.getContext().getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-        timerSingle1 = new FloTimer(pref.getInt(SharedPrefConstants.TIME_IN_SECONDS,0));
+        timerSingle1 = new FloTimer(guest.getTimeInSeconds());
         timerSingle1.setResolution(0.01f);
         timerTotal1 = new FloTimer(0);
         timerTotal1.setCountMode(false);
@@ -163,14 +133,13 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         tiTvTotal.setText("Gesamtzeit: "+timerTotal1.getTimeAsString());
         tiTvSingle.setText(timerSingle1.getTimeAsString());
         rnd = new Random();
-        dateStart = setDate();
         //Notification
         createNotificationChannel();
         notification = new NotificationCompat.Builder(this.getActivity(),myChannelId);
         notification.setAutoCancel(true);
         notification.setSmallIcon(R.mipmap.icon_setup_white);
         notification.setOngoing(true);
-        notification.setContentIntent(((TimeTrackerActivity)getActivity()).myPendingIntent());
+        notification.setContentIntent(((TimeTrackerActivityGuest)getActivity()).myPendingIntent());
         notification.setPriority(NotificationCompat.PRIORITY_DEFAULT);
         manager = NotificationManagerCompat.from(getActivity());
         window = getActivity().getWindow();
@@ -184,30 +153,12 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         });
     }
 
-    public List<ChooseFriendObject> getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(List<ChooseFriendObject> sequence) {
-        this.sequence = sequence;
-    }
-
-    public List<ChooseFriendObject> getUncheckedFriends() {
-        return uncheckedFriends;
-    }
-
-    public void setUncheckedFriends(List<ChooseFriendObject> uncheckedFriends) {
-        this.uncheckedFriends = uncheckedFriends;
-    }
-
     public void fragmentPressedStart() {
         btPause.setEnabled(true);
         btStart.setEnabled(false);
         if(firstStart) {
             firstStart = false;
             getActivity().showDialog(1);
-            callback.sendTrackerFriends(sequence,uncheckedFriends);
-            registerInitialHistories();
         } else {
             timerSingle1.resume();
             if (timerFlash.isPaused()) {
@@ -215,22 +166,6 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
             }
         }
         tiTvInfo.setText("Momentan ist " + sequence.get(actualFriend).getName() + " dran.");
-    }
-
-    private void registerInitialHistories() {
-        for (ChooseFriendObject i : sequence) {
-            if (allFriendsUnique.add(i)) {
-                History history = new History();
-                history.setDuration(0);
-                history.setLocation("In Dawids Garage");
-                history.setParticipants("");
-                history.setSessionName("Von anfang an dabei");
-                history.setTotalShishas(numOfSwitchedCoal);
-                history.setUserId(i.getId());
-                history.setDate(dateStart);
-                histories.add(history);
-            }
-        }
     }
 
     public void fragmentPressedPause() {
@@ -246,7 +181,6 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
     public void fragmentPressedEnd() {
         getActivity().showDialog(2);
-        totalTime=timerTotal1.getTimeAsString();
     }
 
     private void printFriendsList(List<ChooseFriendObject> sequence) {
@@ -274,7 +208,6 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         } catch (Exception e) {
 
         }
-        callback= null; // => avoid leaking, thanks @Deepscorn
 
         super.onDetach();
     }
@@ -295,7 +228,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     }
 
     private void runTimeSingle() {
-        final int standardTime = pref.getInt(SharedPrefConstants.TIME_IN_SECONDS,0);
+        final int standardTime = (int)guest.getTimeInSeconds();
         circleAnimation.setDuration(100);
         timerSingle1.setCallback(new FloTimer.TimerCallback() {
             @Override
@@ -481,58 +414,11 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         timerNextPlayer.pause();
         timerTotal1.pause();
         timerFlash.pause();
-
-        dateEnd = setDate();
-        saveToStatistics();
         showNotification=false;
-        stopPlaying(soundTimeUp);
-        //getActivity().finish();
-    }
-
-    private void saveToStatistics() {
-        String participants = "";
-        for (ChooseFriendObject i: allFriendsUnique) {
-            participants+=i.getName()+";";
-        }
-
-        for (History i: histories) {
-            i.setDuration(timerTotal1.getTimeAsLong()-i.getDuration());
-            i.setParticipants(participants);
-            i.setTotalShishas(numOfSwitchedCoal);
-            uploadHistory(i);
-        }
-    }
-
-    private void uploadHistory(final History history) {
-
-            Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    MediaType jsonMediaFile = MediaType.parse("application/json; charset=utf-8");
-                    String content = gson.toJson(history);
-
-                    OkHttpClient client = new OkHttpClient();
-                    RequestBody jsonBody =  RequestBody.create(jsonMediaFile,content);
-
-                    Request request = new Request.Builder()
-                            .url(ServerConstants.URL_SAVE_HISTORY)
-                            .post(jsonBody)
-                            .build();
-                    try {
-                        Response response = client.newCall(request).execute();
-                        if (!response.isSuccessful()) {
-                            Snackbar.make(tiLayoutMain,"ERROR",Snackbar.LENGTH_LONG).show();
-                            throw new IOException("Error" + response);
-                        } else {
-                            getActivity().finish();
-                        }
-                        response.body().close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            t.start();
+        try {
+            stopPlaying(soundTimeUp);
+        } catch (Exception e) {}
+        getActivity().finish();
     }
 
     public String setDate() {
@@ -586,43 +472,10 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         }
     }
 
-    public void updateFriends(ChooseFriendObject object, boolean checked) {
-        if (!checked) {
-            sequence.add(object);
-            uncheckedFriends.remove(object);
-            registerNewHistory(object);
-        } else {
-            sequence.remove(object);
-            uncheckedFriends.add(object);
-        }
-        callback.sendTrackerFriends(sequence,uncheckedFriends);
-        printFriendsList(sequence);
-    }
-
-    private void registerNewHistory(ChooseFriendObject object) {
-        if (object.getId()>0) {
-            if (allFriendsUnique.add(object)) {
-                History history = new History();
-                history.setDuration(timerTotal1.getTimeAsLong());
-                history.setLocation("In Dawids Garage");
-                history.setParticipants("");
-                history.setSessionName("Kam später dazu");
-                history.setTotalShishas(numOfSwitchedCoal);
-                history.setUserId(object.getId());
-                history.setDate(dateStart);
-                histories.add(history);
-            }
-        }
-    }
-
     public void endNeutral() {
         showNotification=false;
         stopPlaying(soundTimeUp);
         getActivity().finish();
-    }
-
-    public interface SendFriends {
-        public void sendTrackerFriends(List<ChooseFriendObject> checked, List<ChooseFriendObject> unchecked);
     }
 
     @Override
@@ -631,12 +484,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
-        try {
-            callback = (SendFriends) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement TextClicked");
-        }
+
     }
 
     private void stopPlaying(MediaPlayer mp) {

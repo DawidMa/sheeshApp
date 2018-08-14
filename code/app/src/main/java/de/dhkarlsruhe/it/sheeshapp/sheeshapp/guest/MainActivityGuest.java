@@ -1,8 +1,6 @@
-package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
+package de.dhkarlsruhe.it.sheeshapp.sheeshapp.guest;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -20,7 +18,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -49,6 +46,12 @@ import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloating
 import java.util.ArrayList;
 import java.util.List;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.FriendsFragment;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.SettingsActivity;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.SharedPrefConstants;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.TimeTrackerActivity;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.TrackerSetupFragment;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.history.HistoryFragment;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.images.ImageHelper;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete.DelayAutoCompleteTextView;
@@ -56,10 +59,9 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.profile.MyProfileActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivityGuest extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
 
-    private SharedPreferences pref;
     private TextView tvUsername, tvEmail;
     private Toolbar toolbar;
     private ViewPager viewPager;
@@ -73,9 +75,8 @@ public class MainActivity extends AppCompatActivity
     private RapidFloatingActionButton rfaButton;
     private RapidFloatingActionHelper rfaHelper;
     private RapidFloatingActionContentLabelList rfaContent;
-    private UserSessionObject session;
+    private Guest guest;
     private ImageView imgUser;
-    private LinearLayout linearLayout;
     private ImageHelper imageHelper;
     private String actualTab;
     private Window window;
@@ -83,10 +84,9 @@ public class MainActivity extends AppCompatActivity
     private final static String AD_BANNER_ID = "ca-app-pub-4355529827581242/7220321532";
     private final static String AD_BANNER_ID_TEST = "ca-app-pub-3940256099942544/1033173712";
     private InterstitialAd ad;
-    private DelayAutoCompleteTextView autoCompleteTextView;
-    private FriendsFragment friendsFragment;
-    private HistoryFragment historyFragment;
-    private TrackerSetupFragment trackerSetupFragment;
+    private FriendsFragmentGuest friendsFragment;
+    private HistoryFragmentGuest historyFragment;
+    private TrackerSetupFragmentGuest trackerSetupFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,10 +96,10 @@ public class MainActivity extends AppCompatActivity
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(Color.BLACK);
         setContentView(R.layout.activity_main);
-        friendsFragment = new FriendsFragment();
-        historyFragment = new HistoryFragment();
-        trackerSetupFragment = new TrackerSetupFragment();
-        session = new UserSessionObject(this);
+        friendsFragment = new FriendsFragmentGuest();
+        historyFragment = new HistoryFragmentGuest();
+        trackerSetupFragment = new TrackerSetupFragmentGuest();
+        guest = new Guest(this);
         initStart();
 
         MobileAds.initialize(this, AD_APP_ID);
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity
         ad.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
-                Intent intent = new Intent(MainActivity.this, TimeTrackerActivity.class);
+                Intent intent = new Intent(MainActivityGuest.this, TimeTrackerActivityGuest.class);
                 startActivity(intent);
                 ad.loadAd(new AdRequest.Builder().build());
             }
@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initStart() {
-        pref = getSharedPreferences("com.preferences.sheeshapp", Context.MODE_PRIVATE);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -173,11 +172,11 @@ public class MainActivity extends AppCompatActivity
         tvUsername = header.findViewById(R.id.tvMaiUsername);
         tvEmail = header.findViewById(R.id.tvMaiEmail);
 
-        tvUsername.setText(session.getName());
-        tvEmail.setText(session.getEmail());
+        tvUsername.setText(guest.getName());
+        tvEmail.setText(guest.getEmail());
 
         imgUser = header.findViewById(R.id.imgHeader);
-        decideProfileImage(imgUser);
+        imageHelper.setRoundImageDefault(imgUser);
         // setImgUser();
         imgUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,7 +184,6 @@ public class MainActivity extends AppCompatActivity
                 animateIntent(v);
             }
         });
-
     }
 
     private void initRfa() {
@@ -194,22 +192,6 @@ public class MainActivity extends AppCompatActivity
 
         rfaLayout = findViewById(R.id.rfabLayoutMain);
         rfaButton = findViewById(R.id.rfabButtonMain);
-
-    }
-
-    private void setImgUser() {
-        String user = session.getUser_id() + "";
-
-        Bitmap bitmap = imageHelper.loadImageFromStorage(user);
-        if (bitmap == null) {
-            if (imgUser != null) {
-                Glide.with(getApplicationContext()).load(R.drawable.sheeshopa).apply(RequestOptions.circleCropTransform()).into(imgUser);
-            }
-        } else {
-            Bitmap thumbnail = imageHelper.getThumbnailOfBitmap(bitmap, 200, 200);
-            Glide.with(getApplicationContext()).load(thumbnail).apply(RequestOptions.circleCropTransform()).into(imgUser);
-            //imgUser.setImageDrawable(imageHelper.getRoundedBitmap(thumbnail));
-        }
     }
 
     public void animateIntent(View view) {
@@ -311,29 +293,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -349,18 +308,14 @@ public class MainActivity extends AppCompatActivity
             viewPager.setCurrentItem(2);
 
         } else if (id == R.id.nav_discord) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/GqX6SzK"));
-            startActivity(browserIntent);
+            Toast.makeText(getApplicationContext(),getString(R.string.not_available_for_guest),Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_share) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
+
         } else if (id == R.id.nav_send) {
-            SharedPreferences pref = getSharedPreferences(SharedPrefConstants.HISTORY, MODE_PRIVATE);
-            SharedPreferences.Editor editor = pref.edit();
-            editor.remove(SharedPrefConstants.H_OFFLINE_JSON);
-            editor.apply();
+
             this.finish();
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -371,24 +326,21 @@ public class MainActivity extends AppCompatActivity
     public void onRFACItemLabelClick(int position, RFACLabelItem item) {
         if (actualTab.equals("friend")) {
             if (position == 0) {
-                MyUtilities.openAddFriendPopUp(this);
+                Toast.makeText(getApplicationContext(),getString(R.string.not_available_for_guest),Toast.LENGTH_LONG).show();
 
-                // Intent intent = new Intent(MainActivity.this, AddFriendActivity.class);
-                //startActivity(intent);
             } else if (position == 1) {
-                Toast.makeText(this, R.string.starting_session_text, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.not_available_for_guest),Toast.LENGTH_LONG).show();
             }
         } else if (actualTab.equals("setup")) {
             if (position == 0) {
-                if (TrackerSetupFragment.runShisha(getApplicationContext())) {
+                if (TrackerSetupFragmentGuest.runShisha(getApplicationContext())) {
                     if (ad.isLoaded()) {
                         ad.show();
                     } else {
-                        Intent intent = new Intent(MainActivity.this, TimeTrackerActivity.class);
+                        Intent intent = new Intent(MainActivityGuest.this, TimeTrackerActivityGuest.class);
                         startActivity(intent);
                         ad.loadAd(new AdRequest.Builder().build());
                     }
-
                 }
             } else if (position == 1) {
                 Toast.makeText(this, R.string.canceled_text, Toast.LENGTH_SHORT).show();
@@ -401,18 +353,18 @@ public class MainActivity extends AppCompatActivity
     public void onRFACItemIconClick(int position, RFACLabelItem item) {
         if (actualTab.equals("friend")) {
             if (position == 0) {
-                MyUtilities.openAddFriendPopUp(this);
+                Toast.makeText(getApplicationContext(),getString(R.string.not_available_for_guest),Toast.LENGTH_LONG).show();
             } else if (position == 1) {
-                Toast.makeText(this, getString(R.string.starting_session_text), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.not_available_for_guest),Toast.LENGTH_LONG).show();
             }
             rfaHelper.toggleContent();
         } else if (actualTab.equals("setup")) {
             if (position == 0) {
-                if (TrackerSetupFragment.runShisha(getApplicationContext())) {
+                if (TrackerSetupFragmentGuest.runShisha(getApplicationContext())) {
                     if (ad.isLoaded()) {
                         ad.show();
                     } else {
-                        Intent intent = new Intent(MainActivity.this, TimeTrackerActivity.class);
+                        Intent intent = new Intent(MainActivityGuest.this, TimeTrackerActivityGuest.class);
                         startActivity(intent);
                         ad.loadAd(new AdRequest.Builder().build());
                     }
@@ -453,15 +405,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public CharSequence getPageTitle(int position) {
-           /* switch (position){
-                //
-                //Your tab titles
-                //
-                case 0:return "Profile";
-                case 1:return "Search";
-                case 2: return "Contacts";
-                default:
-                */
+
             return null;
 
         }
@@ -471,10 +415,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (imageHelper.getChanged(session.getUser_id() + "")) {
-            setImgUser();
-            imageHelper.setChanged(false, session.getUser_id() + "");
-        }
     }
 
     public boolean onKeyDown(int KeyCode, KeyEvent event) {
@@ -490,25 +430,4 @@ public class MainActivity extends AppCompatActivity
         super.onPause();
     }
 
-    private void decideProfileImage(ImageView imgFriends) {
-        long userid = session.getUser_id();
-        String imageId = session.getLast_changed_icon_id();
-        if (session.isHas_icon()) {
-            //prepareProgressDialog();
-            if (imageHelper.getIconId(userid).equals(imageId)) {
-                Bitmap bitmap = imageHelper.loadImageFromStorage(userid + "");
-                if (bitmap != null) {
-                    imageHelper.setRoundImageWithBitmap(imgFriends, bitmap);
-                } else {
-                    imageHelper.loadFileFromServer(userid, imgFriends, imageId);
-                }
-            } else {
-                imageHelper.loadFileFromServer(userid, imgFriends, imageId);
-                imageHelper.setNewIconId(userid, imageId);
-                // session.setLast_changed_icon_id(imageHelper.getIconId(userid));
-            }
-        } else {
-            imageHelper.setRoundImageDefault(imgFriends);
-        }
-    }
 }
