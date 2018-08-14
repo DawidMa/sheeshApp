@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -36,6 +38,8 @@ public class LogInActivity extends AppCompatActivity {
     private Login login;
     private CheckBox cbSaveLogin;
     private Gson json = new Gson();
+    private final String TOPIC = "JavaSampleApproach";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +73,6 @@ public class LogInActivity extends AppCompatActivity {
     public void login(View view) {
         email = etEmail.getText().toString();
         password = etPassword.getText().toString();
-        System.out.println();
         login.setEmail(email);
         login.setPassword(password);
         dialog.show();
@@ -119,13 +122,14 @@ public class LogInActivity extends AppCompatActivity {
             login.setSaved(cbSaveLogin.isChecked());
             login.setSavedEmail();
             login.setSavedPassword();
-            this.finish();
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+                FirebaseMessaging.getInstance().subscribeToTopic(TOPIC);
+                this.finish();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+
         } else {
             Toast.makeText(this, string, Toast.LENGTH_LONG).show();
         }
         dialog.dismiss();
     }
-
 }

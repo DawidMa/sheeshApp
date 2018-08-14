@@ -1,6 +1,8 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,32 +40,27 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
 
 public class FriendAutoCompleteAdapter extends BaseAdapter implements Filterable {
 
-    private static Context context;
+    private static Activity context;
     private List<UserSearchObject> resultList = new ArrayList<>();
     private Gson json = new Gson();
     private static FriendAutoCompleteAdapter instance;
     private RequestQueue mRequestQueue;
     private Friend friend;
     private String myResult;
-    private PopupWindow popupWindow;
+    private static AlertDialog dialog;
+    List<UserSearchObject> users;
+    Type type;
 
-
-    public FriendAutoCompleteAdapter(Context context) {
+    public FriendAutoCompleteAdapter(Activity context, AlertDialog dialog) {
         this.context = context;
         mRequestQueue = getRequestQueue();
-        friend = new Friend(context);
-    }
-
-    public FriendAutoCompleteAdapter(Context context, PopupWindow popupWindow) {
-        this.context = context;
-        mRequestQueue = getRequestQueue();
-        friend = new Friend(context);
-        this.popupWindow = popupWindow;
+        friend = new Friend(this.context);
+        this.dialog = dialog;
     }
 
     public static synchronized FriendAutoCompleteAdapter getInstance() {
         if (instance == null) {
-            instance = new FriendAutoCompleteAdapter(context);
+            instance = new FriendAutoCompleteAdapter(context, dialog);
         }
         return instance;
     }
@@ -105,7 +102,7 @@ public class FriendAutoCompleteAdapter extends BaseAdapter implements Filterable
         ((Button) convertView.findViewById(R.id.dropdownButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                friend.addFriend(getItem(position).getEmail(),getItem(position).getName(),popupWindow);
+                friend.addFriend(getItem(position).getEmail(),getItem(position).getName(),dialog);
             }
         });
         return convertView;
@@ -114,38 +111,36 @@ public class FriendAutoCompleteAdapter extends BaseAdapter implements Filterable
     @Override
     public Filter getFilter() {
         return new Filter() {
+            FilterResults filterResults = new FilterResults();
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                FilterResults filterResults = new FilterResults();
-                if (constraint != null && !constraint.equals(" ")) {
-                    Type type = new TypeToken<List<UserSearchObject>>() {}.getType();
-                    List<UserSearchObject> users;
-                    getResponse(ServerConstants.URL + "user/name?searchFor=" + constraint.toString(), new VolleyCallback() {
-                        @Override
-                        public void onSuccessResponse(String result) {
-                            saveResult(result);
-                        }
-                    });
-                    users = json.fromJson(myResult, type);
-                    filterResults.values = users;
-                    filterResults.count = users.size();
-                    resultList = users;
+                if (constraint!=null) {
+                    String string = constraint.toString();
+                    if (!string.contains(" ")) {
+                        type = new TypeToken<List<UserSearchObject>>() {}.getType();
+                        getResponse(ServerConstants.URL + "user/name?searchFor=" + constraint.toString(), new VolleyCallback() {
+                            @Override
+                            public void onSuccessResponse(String result) {
+                                myResult = result;
+                                users = json.fromJson(myResult, type);
+                                filterResults.values = users;
+                                filterResults.count = users.size();
+                                resultList = users;
+                                if (filterResults != null && filterResults.count > 0) {
+                                    notifyDataSetChanged();
+                                } else {
+                                    notifyDataSetInvalidated();
+                                }                            }
+                        });
+                    }
                 }
                 return filterResults;
             }
-
                 @Override
                 protected void publishResults (CharSequence constraint, FilterResults results){
-                    if (results != null && results.count > 0) {
-                        notifyDataSetChanged();
-                    } else {
-                        notifyDataSetInvalidated();
-                    }
+
                 }
             };
-    }
-    private void saveResult(String result) {
-        myResult = result;
     }
 
     public void getResponse(String url, final VolleyCallback callback) {
