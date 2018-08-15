@@ -1,6 +1,8 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp.guest;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -52,6 +54,7 @@ public class ChooseFriendActivityGuest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_friend);
         guest = new Guest(this);
+        guest.deleteAllFriends();
         tvFriends = findViewById(R.id.tvChooseTitle);
         Window window = getWindow();
         window.setStatusBarColor(Color.rgb(0,0,0));
@@ -80,6 +83,9 @@ public class ChooseFriendActivityGuest extends AppCompatActivity {
         chFabAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                guest.setFriends(objects);
+                Intent intent = new Intent();
+                setResult(RESULT_OK,intent);
                 finish();
             }
         });
@@ -128,8 +134,7 @@ public class ChooseFriendActivityGuest extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+
         super.onDestroy();
-        guest.setFriends(objects);
-        setResult(RESULT_CANCELED);
     }
 }

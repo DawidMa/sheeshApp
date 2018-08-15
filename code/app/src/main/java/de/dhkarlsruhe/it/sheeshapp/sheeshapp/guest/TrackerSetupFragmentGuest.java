@@ -1,5 +1,6 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp.guest;
 
+import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +26,9 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by d0272129 on 14.04.17.
  */
@@ -39,6 +43,7 @@ public class TrackerSetupFragmentGuest extends Fragment{
     private int minutes, seconds;
     private TextView tvTime, tvFriends;
     private static Guest guest;
+    private View rootView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,7 +54,7 @@ public class TrackerSetupFragmentGuest extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_tracker_setup, container, false);
+        rootView = inflater.inflate(R.layout.fragment_tracker_setup, container, false);
         guest = new Guest(getActivity());
         tvTime = rootView.findViewById(R.id.tvSeTimeInfo);
         tvFriends = rootView.findViewById(R.id.tvSeFriendsInfo);
@@ -78,8 +83,8 @@ public class TrackerSetupFragmentGuest extends Fragment{
         layoutFriends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ChooseFriendActivityGuest.class);
-                startActivityForResult(intent,11);
+                Intent intent = new Intent(getContext(), ChooseFriendActivityGuest.class);
+                startActivityForResult(intent,12345);
             }
         });
         myResume();
@@ -88,10 +93,11 @@ public class TrackerSetupFragmentGuest extends Fragment{
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 11 && resultCode==0) {
+        super.onActivityResult(requestCode, resultCode, data);
+        System.out.println(resultCode+"XXXXXXXXXXXXXX");
+        if (requestCode == 12345 && resultCode == RESULT_OK) {
             myResume();
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void updateTvTime() {
@@ -145,6 +151,8 @@ public class TrackerSetupFragmentGuest extends Fragment{
     }
 
     public void myResume() {
+        System.out.println("nullnullnullnull");
+        //tvFriends = rootView.findViewById(R.id.tvSeFriendsInfo);
         if (tvFriends!=null) {
             List<ChooseFriendObject> friends = guest.getFriends();
             if (!friends.isEmpty()) {

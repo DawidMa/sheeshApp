@@ -95,4 +95,9 @@ public class Guest {
     public float getTimeInSeconds() {
         return pref.getInt(SharedPrefConstants.TIME_IN_SECONDS,5);
     }
+
+    public void deleteAllFriends() {
+        editor.remove(SharedPrefConstants.F_ALL_CHECKED);
+        editor.apply();
+    }
 }
