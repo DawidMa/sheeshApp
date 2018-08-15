@@ -21,7 +21,7 @@ public class LoginActivityGuest extends AppCompatActivity implements RewardedVid
     private Guest guest;
     private final static String AD_APP_ID = "ca-app-pub-4355529827581242~4147435635";
     private final static String AD_REWARD_ID = "ca-app-pub-4355529827581242/8469199305";
-    private final static String AD_REWARD_TEST = "ca-app-pub-3940256099942544/5224354917";
+    private final static String AD_REWARD_ID_TEST = "ca-app-pub-3940256099942544/5224354917";
     private RewardedVideoAd mRewardedVideoAd;
     private String username;
 
@@ -39,7 +39,7 @@ public class LoginActivityGuest extends AppCompatActivity implements RewardedVid
 
     private void loadRewardedVideoAd() {
 
-        mRewardedVideoAd.loadAd(AD_REWARD_TEST, new AdRequest.Builder().build());
+        mRewardedVideoAd.loadAd(AD_REWARD_ID_TEST, new AdRequest.Builder().build());
     }
 
 

@@ -76,6 +76,7 @@ public class ChooseFriendActivityGuest extends AppCompatActivity {
                     objects.add(new ChooseFriendObject(name,id));
                     adapter.notifyDataSetChanged();
                     etLocalName.setText("");
+                    updateTv();
                 }
             }
         });
@@ -120,21 +121,29 @@ public class ChooseFriendActivityGuest extends AppCompatActivity {
             row.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    objects.remove(actualObject);
-                    if (objects.isEmpty()) {
-                        tvFriends.setText(getString(R.string.no_selected_friends_text));
-                    } else {
-                        tvFriends.setText(MyUtilities.getChooseFriendsAsString(objects));
-                    }
+                    removeFriend(position);
                 }
             });
             return row;
         }
     }
 
+    private void removeFriend(int position) {
+        objects.remove(position);
+        adapter.notifyDataSetChanged();
+        updateTv();
+    }
+
+    private void updateTv() {
+        if (objects.isEmpty()) {
+            tvFriends.setText(getString(R.string.no_selected_friends_text));
+        } else {
+            tvFriends.setText(MyUtilities.getChooseFriendsAsString(objects));
+        }
+    }
+
     @Override
     protected void onDestroy() {
-
         super.onDestroy();
     }
 }

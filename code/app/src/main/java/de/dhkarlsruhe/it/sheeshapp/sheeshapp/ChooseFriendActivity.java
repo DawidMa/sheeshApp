@@ -51,25 +51,23 @@ public class ChooseFriendActivity extends AppCompatActivity {
     private ListView list;
     private FloatingActionButton chFabAccept;
     private Friend friend;
-    private UserSessionObject session;
     private NamesAdapter adapter;
     private List<ChooseFriendObject> objects = new ArrayList<>();
     private Gson json = new Gson();
-    private List<Long> checkedFriendIds = new ArrayList<>();
-    private List<Long> uncheckedFriendIds = new ArrayList<>();
     private TextView tvFriends;
-    private List<ChooseFriendObject> friendNames= new ArrayList<>();
-
+    private List<ChooseFriendObject> checkedObjects= new ArrayList<>();
+    private List<ChooseFriendObject> uncheckedObjects = new ArrayList<>();
     private Button btnAdd;
     private EditText etLocalName;
     private int addedLocals = 0;
+    private boolean changedData = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_friend);
         friend = new Friend(this);
-        session = new UserSessionObject(this);
+        friend.dropAllFriends();
         tvFriends = findViewById(R.id.tvChooseTitle);
         Window window = getWindow();
         window.setStatusBarColor(Color.rgb(0,0,0));
@@ -80,7 +78,6 @@ public class ChooseFriendActivity extends AppCompatActivity {
         setTitle(getString(R.string.choose_friend_title));
         btnAdd = findViewById(R.id.btnChooseAddLocal);
         etLocalName = findViewById(R.id.etChooseLocalFriend);
-
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,11 +85,12 @@ public class ChooseFriendActivity extends AppCompatActivity {
                 if (name.length()>0) {
                     addedLocals++;
                     long id = addedLocals*(-1);
-                    friend.setFriendName(id,name);
-                    friend.setChecked(id,false);
-                    objects.add(new ChooseFriendObject(name,id));
+                    ChooseFriendObject newObject = new ChooseFriendObject(name,id);
+                    checkedObjects.add(newObject);
+                    objects.add(newObject);
                     adapter.notifyDataSetChanged();
                     etLocalName.setText("");
+                    updateTv();
                 }
             }
         });
@@ -100,12 +98,15 @@ public class ChooseFriendActivity extends AppCompatActivity {
         chFabAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Gson json = new Gson();
+                friend.setAllCheckedFriends(json.toJson(checkedObjects));
+                friend.setAllUncheckedFriends(json.toJson(uncheckedObjects));
+                Intent intent = new Intent();
+                setResult(RESULT_OK,intent);
                 finish();
             }
         });
         list = (ListView)findViewById(R.id.liChooseList);
-
-
         getOfflineData();
     }
 
@@ -115,55 +116,15 @@ public class ChooseFriendActivity extends AppCompatActivity {
             Type listType = new TypeToken<List<FriendlistObject>>() {}.getType();
             List<FriendlistObject> friendlistObject = json.fromJson(offlineData, listType);
             for (FriendlistObject o: friendlistObject) {
-                objects.add(new ChooseFriendObject(o.getName(),o.getFriend_id()));
+                ChooseFriendObject object = new ChooseFriendObject(o.getName(),o.getFriend_id());
+                objects.add(object);
             }
-            fillList();
         }
+        uncheckedObjects.addAll(objects);
+        fillList();
     }
 
     private void fillList() {
-        friend.dropAllFriends();
-        for (int i=0; i<objects.size(); i++) {
-            friend.setFriendName(objects.get(i).getId(),objects.get(i).getName());
-            friend.setChecked(objects.get(i).getId(),false);
-        }
-        for (ChooseFriendObject i:objects) {
-            uncheckedFriendIds.add(i.getId());
-        }
-        adapter = new NamesAdapter(ChooseFriendActivity.this,objects);
-        list.setAdapter(adapter);
-    }
-
-    private void getOnlineData() {
-        /*
-        long id = session.getUser_id();
-        StringRequest request =  new StringRequest(ServerConstants.URL_FRIEND_NAMES+id, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String string) {
-                fillData(string);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(getApplicationContext(),"An Error occured",Toast.LENGTH_SHORT).show();
-            }
-        });
-        RequestQueue rQueue = Volley.newRequestQueue(getApplicationContext());
-        rQueue.add(request);*/
-
-    }
-
-    private void fillData(String string) {
-        Type listType = new TypeToken<List<ChooseFriendObject>>() {}.getType();
-        objects = json.fromJson(string, listType);
-        friend.dropAllFriends();
-        for (int i=0; i<objects.size(); i++) {
-            friend.setFriendName(objects.get(i).getId(),objects.get(i).getName());
-            friend.setChecked(objects.get(i).getId(),false);
-        }
-        for (ChooseFriendObject i:objects) {
-            uncheckedFriendIds.add(i.getId());
-        }
         adapter = new NamesAdapter(ChooseFriendActivity.this,objects);
         list.setAdapter(adapter);
     }
@@ -178,48 +139,50 @@ public class ChooseFriendActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater)getContext().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View row = inflater.inflate(R.layout.row_choose_friend,parent,false);
-            final ChooseFriendObject actualObject = getItem(position);
+            final ChooseFriendObject actualObject = objects.get(position);
             TextView myTitle = (TextView)row.findViewById(R.id.liChooseFriendName);
             myTitle.setText(actualObject.getName());
-            long tag = actualObject.getId();
-            Switch cb = (Switch) row.findViewById(R.id.switchFriends);
-            cb.setTag(tag);
-            boolean checked = friend.getChecked(tag);
+            final Switch cb = (Switch) row.findViewById(R.id.switchFriends);
+            cb.setClickable(false);
+            final boolean checked;
+            if (checkedObjects.contains(objects.get(position))) {
+                checked = true;
+            } else {
+                checked = false;
+            }
             cb.setChecked(checked);
-            cb.setOnClickListener(new View.OnClickListener() {
+            row.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    long tag = (long)v.getTag();
-                    boolean checked = friend.getChecked(tag);
-                    if(!checked) {
-                       friend.setChecked(tag,true);
-                       checkedFriendIds.add(tag);
-                       uncheckedFriendIds.remove(tag);
-                       friendNames.add(actualObject);
+                    if(!cb.isChecked()) {
+                        checkedObjects.add(objects.get(position));
+                        uncheckedObjects.remove(objects.get(position));
+                        cb.setChecked(true);
                     } else {
-                        friend.setChecked(tag,false);
-                        checkedFriendIds.remove(tag);
-                        uncheckedFriendIds.add(tag);
-                        friendNames.remove(actualObject);
+                        checkedObjects.remove(objects.get(position));
+                        uncheckedObjects.add(objects.get(position));
+                        cb.setChecked(false);
                     }
-                    if (friendNames.isEmpty()) {
-                        tvFriends.setText(getString(R.string.no_selected_friends_text));
-                    } else {
-                        tvFriends.setText(MyUtilities.getChooseFriendsAsString(friendNames));
-                    }
+                    updateTv();
                 }
             });
             return row;
         }
     }
 
+    private void updateTv(){
+        if (checkedObjects.isEmpty()) {
+            tvFriends.setText(getString(R.string.no_selected_friends_text));
+        } else {
+            tvFriends.setText(MyUtilities.getChooseFriendsAsString(checkedObjects));
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        friend.setAllCheckedFriends(checkedFriendIds);
-        friend.setAllUnchekedFriends(uncheckedFriendIds);
     }
 }

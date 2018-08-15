@@ -25,6 +25,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.Login;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
@@ -133,7 +134,9 @@ public class LogInActivity extends AppCompatActivity {
             login.setSavedEmail();
             login.setSavedPassword();
                 FirebaseMessaging.getInstance().subscribeToTopic(TOPIC);
-                this.finish();
+            Friend friend = new Friend(this);
+            friend.dropAllFriends();
+            this.finish();
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
 

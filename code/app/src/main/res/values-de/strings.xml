@@ -94,4 +94,5 @@
     <string name="coming_soon_text">Bald verfügbar..</string>
     <string name="not_available_for_guest">Nicht verfügbar für Gäste!</string>
     <string name="no_friends_available">Keine Freunde verfügbar</string>
+    <string name="cant_remove_all_friends_text">Du kannst nicht alle Freunde entfernen!</string>
 </resources>

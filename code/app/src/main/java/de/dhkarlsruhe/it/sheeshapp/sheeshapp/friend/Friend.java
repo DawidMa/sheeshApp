@@ -11,10 +11,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -100,25 +104,6 @@ public class Friend  {
         rQueue.add(request);
     }
 
-    public boolean getChecked(long id) {
-        return pref.getBoolean("FRIEND_CHOOSEN_"+id,false);
-    }
-    public void setChecked(long id, boolean b) {
-        editor.putBoolean("FRIEND_CHOOSEN_"+id,b);
-        editor.commit();
-    }
-
-    public int getNumberOfFriends() {
-        return pref.getInt(SharedPrefConstants.F_NUMBER_ALL, 0);
-    }
-
-    private void incNumberOfFriends() {
-        int num = getNumberOfFriends();
-        num++;
-        editor.putInt(SharedPrefConstants.F_NUMBER_ALL,num);
-        editor.commit();
-    }
-
     public boolean actualInformationAvailable() {
         return pref.contains(SharedPrefConstants.F_OFFILNE_JSON);
     }
@@ -133,88 +118,41 @@ public class Friend  {
         return pref.getString(SharedPrefConstants.F_OFFILNE_JSON,"empty");
     }
 
-    public String getFriendName(long id) {
-        return pref.getString("FRIEND_"+id,"FEHLER");
-    }
-
-    public void setFriendName(long id, String name) {
-        editor.putString("FRIEND_"+id,name);
-        String allFriends = pref.getString(SharedPrefConstants.F_ALL,"");
-        allFriends+=id+";";
-        editor.putString(SharedPrefConstants.F_ALL,allFriends);
-        incNumberOfFriends();
-        editor.commit();
-    }
-
     public void dropAllFriends() {
-        editor.putString(SharedPrefConstants.F_ALL,"");
-        editor.putInt(SharedPrefConstants.F_NUMBER_ALL,0);
-        editor.putInt(SharedPrefConstants.F_NUMBER_ALL_CHECKED,0);
-        editor.putString(SharedPrefConstants.F_ALL_CHECKED,"");
-        editor.putInt(SharedPrefConstants.F_NUMBER_ALL_UNCHECKED,0);
-        editor.putString(SharedPrefConstants.F_ALL_UNCHECKED,"");
+        editor.putString(SharedPrefConstants.F_ALL_CHECKED,"empty");
+        editor.putString(SharedPrefConstants.F_ALL_UNCHECKED,"empty");
         editor.commit();
     }
 
     public List<ChooseFriendObject> getAllCheckedFriends() {
-        List<ChooseFriendObject> objects = new ArrayList<>();
-        int numOfAll = getNumberOfAllCheckedFriends();
-        String[] allIds;
-        if (numOfAll>0) {
-            allIds = pref.getString(SharedPrefConstants.F_ALL_CHECKED,null).split(";");
-            for (int i=0; i<numOfAll; i++) {
-                long friendId = Long.parseLong(allIds[i]);
-                String friendName = getFriendName(friendId);
-                objects.add(new ChooseFriendObject(friendName,friendId));
-            }
+        Type listType = new TypeToken<List<ChooseFriendObject>>() {}.getType();
+        Gson json = new Gson();
+        String friends = pref.getString(SharedPrefConstants.F_ALL_CHECKED,"empty");
+        if (friends.equals("empty")) {
+            return Collections.emptyList();
+        } else {
+            return json.fromJson(friends, listType);
         }
-        return objects;
     }
 
     public List<ChooseFriendObject> getAllUncheckedFriends() {
-        List<ChooseFriendObject> objects = new ArrayList<>();
-        int numOfAll = getNumberOfAllUncheckedFriends();
-        String[] allIds;
-        if (numOfAll>0) {
-            allIds = pref.getString(SharedPrefConstants.F_ALL_UNCHECKED,null).split(";");
-            for (int i=0; i<numOfAll; i++) {
-                long friendId = Long.parseLong(allIds[i]);
-                String friendName = getFriendName(friendId);
-                objects.add(new ChooseFriendObject(friendName,friendId));
-            }
+        Type listType = new TypeToken<List<ChooseFriendObject>>() {}.getType();
+        Gson json = new Gson();
+        String friends = pref.getString(SharedPrefConstants.F_ALL_UNCHECKED,"empty");
+        if (friends.equals("empty")) {
+            return Collections.emptyList();
+        } else {
+            return json.fromJson(friends, listType);
         }
-        return objects;
     }
 
-    public void setAllCheckedFriends(List<Long> checkedFriendIds) {
-        String all = "";
-        int num = 0;
-        for (Long i:checkedFriendIds) {
-            all+=i+";";
-            num++;
-        }
-        editor.putInt(SharedPrefConstants.F_NUMBER_ALL_CHECKED,num);
-        editor.putString(SharedPrefConstants.F_ALL_CHECKED,all);
+    public void setAllCheckedFriends(String checkedFriends) {
+        editor.putString(SharedPrefConstants.F_ALL_CHECKED,checkedFriends);
         editor.commit();
     }
 
-    public int getNumberOfAllCheckedFriends() {
-       return pref.getInt(SharedPrefConstants.F_NUMBER_ALL_CHECKED,0);
-    }
-
-    public void setAllUnchekedFriends(List<Long> uncheckedFriendIds) {
-        String all = "";
-        int num = 0;
-        for (Long i:uncheckedFriendIds) {
-            all+=i+";";
-            num++;
-        }
-        editor.putInt(SharedPrefConstants.F_NUMBER_ALL_UNCHECKED,num);
-        editor.putString(SharedPrefConstants.F_ALL_UNCHECKED,all);
+    public void setAllUncheckedFriends(String s) {
+        editor.putString(SharedPrefConstants.F_ALL_UNCHECKED,s);
         editor.commit();
-    }
-
-    public int getNumberOfAllUncheckedFriends() {
-        return pref.getInt(SharedPrefConstants.F_NUMBER_ALL_UNCHECKED,0);
     }
 }

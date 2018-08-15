@@ -184,22 +184,6 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         });
     }
 
-    public List<ChooseFriendObject> getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(List<ChooseFriendObject> sequence) {
-        this.sequence = sequence;
-    }
-
-    public List<ChooseFriendObject> getUncheckedFriends() {
-        return uncheckedFriends;
-    }
-
-    public void setUncheckedFriends(List<ChooseFriendObject> uncheckedFriends) {
-        this.uncheckedFriends = uncheckedFriends;
-    }
-
     public void fragmentPressedStart() {
         btPause.setEnabled(true);
         btStart.setEnabled(false);
