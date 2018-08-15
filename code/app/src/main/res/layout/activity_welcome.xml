@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,19 +9,19 @@
 
     <TextView
         android:id="@+id/tvWelTitle"
+        style="@style/tvTitle"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="@string/welcome"
-        style="@style/tvTitle"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnWelSignUp"
         style="@style/btnStyleLongGray"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
         android:onClick="openSignUp"
         android:text="@string/welcome_signup_button"
         app:layout_constraintBottom_toTopOf="@+id/textView4"
@@ -30,19 +31,38 @@
     <Button
         android:id="@+id/btnWelLogin"
         style="@style/btnStyleLongGray"
-        android:onClick="openLogIn"
+        android:layout_width="0dp"
         android:layout_marginBottom="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="4dp"
+        android:onClick="openLogIn"
         android:text="@string/welcome_login_button"
         app:layout_constraintBottom_toTopOf="@+id/btnWelClose"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/btnWelSignUp" />
 
+    <Button
+        android:id="@+id/btnWelGuest"
+        style="@style/btnStyleLongGray"
+        android:layout_width="0dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="4dp"
+        android:onClick="openGuest"
+        android:text="@string/guest_text"
+        app:layout_constraintBottom_toTopOf="@+id/btnWelClose"
+        app:layout_constraintEnd_toEndOf="@+id/btnWelSignUp"
+        app:layout_constraintHorizontal_weight="0.5"
+        app:layout_constraintStart_toStartOf="@+id/guideline3" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
     <Button
         android:id="@+id/btnWelClose"
         style="@style/btnStyleLongRed"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="32dp"
         android:layout_marginStart="8dp"
         android:onClick="closeWelcome"
         android:text="@string/welcome_close_button"

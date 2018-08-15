@@ -73,7 +73,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     private List<ChooseFriendObject> sequence = new ArrayList<>();
     private List<ChooseFriendObject> uncheckedFriends = new ArrayList<>();
 
-    static String firstFriend;
+    public static String firstFriend;
     private String friendsAsString="", dateStart ="", dateEnd="",totalTime;
 
     private Friend friend;

@@ -68,8 +68,10 @@ public class HistoryFragment extends Fragment {
         List<History> offlineHistories = getHistoryOfflineData();
         if (!offlineHistories.isEmpty()) {
             histories = offlineHistories;
+            tvInfo.setVisibility(View.GONE);
         } else {
             Toast.makeText(getContext(), R.string.no_saved_history,Toast.LENGTH_LONG).show();
+            tvInfo.setVisibility(View.VISIBLE);
         }
         showList();
     }
@@ -91,7 +93,6 @@ public class HistoryFragment extends Fragment {
                     newAdapter.notifyDataSetChanged();
                     addNewToOffline(string);
                     Toast.makeText(getContext(), String.format(getString(R.string.added_n_new_histories), onlineHistories.size()),Toast.LENGTH_SHORT).show();
-                    //showList();
                 }
                 showList();
             }
@@ -99,6 +100,11 @@ public class HistoryFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Toast.makeText(getContext(), R.string.error_loading_history,Toast.LENGTH_SHORT).show();
+                if (histories.size()>0) {
+                    tvInfo.setVisibility(View.GONE);
+                } else {
+                    tvInfo.setVisibility(View.VISIBLE);
+                }
             }
         });
         RequestQueue rQueue = Volley.newRequestQueue(getContext());
@@ -142,11 +148,7 @@ public class HistoryFragment extends Fragment {
         listDataChild = new HashMap<String, List<String>>();
         // Adding header data
         // Adding child data
-        if (histories.size()>0) {
-            tvInfo.setVisibility(View.VISIBLE);
-        } else {
-            tvInfo.setVisibility(View.GONE);
-        }
+
         for(int i=0; i<histories.size(); i++) {
             listDataHeader.add(histories.get(i).getDate());
             List<String> pimbloktos = new ArrayList<>();
@@ -156,6 +158,11 @@ public class HistoryFragment extends Fragment {
             pimbloktos.add(histories.get(i).getDuration()+"");
             pimbloktos.add(histories.get(i).getTotalShishas()+"");
             listDataChild.put(listDataHeader.get(i), pimbloktos);
+        }
+        if (histories.size()>0) {
+            tvInfo.setVisibility(View.GONE);
+        } else {
+            tvInfo.setVisibility(View.VISIBLE);
         }
     }
 

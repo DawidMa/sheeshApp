@@ -22,26 +22,37 @@
 
     <Button
         android:id="@+id/btnSigWelcome"
-        android:layout_width="110dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/btn_roundrect_states"
         android:onClick="closeSignUp"
         android:text="@string/cancel_text"
         android:textColor="#fff"
-        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/edTPasswordRepeat"
         app:layout_constraintTop_toBottomOf="@+id/cbSaveLogin" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
     <Button
         android:id="@+id/btnSigHomescreen"
-        android:layout_width="110dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/btn_roundrect_states"
         android:onClick="submitSignUp"
         android:text="@string/submit_text"
         android:textColor="#fff"
-        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintEnd_toEndOf="@+id/edTPasswordRepeat"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/cbSaveLogin" />
 
     <EditText
@@ -127,59 +138,67 @@
 
     <ImageButton
         android:id="@+id/imgBtnSigInfoUsername"
-        android:onClick="showInfoUsername"
-        android:background="@drawable/ic_info"
-        android:visibility="invisible"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="163dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/ic_info"
+        android:onClick="showInfoUsername"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/edTUsername"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.266"
         app:layout_constraintStart_toEndOf="@+id/edTUsername"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/edTUsername" />
 
     <ImageButton
         android:id="@+id/imgBtnSigInfoEmail"
-        android:onClick="showInfoEmail"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/ic_info"
+        android:onClick="showInfoEmail"
         android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/edTEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.264"
         app:layout_constraintStart_toEndOf="@+id/edTEmail"
-        app:layout_constraintTop_toBottomOf="@+id/imgBtnSigInfoUsername" />
+        app:layout_constraintTop_toTopOf="@+id/edTEmail" />
 
     <ImageButton
         android:id="@+id/imgBtnSigInfoPassword"
-        android:onClick="showInfoPassword"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/ic_info"
+        android:onClick="showInfoPassword"
         android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/edTPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.26"
         app:layout_constraintStart_toEndOf="@+id/edTPassword"
-        app:layout_constraintTop_toBottomOf="@+id/imgBtnSigInfoEmail" />
+        app:layout_constraintTop_toTopOf="@+id/edTPassword" />
 
     <ImageButton
         android:id="@+id/imgBtnSigInfoPasswordRepeat"
-        android:onClick="showInfoPasswordRepeat"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/ic_info"
+        android:onClick="showInfoPasswordRepeat"
         android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/edTPasswordRepeat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.264"
         app:layout_constraintStart_toEndOf="@+id/edTPasswordRepeat"
-        app:layout_constraintTop_toBottomOf="@+id/imgBtnSigInfoPassword" />
+        app:layout_constraintTop_toTopOf="@+id/edTPasswordRepeat" />
 
     <CheckBox
         android:id="@+id/cbSaveLogin"
@@ -196,18 +215,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edTPasswordRepeat" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.18" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.83" />
 
 </android.support.constraint.ConstraintLayout>

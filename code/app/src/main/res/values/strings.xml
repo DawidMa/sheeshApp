@@ -87,4 +87,11 @@
     <string name="search_friend_hint">Search friend</string>
     <string name="friend_without_sheeshapp_hint">Friend without SheeshApp</string>
     <string name="no_selected_friends_text">No friends selected</string>
+    <string name="check_your_inout">Check your input</string>
+    <string name="success">Success!</string>
+    <string name="check_your_emails">Check your Emails</string>
+    <string name="guest_text">Guest</string>
+    <string name="coming_soon_text">Coming soon..</string>
+    <string name="not_available_for_guest">Not available for guest!</string>
+    <string name="no_friends_available">No friends available</string>
 </resources>

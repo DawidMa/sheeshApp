@@ -39,28 +39,39 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
     <Button
         android:id="@+id/btnLogLogin"
         style="@style/btnStyleLongGray"
-        android:layout_width="110dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:onClick="login"
         android:text="@string/login_text"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintEnd_toEndOf="@+id/etLogPassword"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/cbLogSaveLogin" />
 
     <Button
         android:id="@+id/btnLogCancel"
         style="@style/btnStyleLongGray"
-        android:layout_width="110dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:onClick="cancelLogin"
         android:text="@string/cancel_text"
-        app:layout_constraintStart_toEndOf="@id/guideline8"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/etLogPassword"
         app:layout_constraintTop_toBottomOf="@+id/cbLogSaveLogin" />
 
     <EditText
@@ -92,24 +103,25 @@
         android:layout_marginTop="8dp"
         android:checked="false"
         android:text="@string/save_login_text"
-        android:textSize="20dp"
         android:textColor="#FFFFFF"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etLogPassword" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline8"
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.18" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-4355529827581242/7588945055"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
+    <!--ads:adUnitId="ca-app-pub-4355529827581242/7588945055" -->
+    <!--ads:adUnitId="ca-app-pub-3940256099942544/1033173712" -->
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.83" />
 
 </android.support.constraint.ConstraintLayout>
