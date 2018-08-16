@@ -10,6 +10,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
@@ -146,11 +147,15 @@ public class MyUtilities {
         return (!text.matches(""));
     }
 
-    public static void configureEtMax(final EditText et, final TextView textView, final int max) {
+    public static void configureEtMax(final EditText et, final TextView textView, final int max, boolean emoji_filter) {
         textView.setVisibility(View.VISIBLE);
         textView.setText(max+"");
         et.setInputType(InputType.TYPE_CLASS_TEXT);
-        et.setFilters(new InputFilter[]{new InputFilter.LengthFilter(max)});
+        if (emoji_filter) {
+            et.setFilters(new InputFilter[]{new InputFilter.LengthFilter(max),EMOJI_FILTER});
+        } else {
+            et.setFilters(new InputFilter[]{new InputFilter.LengthFilter(max)});
+        }
         et.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -195,4 +200,16 @@ public class MyUtilities {
         }
         return time;
     }
+    public static InputFilter EMOJI_FILTER = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            for (int index = start; index < end; index++) {
+                int type = Character.getType(source.charAt(index));
+                if (type == Character.SURROGATE) {
+                    return "";
+                }
+            }
+            return null;
+        }
+    };
 }

@@ -70,8 +70,8 @@ public class TrackerSetupFragmentGuest extends Fragment{
         etComment.setKeyListener(null);
         etLocation.setKeyListener(null);
 
-        MyUtilities.configureEtMax(etLocation,tvLocationLength,MAX_CHARS);
-        MyUtilities.configureEtMax(etComment,tvCommentLength,MAX_CHARS);
+        MyUtilities.configureEtMax(etLocation,tvLocationLength,MAX_CHARS,false);
+        MyUtilities.configureEtMax(etComment,tvCommentLength,MAX_CHARS,false);
 
         updateTvTime();
 

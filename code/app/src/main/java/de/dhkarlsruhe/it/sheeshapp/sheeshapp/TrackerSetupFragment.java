@@ -71,8 +71,8 @@ public class TrackerSetupFragment extends Fragment{
         etLocation = rootView.findViewById(R.id.etSeLocation);
         etComment = rootView.findViewById(R.id.etSeComment);
 
-        MyUtilities.configureEtMax(etLocation,tvLocationLength,MAX_CHARS);
-        MyUtilities.configureEtMax(etComment,tvCommentLength,MAX_CHARS);
+        MyUtilities.configureEtMax(etLocation,tvLocationLength,MAX_CHARS,true);
+        MyUtilities.configureEtMax(etComment,tvCommentLength,MAX_CHARS,true);
         updateTvTime();
 
         onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
