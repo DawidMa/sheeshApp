@@ -19,11 +19,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -166,13 +169,14 @@ public class TrackerSetupFragment extends Fragment{
     }
 
     private static boolean checkChoosenFriends() {
-        boolean check = false;
         int numberFriends = friend.getAllCheckedFriends().size();
 
-        if(numberFriends>=1) {
-            check = true;
-            editor.commit();
+        if(numberFriends==0) {
+            List<ChooseFriendObject> objects = new ArrayList<>();
+            objects = MyUtilities.getOfflineFriends(friend);
+            Gson json = new Gson();
+            friend.setAllUncheckedFriends(json.toJson(objects));
         }
-        return check;
+        return true;
     }
 }

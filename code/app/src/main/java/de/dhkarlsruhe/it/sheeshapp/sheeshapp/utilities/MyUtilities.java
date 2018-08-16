@@ -22,16 +22,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.MainActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete.DelayAutoCompleteTextView;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete.FriendAutoCompleteAdapter;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
 
 /**
  * Created by d0272129 on 10.08.18.
@@ -157,5 +164,21 @@ public class MyUtilities {
             public void onTextChanged(CharSequence s, int st, int b, int c) {
             }
         });
+    }
+
+    public static List<ChooseFriendObject> getOfflineFriends(Friend friend) {
+        List<ChooseFriendObject> objects = new ArrayList<>();
+        if (friend.actualInformationAvailable()) {
+            Gson json = new Gson();
+            String offlineData = friend.getOfflineData();
+            Type listType = new TypeToken<List<FriendlistObject>>() {
+            }.getType();
+            List<FriendlistObject> friendlistObject = json.fromJson(offlineData, listType);
+            for (FriendlistObject o : friendlistObject) {
+                ChooseFriendObject object = new ChooseFriendObject(o.getName(), o.getFriend_id());
+                objects.add(object);
+            }
+        }
+        return objects;
     }
 }

@@ -159,10 +159,10 @@ public class TrackerSetupFragmentGuest extends Fragment{
     private static boolean checkChoosenFriends() {
         boolean check = false;
         int numberFriends = guest.getFriends().size();
-        if(numberFriends>=1) {
+        if(numberFriends==0) {
             check = true;
         }
-        return check;
+        return true;
     }
 
     public void myResume() {

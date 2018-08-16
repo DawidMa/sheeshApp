@@ -111,15 +111,8 @@ public class ChooseFriendActivity extends AppCompatActivity {
     }
 
     private void getOfflineData() {
-        if (friend.actualInformationAvailable()) {
-            String offlineData = friend.getOfflineData();
-            Type listType = new TypeToken<List<FriendlistObject>>() {}.getType();
-            List<FriendlistObject> friendlistObject = json.fromJson(offlineData, listType);
-            for (FriendlistObject o: friendlistObject) {
-                ChooseFriendObject object = new ChooseFriendObject(o.getName(),o.getFriend_id());
-                objects.add(object);
-            }
-        }
+
+        objects = MyUtilities.getOfflineFriends(friend);
         uncheckedObjects.addAll(objects);
         fillList();
     }

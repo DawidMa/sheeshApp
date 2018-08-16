@@ -45,6 +45,7 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.history.History;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.timer.FloTimer;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -110,7 +111,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     private HashSet<ChooseFriendObject> allFriendsUnique = new HashSet<>();
 
     private MediaPlayer soundTimeUp;
-
+    private UserSessionObject session;
 
     public TimeTrackerFragment() {}
 
@@ -121,7 +122,12 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         v= rootView;
         init();
         friend = new Friend(getContext());
+        session = new UserSessionObject(getContext());
         sequence = friend.getAllCheckedFriends();
+        if (sequence.isEmpty()) {
+            sequence = new ArrayList<>();
+        }
+        sequence.add(new ChooseFriendObject(session.getName(),session.getUser_id()));
         uncheckedFriends = friend.getAllUncheckedFriends();
         Collections.shuffle(sequence);
         printFriendsList(sequence);

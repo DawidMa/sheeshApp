@@ -95,6 +95,7 @@ public class TimeTrackerFragmentGuest extends android.support.v4.app.Fragment {
         guest = new Guest(getActivity());
         init();
         sequence = guest.getFriends();
+        sequence.add(new ChooseFriendObject(guest.getName(),-sequence.size()));
         Collections.shuffle(sequence);
         printFriendsList(sequence);
         firstFriend = sequence.get(0).getName();
