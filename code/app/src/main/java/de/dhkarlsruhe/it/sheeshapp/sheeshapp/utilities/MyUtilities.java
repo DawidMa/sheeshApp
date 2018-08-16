@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -146,6 +147,11 @@ public class MyUtilities {
         String text = et.getText().toString().trim();
         return (!text.matches(""));
     }
+    public static boolean stringOK(String string) {
+        String text = string.trim();
+        return (!text.matches(""));
+    }
+
 
     public static void configureEtMax(final EditText et, final TextView textView, final int max, boolean emoji_filter) {
         textView.setVisibility(View.VISIBLE);
@@ -212,4 +218,13 @@ public class MyUtilities {
             return null;
         }
     };
+
+    public static String calendarToString(Calendar calendar) {
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = (calendar.get(Calendar.MONTH)+1);
+        int year = calendar.get(Calendar.YEAR);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        return String.format("%02d.%02d.%04d  %02d:%02d",day,month,year,hour,minute);
+    }
 }

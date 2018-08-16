@@ -47,6 +47,7 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.timer.FloTimer;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -75,7 +76,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     private List<ChooseFriendObject> uncheckedFriends = new ArrayList<>();
 
     public static String firstFriend;
-    private String friendsAsString="", dateStart ="", dateEnd="",totalTime;
+    private String friendsAsString="", dateStart ="", dateEnd="",totalTime, comment, location;
 
     private Friend friend;
 
@@ -132,6 +133,14 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         Collections.shuffle(sequence);
         printFriendsList(sequence);
         firstFriend = sequence.get(0).getName();
+        comment = pref.getString(SharedPrefConstants.COMMENT,"---");
+        location = pref.getString(SharedPrefConstants.LOCATION,"---");
+        if (!MyUtilities.stringOK(comment)) {
+            comment = "---";
+        }
+        if (!MyUtilities.stringOK(location)) {
+            location = "---";
+        }
         circle = rootView.findViewById(R.id.animatedCircle);
         circle.setColor("#00ff00");
         circleGray = rootView.findViewById(R.id.grayCircle);
@@ -209,16 +218,18 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
     private void registerInitialHistories() {
         for (ChooseFriendObject i : sequence) {
-            if (allFriendsUnique.add(i)) {
-                History history = new History();
-                history.setDuration(0);
-                history.setLocation("In Dawids Garage");
-                history.setParticipants("");
-                history.setSessionName("Von anfang an dabei");
-                history.setTotalShishas(numOfSwitchedCoal);
-                history.setUserId(i.getId());
-                history.setDate(dateStart);
-                histories.add(history);
+            if (i.getId()>0) {
+                if (allFriendsUnique.add(i)) {
+                    History history = new History();
+                    history.setDuration(0);
+                    history.setLocation(location);
+                    history.setParticipants("");
+                    history.setSessionName(comment);
+                    history.setTotalShishas(numOfSwitchedCoal);
+                    history.setUserId(i.getId());
+                    history.setDate(dateStart);
+                    histories.add(history);
+                }
             }
         }
     }
@@ -471,7 +482,6 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         timerNextPlayer.pause();
         timerTotal1.pause();
         timerFlash.pause();
-
         dateEnd = setDate();
         saveToStatistics();
         showNotification=false;
@@ -526,14 +536,8 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     }
 
     public String setDate() {
-        String date="";
         calendar.setTimeInMillis(System.currentTimeMillis());
-        date += calendar.get(Calendar.DAY_OF_MONTH)+".";
-        date += (calendar.get(Calendar.MONTH)+1)+".";
-        date += calendar.get(Calendar.YEAR)+"  ";
-        date += calendar.get(Calendar.HOUR_OF_DAY)+":";
-        date += calendar.get(Calendar.MINUTE);
-        return date;
+        return MyUtilities.calendarToString(calendar);
     }
 
     // Vibrate for 500 milliseconds
@@ -590,13 +594,14 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     }
 
     private void registerNewHistory(ChooseFriendObject object) {
+        dateStart = setDate();
         if (object.getId()>0) {
             if (allFriendsUnique.add(object)) {
                 History history = new History();
                 history.setDuration(timerTotal1.getTimeAsLong());
-                history.setLocation("In Dawids Garage");
+                history.setLocation(location);
                 history.setParticipants("");
-                history.setSessionName("Kam später dazu");
+                history.setSessionName(comment);
                 history.setTotalShishas(numOfSwitchedCoal);
                 history.setUserId(object.getId());
                 history.setDate(dateStart);

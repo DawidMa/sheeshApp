@@ -46,7 +46,7 @@ public class TrackerSetupFragment extends Fragment{
     private ConstraintLayout layoutTime, layoutFriends;
     private int minutes, seconds;
     private TextView tvTime, tvFriends, tvLocationLength, tvCommentLength;
-    private EditText etLocation, etComment;
+    private static EditText etLocation, etComment;
     private static final int MAX_CHARS = 20;
 
     @Override
@@ -160,6 +160,8 @@ public class TrackerSetupFragment extends Fragment{
                 Toast.makeText(c, R.string.choose_at_least_one_friend,Toast.LENGTH_SHORT).show();
             } else {
                 editor.putInt(SharedPrefConstants.TIME_IN_SECONDS,sec);
+                editor.putString(SharedPrefConstants.COMMENT,etComment.getText().toString());
+                editor.putString(SharedPrefConstants.LOCATION,etLocation.getText().toString());
                 editor.commit();
             }
         } else {
