@@ -178,12 +178,6 @@ public class MainActivityGuest extends AppCompatActivity
         imgUser = header.findViewById(R.id.imgHeader);
         imageHelper.setRoundImageDefault(imgUser);
         // setImgUser();
-        imgUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                animateIntent(v);
-            }
-        });
     }
 
     private void initRfa() {
@@ -192,22 +186,6 @@ public class MainActivityGuest extends AppCompatActivity
 
         rfaLayout = findViewById(R.id.rfabLayoutMain);
         rfaButton = findViewById(R.id.rfabButtonMain);
-    }
-
-    public void animateIntent(View view) {
-        // Bitmap bitmap = ((BitmapDrawable)imgUser.getDrawable()).getBitmap();
-        //  ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        // bitmap.compress(Bitmap.CompressFormat.PNG, 10, stream);
-        //byte[] byteArray = stream.toByteArray();
-        Intent intent = new Intent(this, MyProfileActivity.class);
-        String transitionName = getString(R.string.transition_string);
-        ActivityOptionsCompat options =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-                        imgUser,   // Starting view
-                        transitionName    // The String
-                );
-        //intent.putExtra("image",byteArray);
-        startActivity(intent, options.toBundle());
     }
 
     public void changeFabToAddFriend() {

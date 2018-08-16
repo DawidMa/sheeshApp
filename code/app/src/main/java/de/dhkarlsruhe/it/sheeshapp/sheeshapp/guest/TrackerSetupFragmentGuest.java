@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -41,9 +42,12 @@ public class TrackerSetupFragmentGuest extends Fragment{
     private TimePickerDialog.OnTimeSetListener onTimeSetListener;
     private ConstraintLayout layoutTime, layoutFriends;
     private int minutes, seconds;
-    private TextView tvTime, tvFriends;
+    private TextView tvTime, tvFriends, tvLocationLength, tvCommentLength;
     private static Guest guest;
     private View rootView;
+    private EditText etComment, etLocation;
+    private static final int MAX_CHARS = 0;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +62,17 @@ public class TrackerSetupFragmentGuest extends Fragment{
         guest = new Guest(getActivity());
         tvTime = rootView.findViewById(R.id.tvSeTimeInfo);
         tvFriends = rootView.findViewById(R.id.tvSeFriendsInfo);
+        tvLocationLength = rootView.findViewById(R.id.tvSeLocationLength);
+        tvCommentLength = rootView.findViewById(R.id.tvSeCommentLength);
+
+        etComment = rootView.findViewById(R.id.etSeComment);
+        etLocation = rootView.findViewById(R.id.etSeLocation);
+        etComment.setKeyListener(null);
+        etLocation.setKeyListener(null);
+
+        MyUtilities.configureEtMax(etLocation,tvLocationLength,MAX_CHARS);
+        MyUtilities.configureEtMax(etComment,tvCommentLength,MAX_CHARS);
+
         updateTvTime();
 
         onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {

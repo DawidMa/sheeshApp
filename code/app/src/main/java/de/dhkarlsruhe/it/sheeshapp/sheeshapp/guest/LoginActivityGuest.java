@@ -14,6 +14,7 @@ import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
 
 public class LoginActivityGuest extends AppCompatActivity implements RewardedVideoAdListener {
 
@@ -49,12 +50,11 @@ public class LoginActivityGuest extends AppCompatActivity implements RewardedVid
 
 
     public void loginGuest(View view) {
-        String name = et.getText().toString().trim();
-        if (name.matches("")) {
+        if (!MyUtilities.etOK(et)) {
             et.setText("");
             Snackbar.make(view,getString(R.string.check_your_inout),Snackbar.LENGTH_LONG).show();
         } else {
-            username = name;
+            username = et.getText().toString().trim();
             startAd();
         }
     }

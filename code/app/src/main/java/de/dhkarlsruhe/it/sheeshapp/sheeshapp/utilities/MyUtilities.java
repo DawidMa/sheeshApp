@@ -6,7 +6,11 @@ import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.text.Html;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,6 +18,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -127,20 +133,29 @@ public class MyUtilities {
         alert.show();
     }
 
-    private static String readTextFromResource(int resourceID, Activity activity) {
-        InputStream raw = activity.getResources().openRawResource(resourceID);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        int i;
-        try {
-            i = raw.read();
-            while (i != -1) {
-                stream.write(i);
-                i = raw.read();
+    public static boolean etOK(EditText et) {
+        String text = et.getText().toString().trim();
+        return (!text.matches(""));
+    }
+
+    public static void configureEtMax(final EditText et, final TextView textView, final int max) {
+        textView.setVisibility(View.VISIBLE);
+        textView.setText(max+"");
+        et.setInputType(InputType.TYPE_CLASS_TEXT);
+        et.setFilters(new InputFilter[]{new InputFilter.LengthFilter(max)});
+        et.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                textView.setText(String.valueOf(max - et.length()));
             }
-            raw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return stream.toString();
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int st, int c, int a) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int st, int b, int c) {
+            }
+        });
     }
 }
