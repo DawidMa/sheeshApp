@@ -95,4 +95,6 @@
     <string name="not_available_for_guest">Nicht verfügbar für Gäste!</string>
     <string name="no_friends_available">Keine Freunde verfügbar</string>
     <string name="cant_remove_all_friends_text">Du kannst nicht alle Freunde entfernen!</string>
+    <string name="legal_text">Datenschutzerklärung</string>
+    <string name="license_text">Lizenz</string>
 </resources>

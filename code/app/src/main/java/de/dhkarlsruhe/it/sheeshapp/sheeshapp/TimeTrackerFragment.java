@@ -605,6 +605,20 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         getActivity().finish();
     }
 
+    public void myDestory() {
+        try {
+            timerTotal1.interrupt();
+            timerSingle1.interrupt();
+            timerNextPlayer.interrupt();
+            showNotification=false;
+            stopPlaying(soundTimeUp);
+            manager.cancelAll();
+        } catch (Exception e) {
+
+        }
+        callback= null; // => avoid leaking, thanks @Deepscorn
+    }
+
     public interface SendFriends {
         public void sendTrackerFriends(List<ChooseFriendObject> checked, List<ChooseFriendObject> unchecked);
     }
@@ -630,5 +644,4 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
             mp = null;
         }
     }
-
 }

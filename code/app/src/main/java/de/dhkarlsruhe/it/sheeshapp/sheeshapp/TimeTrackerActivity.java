@@ -222,7 +222,6 @@ public class TimeTrackerActivity extends AppCompatActivity implements TrackerFri
 
     @Override
     public void onDestroy() {
-       // this.mWakeLock.release();
         super.onDestroy();
     }
     @Override
