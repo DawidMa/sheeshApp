@@ -72,7 +72,6 @@ public class SignUpActivity extends AppCompatActivity {
         editor = pref.edit();
 
         animEtShake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.anim_shake_et);
-
     }
 
     public void closeSignUp(View view) {

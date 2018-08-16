@@ -12,6 +12,7 @@ import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
@@ -48,6 +49,7 @@ public class TrackerSetupFragment extends Fragment{
     private TextView tvTime, tvFriends, tvLocationLength, tvCommentLength;
     private static EditText etLocation, etComment;
     private static final int MAX_CHARS = 20;
+    private Button btComment, btLocation;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,6 +75,25 @@ public class TrackerSetupFragment extends Fragment{
 
         MyUtilities.configureEtMax(etLocation,tvLocationLength,MAX_CHARS,true);
         MyUtilities.configureEtMax(etComment,tvCommentLength,MAX_CHARS,true);
+
+        btComment = rootView.findViewById(R.id.btnSeClearComment);
+        btLocation = rootView.findViewById(R.id.btnSeClearLocation);
+        btComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etComment.setText("");
+            }
+        });
+        btLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etLocation.setText("");
+            }
+        });
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+
         updateTvTime();
 
         onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
