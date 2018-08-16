@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.MainActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
@@ -180,5 +181,18 @@ public class MyUtilities {
             }
         }
         return objects;
+    }
+
+    public static String durationAsString(long duration) {
+        String time = "";
+        if (duration==0) {
+            time = "00:00:00";
+        } else {
+            int seconds = (int) (duration / 1000) % 60 ;
+            int minutes = (int) ((duration / (1000*60)) % 60);
+            int hours   = (int) ((duration / (1000*60*60)) % 24);
+            time = String.format("%02d:%02d:%02d",hours,minutes,seconds );
+        }
+        return time;
     }
 }

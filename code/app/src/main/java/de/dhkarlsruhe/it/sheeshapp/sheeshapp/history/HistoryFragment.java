@@ -29,6 +29,7 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.SharedPrefConstants;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
 
 /**
  * Created by Informatik on 29.11.2017.
@@ -155,7 +156,7 @@ public class HistoryFragment extends Fragment {
             pimbloktos.add(histories.get(i).getLocation());
             pimbloktos.add(histories.get(i).getParticipants());
             pimbloktos.add(histories.get(i).getSessionName());
-            pimbloktos.add(histories.get(i).getDuration()+"");
+            pimbloktos.add(MyUtilities.durationAsString(histories.get(i).getDuration()));
             pimbloktos.add(histories.get(i).getTotalShishas()+"");
             listDataChild.put(listDataHeader.get(i), pimbloktos);
         }
