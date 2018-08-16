@@ -2,6 +2,7 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -33,6 +34,7 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.myvolley.VolleyCallback;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 
 /**
  * Created by d0272129 on 09.05.18.
@@ -48,6 +50,7 @@ public class FriendAutoCompleteAdapter extends BaseAdapter implements Filterable
     private Friend friend;
     private String myResult;
     private static AlertDialog dialog;
+    private UserSessionObject session;
     List<UserSearchObject> users;
     Type type;
 
@@ -55,6 +58,7 @@ public class FriendAutoCompleteAdapter extends BaseAdapter implements Filterable
         this.context = context;
         mRequestQueue = getRequestQueue();
         friend = new Friend(this.context);
+        session = new UserSessionObject(context);
         this.dialog = dialog;
     }
 
@@ -91,7 +95,7 @@ public class FriendAutoCompleteAdapter extends BaseAdapter implements Filterable
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -102,7 +106,11 @@ public class FriendAutoCompleteAdapter extends BaseAdapter implements Filterable
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                friend.addFriend(getItem(position).getEmail(),getItem(position).getName(),dialog);
+                if (getItem(position).getEmail().equals(session.getEmail())) {
+                    Snackbar.make(dialog.getCurrentFocus(), R.string.cant_be_your_own_friend,Snackbar.LENGTH_LONG).show();
+                } else {
+                    friend.addFriend(getItem(position).getEmail(),getItem(position).getName(),dialog);
+                }
             }
         });
         return convertView;

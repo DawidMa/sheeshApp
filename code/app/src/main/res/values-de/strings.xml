@@ -97,4 +97,5 @@
     <string name="cant_remove_all_friends_text">Du kannst nicht alle Freunde entfernen!</string>
     <string name="legal_text">Datenschutzerklärung</string>
     <string name="license_text">Lizenz</string>
+    <string name="cant_be_your_own_friend">Du kannst nicht dein eigener Freund sein :(</string>
 </resources>
