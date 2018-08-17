@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ public class HistoryFragment extends Fragment {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private TextView tvInfo;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +62,14 @@ public class HistoryFragment extends Fragment {
         editor = preferences.edit();
         tvInfo = rootView.findViewById(R.id.tvHitoryInfo);
         histories = new ArrayList<>();
+        swipeRefreshLayout = rootView.findViewById(R.id.swipeFragHis);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.orangeAccent));
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                onlineData();
+            }
+        });
         offlineData();
         onlineData();
         return rootView;
@@ -78,6 +88,7 @@ public class HistoryFragment extends Fragment {
     }
 
     private void onlineData() {
+        swipeRefreshLayout.setRefreshing(true);
         long id = session.getUser_id();
         long lastid;
         if (!histories.isEmpty()) {
@@ -88,6 +99,7 @@ public class HistoryFragment extends Fragment {
         StringRequest request = new StringRequest(ServerConstants.URL_HISTORIES + id+"&lastid="+lastid, new Response.Listener<String>() {
             @Override
             public void onResponse(String string) {
+                swipeRefreshLayout.setRefreshing(false);
                 List<History> onlineHistories = jsonToList(string);
                 if (!onlineHistories.isEmpty()) {
                     histories.addAll(onlineHistories);
@@ -100,6 +112,7 @@ public class HistoryFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(getContext(), R.string.error_loading_history,Toast.LENGTH_SHORT).show();
                 if (histories.size()>0) {
                     tvInfo.setVisibility(View.GONE);

@@ -118,7 +118,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         friendImage = rootView.findViewById(R.id.liFriendImage);
         list = rootView.findViewById(R.id.lvFragFriList);
         swipeRefreshLayout = rootView.findViewById(R.id.swipeFragFri);
-        swipeRefreshLayout.setColorSchemeColors(Color.CYAN);
+        swipeRefreshLayout.setColorSchemeColors(context.getResources().getColor(R.color.orangeAccent));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -442,6 +442,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setAnimationStyle(R.style.popupAnimation);
         popupWindow.setFocusable(true);
+        popupWindow.setElevation(30);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.LTGRAY));
         imageHelper.setRectImage(friendlistObject.get(position).getFriend_id()+"",imgProfile);
         tvName.setText(friendlistObject.get(position).getName());
@@ -452,7 +453,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         Point size = new Point();
         display.getSize(size);
 
-        popupWindow.showAtLocation(imgFriends, Gravity.NO_GRAVITY, (size.x/2)-(pxToDp(imgFriends.getWidth())*4), (size.y/2)- (pxToDp(imgFriends.getHeight())*4));
+        popupWindow.showAtLocation(imgFriends, Gravity.CENTER, 0,0);
     }
 
     public int pxToDp(int px) {

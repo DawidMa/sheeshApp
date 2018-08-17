@@ -99,6 +99,10 @@ public class TimeTrackerActivity extends AppCompatActivity implements TrackerFri
         trackerFriendsFragment.getFriendLists(checked,unchecked);
     }
 
+    public void switchTab(View view) {
+        mViewPager.setCurrentItem(1,true);
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */

@@ -150,6 +150,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/btnTrackChange"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:onClick="switchTab"
+        android:background="@drawable/icon_change_friends"
+        app:layout_constraintBottom_toBottomOf="@+id/tiTvTopTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tiTvTopTitle" />
 
 
 </android.support.constraint.ConstraintLayout>
