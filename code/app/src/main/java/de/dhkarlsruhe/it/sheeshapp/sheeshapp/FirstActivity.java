@@ -12,13 +12,15 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
+
 import static java.lang.Thread.sleep;
 
 /**
  * Created by Informatik on 16.11.2017.
  */
 
-public class FirstActivity extends AppCompatActivity{
+public class FirstActivity extends AppCompatActivity {
 
     public ImageView logo;
     public Animation fadeInAnimation;
@@ -31,8 +33,8 @@ public class FirstActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        MyUtilities.statusBarAccent(getWindow(), this);
         logo = findViewById(R.id.logoSplash);
         tvSplash = findViewById(R.id.tvSplash);
         layout = findViewById(R.id.layoutFirst);
@@ -44,9 +46,8 @@ public class FirstActivity extends AppCompatActivity{
                 startNextActivity();
             }
         };
-        handler.postDelayed(runnable,4000);
+        handler.postDelayed(runnable, 4000);
         setListener();
-
     }
 
     private void setListener() {
@@ -60,20 +61,13 @@ public class FirstActivity extends AppCompatActivity{
     }
 
     private void startNextActivity() {
-        Intent intent = new Intent(this,WelcomeActivity.class);
+        Intent intent = new Intent(this, WelcomeActivity.class);
         startActivity(intent);
         this.finish();
     }
 
-    private void activateAnimation()  {
-
-        //AnimationSet animation = new AnimationSet(false); //change to false
-        //animation.addAnimation(fadeInAnimation);
-        //animation.addAnimation(fadeOutAnimation);
+    private void activateAnimation() {
         logo.setAnimation(fadeInAnimation);
         tvSplash.setAnimation(fadeInAnimation);
-
     }
-
-
 }

@@ -3,6 +3,7 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +15,7 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
@@ -228,5 +230,9 @@ public class MyUtilities {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         return String.format("%02d.%02d.%04d  %02d:%02d",day,month,year,hour,minute);
+    }
+
+    public static void statusBarAccent(Window window, Activity activity) {
+        window.setStatusBarColor(activity.getResources().getColor(R.color.colorAccent));
     }
 }
