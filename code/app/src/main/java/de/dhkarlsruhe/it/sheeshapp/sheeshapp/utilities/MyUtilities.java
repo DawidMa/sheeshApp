@@ -49,6 +49,8 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
 
 public class MyUtilities {
     static DelayAutoCompleteTextView autoCompleteTextView;
+    public final static String AD_APP_ID = "ca-app-pub-4355529827581242~4147435635";
+
 
     public static String getChooseFriendsAsString(List<ChooseFriendObject> list) {
         String ok = "";

@@ -22,7 +22,6 @@ public class LoginActivityGuest extends AppCompatActivity implements RewardedVid
 
     private EditText et;
     private Guest guest;
-    private final static String AD_APP_ID = "ca-app-pub-4355529827581242~4147435635";
     private final static String AD_REWARD_ID = "ca-app-pub-4355529827581242/8469199305";
     private final static String AD_REWARD_ID_TEST = "ca-app-pub-3940256099942544/5224354917";
     private RewardedVideoAd mRewardedVideoAd;
@@ -39,7 +38,7 @@ public class LoginActivityGuest extends AppCompatActivity implements RewardedVid
         guest = new Guest(this);
         btnLogin = findViewById(R.id.btnGuestLogin);
         tvInfo = findViewById(R.id.tvGuestLoginInfo);
-        MobileAds.initialize(this,AD_APP_ID);
+        MobileAds.initialize(this,MyUtilities.AD_APP_ID);
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         mRewardedVideoAd.setRewardedVideoAdListener(this);
         loadRewardedVideoAd();

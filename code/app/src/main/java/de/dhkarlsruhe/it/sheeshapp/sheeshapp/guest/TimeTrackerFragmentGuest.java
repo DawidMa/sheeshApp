@@ -37,6 +37,7 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.circle.MyCircle;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.history.History;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.timer.FloTimer;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
 
 /**
  * Created by Informatik on 28.11.2017.
@@ -88,7 +89,6 @@ public class TimeTrackerFragmentGuest extends android.support.v4.app.Fragment {
 
     private MediaPlayer soundTimeUp;
     private AdView adView;
-    private final static String AD_APP_ID = "ca-app-pub-4355529827581242~4147435635";
     private Button btnChange;
 
 
@@ -104,7 +104,7 @@ public class TimeTrackerFragmentGuest extends android.support.v4.app.Fragment {
         btnChange.setVisibility(View.GONE);
         guest = new Guest(getActivity());
         init();
-        MobileAds.initialize(getContext(), AD_APP_ID);
+        MobileAds.initialize(getContext(), MyUtilities.AD_APP_ID);
         adView = v.findViewById(R.id.adTracker);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);

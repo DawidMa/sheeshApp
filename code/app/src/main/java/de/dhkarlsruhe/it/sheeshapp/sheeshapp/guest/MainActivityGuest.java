@@ -80,7 +80,6 @@ public class MainActivityGuest extends AppCompatActivity
     private ImageHelper imageHelper;
     private String actualTab;
     private Window window;
-    private final static String AD_APP_ID = "ca-app-pub-4355529827581242~4147435635";
     private final static String AD_BANNER_ID = "ca-app-pub-4355529827581242/7220321532";
     private final static String AD_BANNER_ID_TEST = "ca-app-pub-3940256099942544/1033173712";
     private InterstitialAd ad;
@@ -102,7 +101,7 @@ public class MainActivityGuest extends AppCompatActivity
         guest = new Guest(this);
         initStart();
 
-        MobileAds.initialize(this, AD_APP_ID);
+        MobileAds.initialize(this, MyUtilities.AD_APP_ID);
         ad = new InterstitialAd(this);
         ad.setAdUnitId(AD_BANNER_ID_TEST);
         ad.loadAd(new AdRequest.Builder().build());

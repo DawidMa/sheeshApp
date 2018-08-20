@@ -117,7 +117,6 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     private MediaPlayer soundTimeUp;
     private UserSessionObject session;
     private AdView adView;
-    private final static String AD_APP_ID = "ca-app-pub-4355529827581242~4147435635";
 
 
 
@@ -129,7 +128,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         View rootView = inflater.inflate(R.layout.fragment_time_tracker, container, false);
         v= rootView;
         init();
-        MobileAds.initialize(getContext(), AD_APP_ID);
+        MobileAds.initialize(getContext(), MyUtilities.AD_APP_ID);
         adView = v.findViewById(R.id.adTracker);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
