@@ -1,4 +1,4 @@
-package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
+package de.dhkarlsruhe.it.sheeshapp.sheeshapp.first;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.WelcomeActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
 
 import static java.lang.Thread.sleep;
@@ -33,8 +35,7 @@ public class FirstActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        MyUtilities.statusBarAccent(getWindow(), this);
+
         logo = findViewById(R.id.logoSplash);
         tvSplash = findViewById(R.id.tvSplash);
         layout = findViewById(R.id.layoutFirst);

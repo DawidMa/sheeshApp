@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,10 +10,10 @@
         android:id="@+id/tvWelTitle"
         style="@style/tvTitle"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:text="@string/welcome"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/imgWelLogo"
+        app:layout_constraintStart_toEndOf="@+id/imgWelLogo"
+        app:layout_constraintTop_toTopOf="@+id/imgWelLogo" />
 
     <Button
         android:id="@+id/btnWelSignUp"
@@ -24,7 +23,7 @@
         android:layout_marginStart="8dp"
         android:onClick="openSignUp"
         android:text="@string/welcome_signup_button"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintBottom_toTopOf="@+id/tvWelAlreadyHave"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -59,6 +58,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
+
     <Button
         android:id="@+id/btnWelClose"
         style="@style/btnStyleLongRed"
@@ -71,17 +71,16 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imgWelLogo"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnWelSignUp"
+        android:id="@+id/imgWelSheesh"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvWelNew"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvWelTitle" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imgWelLogo"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginStart="16dp"
@@ -91,7 +90,7 @@
         app:srcCompat="@drawable/logo_menus" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvWelNew"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="3dp"
@@ -106,7 +105,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/tvWelAlreadyHave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="3dp"

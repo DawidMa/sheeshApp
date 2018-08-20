@@ -14,24 +14,17 @@ import com.bumptech.glide.Glide;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.guest.LoginActivityGuest;
 
-
-/**
- * Created by Informatik on 17.11.2017.
- */
-
 public class WelcomeActivity extends AppCompatActivity {
 
-    ImageView image;
+    private ImageView image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        image = findViewById(R.id.imgWelLogo);
+
+        image = findViewById(R.id.imgWelSheesh);
         if (image != null) {
             Glide.with(this).load(R.drawable.sheeshopa).into(image);
-            sendViewToBack(image);
         }
     }
 
@@ -47,13 +40,6 @@ public class WelcomeActivity extends AppCompatActivity {
     public void openLogIn(View view) {
         Intent intent = new Intent(this,LogInActivity.class);
         startActivity(intent);
-    }
-    public static void sendViewToBack(final View child) {
-        final ViewGroup parent = (ViewGroup)child.getParent();
-        if (null != parent) {
-            parent.removeView(child);
-            parent.addView(child, 0);
-        }
     }
 
     public void openGuest(View view) {

@@ -53,7 +53,6 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         MobileAds.initialize(this, MyUtilities.AD_APP_ID);
         adView = findViewById(R.id.adLogin);
         AdRequest adRequest = new AdRequest.Builder().build();
