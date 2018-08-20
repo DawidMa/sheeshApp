@@ -40,7 +40,7 @@ public class LoginActivityGuest extends AppCompatActivity implements RewardedVid
 
     private void loadRewardedVideoAd() {
 
-        mRewardedVideoAd.loadAd(AD_REWARD_ID_TEST, new AdRequest.Builder().build());
+        mRewardedVideoAd.loadAd(AD_REWARD_ID, new AdRequest.Builder().build());
     }
 
 
