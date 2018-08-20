@@ -117,7 +117,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     private MediaPlayer soundTimeUp;
     private UserSessionObject session;
     private AdView adView;
-
+    private AdRequest adRequest;
 
 
     public TimeTrackerFragment() {}
@@ -130,7 +130,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         init();
         MobileAds.initialize(getContext(), MyUtilities.AD_APP_ID);
         adView = v.findViewById(R.id.adTracker);
-        AdRequest adRequest = new AdRequest.Builder().build();
+        adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
         friend = new Friend(getContext());
         session = new UserSessionObject(getContext());
