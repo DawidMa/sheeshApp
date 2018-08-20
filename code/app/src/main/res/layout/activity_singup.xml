@@ -1,48 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutSignUp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_menus"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@drawable/background_menus">
 
     <TextView
         android:id="@+id/tvSigTitle"
+        style="@style/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:text="@string/signup"
-        android:textColor="#fff"
-        android:textSize="45dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/imgSigLogo"
+        app:layout_constraintStart_toEndOf="@+id/imgSigLogo"
+        app:layout_constraintTop_toTopOf="@+id/imgSigLogo" />
 
     <Button
         android:id="@+id/btnSigWelcome"
+        style="@style/btnStyleLongGray"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/btn_roundrect_states"
         android:onClick="closeSignUp"
         android:text="@string/cancel_text"
-        android:textColor="#fff"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/edTPasswordRepeat"
         app:layout_constraintTop_toBottomOf="@+id/cbSaveLogin" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
-
     <Button
-        android:id="@+id/btnSigHomescreen"
+        android:id="@+id/btnSigAccept"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -55,79 +44,58 @@
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/cbSaveLogin" />
 
-    <EditText
-        android:id="@+id/edTUsername"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="152dp"
-        android:background="@drawable/et_background"
-        android:hint="@string/username_text"
-        android:inputType="textPersonName"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/edTUsername"
+            style="@style/etStyle"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:hint="@string/username_text"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toTopOf="@+id/edTEmail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
 
     <EditText
         android:id="@+id/edTEmail"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
+        style="@style/etStyle"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/et_background"
-        android:ems="10"
         android:hint="@string/email_text"
         android:inputType="textEmailAddress"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/edTPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edTUsername" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/edTPassword"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
+        style="@style/etStyle"
+        android:layout_marginBottom="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/et_background"
-        android:ems="10"
         android:hint="@string/password_text"
         android:inputType="textPassword"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edTEmail" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/edTPasswordRepeat"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
+        style="@style/etStyle"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/et_background"
-        android:ems="10"
         android:hint="@string/repeat_password_text"
         android:inputType="textPassword"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edTPassword" />
+        app:layout_constraintTop_toBottomOf="@id/guideline4" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imgSigLogo"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginStart="16dp"
@@ -141,14 +109,12 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/ic_info"
         android:onClick="showInfoUsername"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/edTUsername"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.266"
         app:layout_constraintStart_toEndOf="@+id/edTUsername"
         app:layout_constraintTop_toTopOf="@+id/edTUsername" />
 
@@ -157,14 +123,12 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/ic_info"
         android:onClick="showInfoEmail"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/edTEmail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.264"
         app:layout_constraintStart_toEndOf="@+id/edTEmail"
         app:layout_constraintTop_toTopOf="@+id/edTEmail" />
 
@@ -173,14 +137,12 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/ic_info"
         android:onClick="showInfoPassword"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/edTPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.26"
         app:layout_constraintStart_toEndOf="@+id/edTPassword"
         app:layout_constraintTop_toTopOf="@+id/edTPassword" />
 
@@ -189,14 +151,12 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/ic_info"
         android:onClick="showInfoPasswordRepeat"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/edTPasswordRepeat"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.264"
         app:layout_constraintStart_toEndOf="@+id/edTPasswordRepeat"
         app:layout_constraintTop_toTopOf="@+id/edTPasswordRepeat" />
 
@@ -209,11 +169,23 @@
         android:layout_marginTop="8dp"
         android:checked="false"
         android:text="@string/save_login_text"
+        android:textColor="#FFF"
         android:textSize="20dp"
-        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edTPasswordRepeat" />
 
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
 </android.support.constraint.ConstraintLayout>

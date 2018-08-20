@@ -67,6 +67,16 @@
         <item name="android:textSize">45dp</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="inputLayoutText" parent="@android:style/TextAppearance">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">#fff</item>
+        <item name="android:textSize">20sp</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
+    </style>
+
 
     <style name="popupAnimation">
         <item name="android:windowEnterAnimation">@anim/popup_show</item>

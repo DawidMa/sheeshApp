@@ -6,7 +6,7 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 
 public class SharedPrefConstants {
 
-    public static String NAME = "sheeshapp";
+    public static final String USERDATA = "userdata";
     public static String EMAIL = "savedEmail";
     public static String PASSWORD = "savedPassword";
     public static String AUTOMATIC_LOGIN = "saveLogin";
