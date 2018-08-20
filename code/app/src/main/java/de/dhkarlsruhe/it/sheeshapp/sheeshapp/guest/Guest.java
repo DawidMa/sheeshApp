@@ -71,9 +71,11 @@ public class Guest {
     }
 
     public List<ChooseFriendObject> getFriends() {
+
         String friends = pref.getString(SharedPrefConstants.F_ALL_CHECKED,"empty");
         if (friends.equals("empty")) {
-            return Collections.emptyList();
+            List<ChooseFriendObject> list = new ArrayList<>();
+            return list;
         } else {
             Type listType = new TypeToken<List<ChooseFriendObject>>() {}.getType();
             Gson json = new Gson();
@@ -94,5 +96,10 @@ public class Guest {
 
     public float getTimeInSeconds() {
         return pref.getInt(SharedPrefConstants.TIME_IN_SECONDS,5);
+    }
+
+    public void deleteAllFriends() {
+        editor.remove(SharedPrefConstants.F_ALL_CHECKED);
+        editor.apply();
     }
 }

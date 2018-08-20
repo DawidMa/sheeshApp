@@ -8,43 +8,35 @@
 
     <TextView
         android:id="@+id/tvSeTitle"
-        android:shadowColor="@color/colorPrimary"
         android:layout_width="match_parent"
-        android:gravity="center"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/tracker_title"
-        android:textColor="#fff"
+        android:gravity="center"
+        android:shadowColor="@color/colorPrimary"
         android:shadowDx="10"
         android:shadowDy="10"
         android:shadowRadius="80"
+        android:text="@string/tracker_title"
+        android:textColor="#fff"
         android:textSize="32dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
-
     <android.support.constraint.ConstraintLayout
         android:id="@+id/layoutSeFriends"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
         android:background="@drawable/setup_box"
         android:elevation="10dp"
         android:minHeight="120dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSeTitle">
 
@@ -91,13 +83,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/setup_box"
         android:elevation="10dp"
         android:minHeight="120dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/tvSeTitle">
 
@@ -140,7 +131,6 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/layoutSeLocation"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -158,11 +148,12 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             android:tint="@color/orangeAccent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/etSeLocation"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvSeLocationTitle"
+            app:layout_constraintTop_toTopOf="@+id/etSeLocation"
             app:srcCompat="@drawable/icon_location" />
 
         <TextView
@@ -180,17 +171,40 @@
 
         <EditText
             android:id="@+id/etSeLocation"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="@string/shishas_location_hint"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvSeLocationLength"
             app:layout_constraintStart_toEndOf="@+id/imgSeIconLocation"
             app:layout_constraintTop_toBottomOf="@+id/tvSeLocationTitle" />
+
+        <TextView
+            android:id="@+id/tvSeLocationLength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:text="--"
+            android:textSize="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/etSeLocation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/etSeLocation" />
+
+        <Button
+            android:id="@+id/btnSeClearLocation"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/icon_eraser"
+            android:backgroundTint="@color/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -212,10 +226,11 @@
             android:layout_height="32dp"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:tint="@color/orangeAccent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/etSeComment"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvSeCommentTitle"
+            app:layout_constraintTop_toTopOf="@+id/etSeComment"
             app:srcCompat="@drawable/icon_comment" />
 
         <TextView
@@ -233,19 +248,48 @@
 
         <EditText
             android:id="@+id/etSeComment"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="@string/your_comment_hint"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvSeCommentLength"
             app:layout_constraintStart_toEndOf="@+id/imgSeIconComment"
             app:layout_constraintTop_toBottomOf="@+id/tvSeCommentTitle" />
 
+        <TextView
+            android:id="@+id/tvSeCommentLength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:text="--"
+            android:textSize="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/etSeComment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/etSeComment" />
+
+        <Button
+            android:id="@+id/btnSeClearComment"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/icon_eraser"
+            android:backgroundTint="@color/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
     </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
 </android.support.constraint.ConstraintLayout>

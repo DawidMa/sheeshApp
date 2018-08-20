@@ -1,5 +1,6 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp.guest;
 
+import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -25,6 +27,9 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by d0272129 on 14.04.17.
  */
@@ -37,8 +42,12 @@ public class TrackerSetupFragmentGuest extends Fragment{
     private TimePickerDialog.OnTimeSetListener onTimeSetListener;
     private ConstraintLayout layoutTime, layoutFriends;
     private int minutes, seconds;
-    private TextView tvTime, tvFriends;
+    private TextView tvTime, tvFriends, tvLocationLength, tvCommentLength;
     private static Guest guest;
+    private View rootView;
+    private EditText etComment, etLocation;
+    private static final int MAX_CHARS = 0;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,10 +58,21 @@ public class TrackerSetupFragmentGuest extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_tracker_setup, container, false);
+        rootView = inflater.inflate(R.layout.fragment_tracker_setup, container, false);
         guest = new Guest(getActivity());
         tvTime = rootView.findViewById(R.id.tvSeTimeInfo);
         tvFriends = rootView.findViewById(R.id.tvSeFriendsInfo);
+        tvLocationLength = rootView.findViewById(R.id.tvSeLocationLength);
+        tvCommentLength = rootView.findViewById(R.id.tvSeCommentLength);
+
+        etComment = rootView.findViewById(R.id.etSeComment);
+        etLocation = rootView.findViewById(R.id.etSeLocation);
+        etComment.setKeyListener(null);
+        etLocation.setKeyListener(null);
+
+        MyUtilities.configureEtMax(etLocation,tvLocationLength,MAX_CHARS,false);
+        MyUtilities.configureEtMax(etComment,tvCommentLength,MAX_CHARS,false);
+
         updateTvTime();
 
         onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
@@ -78,8 +98,8 @@ public class TrackerSetupFragmentGuest extends Fragment{
         layoutFriends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ChooseFriendActivityGuest.class);
-                startActivityForResult(intent,11);
+                Intent intent = new Intent(getContext(), ChooseFriendActivityGuest.class);
+                startActivityForResult(intent,12345);
             }
         });
         myResume();
@@ -88,10 +108,11 @@ public class TrackerSetupFragmentGuest extends Fragment{
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 11 && resultCode==0) {
+        super.onActivityResult(requestCode, resultCode, data);
+        System.out.println(resultCode+"XXXXXXXXXXXXXX");
+        if (requestCode == 12345 && resultCode == RESULT_OK) {
             myResume();
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void updateTvTime() {
@@ -138,13 +159,15 @@ public class TrackerSetupFragmentGuest extends Fragment{
     private static boolean checkChoosenFriends() {
         boolean check = false;
         int numberFriends = guest.getFriends().size();
-        if(numberFriends>=1) {
+        if(numberFriends==0) {
             check = true;
         }
-        return check;
+        return true;
     }
 
     public void myResume() {
+        System.out.println("nullnullnullnull");
+        //tvFriends = rootView.findViewById(R.id.tvSeFriendsInfo);
         if (tvFriends!=null) {
             List<ChooseFriendObject> friends = guest.getFriends();
             if (!friends.isEmpty()) {

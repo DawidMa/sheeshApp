@@ -3,6 +3,7 @@ package de.dhkarlsruhe.it.sheeshapp.sheeshapp;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,7 +66,7 @@ public class TrackerFriendsFragment extends Fragment {
         friend = new Friend(context);
         listView = rootView.findViewById(R.id.lvFragTrackerFriends);
         numOfChecked = checked.size();
-        adapter = new TrackerFriendsAdapter(getActivity(),objects, numOfChecked);
+        adapter = new TrackerFriendsAdapter(getActivity(), objects, numOfChecked);
         listView.setAdapter(adapter);
         return rootView;
     }
@@ -73,7 +74,7 @@ public class TrackerFriendsFragment extends Fragment {
     public void getFriendLists(List<ChooseFriendObject> checked, List<ChooseFriendObject> unchecked) {
         this.checked = checked;
         this.unchecked = unchecked;
-        if (transGroup!=null)
+        if (transGroup != null)
             TransitionManager.beginDelayedTransition(transGroup, new ChangeBounds());
         fillList();
     }
@@ -83,13 +84,13 @@ public class TrackerFriendsFragment extends Fragment {
         objects.addAll(checked);
         objects.addAll(unchecked);
         numOfChecked = checked.size();
-        adapter = new TrackerFriendsAdapter(getActivity(),objects, checked.size());
+        adapter = new TrackerFriendsAdapter(getActivity(), objects, checked.size());
         listView.setAdapter(adapter);
 
     }
 
     public void sendInfo(ChooseFriendObject object, boolean checked) {
-        callback.send(object,checked);
+        callback.send(object, checked);
     }
 
     @Override
@@ -104,41 +105,40 @@ public class TrackerFriendsFragment extends Fragment {
         int numOfChecked;
 
         TrackerFriendsAdapter(Context c, List<ChooseFriendObject> checkedFirst, int numOfChecked) {
-            super(c, R.layout.row_choose_friend,R.id.liChooseFriendName,checkedFirst);
+            super(c, R.layout.row_choose_friend, R.id.liChooseFriendName, checkedFirst);
             this.context = c;
             this.numOfChecked = numOfChecked;
         }
 
         @Override
         public View getView(int position, View convertView, final ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater)getContext().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View row = inflater.inflate(R.layout.row_choose_friend,parent,false);
+            LayoutInflater inflater = (LayoutInflater) getContext().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View row = inflater.inflate(R.layout.row_choose_friend, parent, false);
             final ChooseFriendObject actualObject = getItem(position);
-            TextView myTitle = (TextView)row.findViewById(R.id.liChooseFriendName);
+            TextView myTitle = (TextView) row.findViewById(R.id.liChooseFriendName);
             myTitle.setText(actualObject.getName());
-            TransitionManager.setTransitionName(row, actualObject.getId()+"");
-            long tag = actualObject.getId();
+            TransitionManager.setTransitionName(row, actualObject.getId() + "");
             final Switch cb = (Switch) row.findViewById(R.id.switchFriends);
             transGroup = parent;
-            cb.setTag(tag);
-            if (position<numOfChecked) {
+            if (position < numOfChecked) {
                 cb.setChecked(true);
             } else {
                 cb.setChecked(false);
             }
-            cb.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(cb.isChecked()) {
-                        sendInfo(actualObject,false);
-                    } else {
-                        sendInfo(actualObject,true);
+            //cb.setClickable(false);
+                cb.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (cb.isChecked()) {
+                            sendInfo(actualObject, false);
+                            //cb.setChecked(false);
+                        } else {
+                            sendInfo(actualObject, true);
+                            // cb.setChecked(true);
+                        }
                     }
-                }
-            });
+                });
             return row;
         }
     }
-
-
 }

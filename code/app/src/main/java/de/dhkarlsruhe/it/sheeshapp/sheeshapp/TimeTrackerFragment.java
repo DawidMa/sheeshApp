@@ -24,6 +24,9 @@ import android.view.animation.Animation;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
@@ -45,7 +48,9 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.history.History;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.timer.FloTimer;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -74,7 +79,7 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     private List<ChooseFriendObject> uncheckedFriends = new ArrayList<>();
 
     public static String firstFriend;
-    private String friendsAsString="", dateStart ="", dateEnd="",totalTime;
+    private String friendsAsString="", dateStart ="", dateEnd="",totalTime, comment, location;
 
     private Friend friend;
 
@@ -110,6 +115,9 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     private HashSet<ChooseFriendObject> allFriendsUnique = new HashSet<>();
 
     private MediaPlayer soundTimeUp;
+    private UserSessionObject session;
+    private AdView adView;
+    private AdRequest adRequest;
 
 
     public TimeTrackerFragment() {}
@@ -120,12 +128,29 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         View rootView = inflater.inflate(R.layout.fragment_time_tracker, container, false);
         v= rootView;
         init();
+        MobileAds.initialize(getContext(), MyUtilities.AD_APP_ID);
+        adView = v.findViewById(R.id.adTracker);
+        adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
         friend = new Friend(getContext());
+        session = new UserSessionObject(getContext());
         sequence = friend.getAllCheckedFriends();
+        if (sequence.isEmpty()) {
+            sequence = new ArrayList<>();
+        }
+        sequence.add(new ChooseFriendObject(session.getName(),session.getUser_id()));
         uncheckedFriends = friend.getAllUncheckedFriends();
         Collections.shuffle(sequence);
         printFriendsList(sequence);
         firstFriend = sequence.get(0).getName();
+        comment = pref.getString(SharedPrefConstants.COMMENT,"---");
+        location = pref.getString(SharedPrefConstants.LOCATION,"---");
+        if (!MyUtilities.stringOK(comment)) {
+            comment = "---";
+        }
+        if (!MyUtilities.stringOK(location)) {
+            location = "---";
+        }
         circle = rootView.findViewById(R.id.animatedCircle);
         circle.setColor("#00ff00");
         circleGray = rootView.findViewById(R.id.grayCircle);
@@ -184,22 +209,6 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         });
     }
 
-    public List<ChooseFriendObject> getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(List<ChooseFriendObject> sequence) {
-        this.sequence = sequence;
-    }
-
-    public List<ChooseFriendObject> getUncheckedFriends() {
-        return uncheckedFriends;
-    }
-
-    public void setUncheckedFriends(List<ChooseFriendObject> uncheckedFriends) {
-        this.uncheckedFriends = uncheckedFriends;
-    }
-
     public void fragmentPressedStart() {
         btPause.setEnabled(true);
         btStart.setEnabled(false);
@@ -219,16 +228,18 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
     private void registerInitialHistories() {
         for (ChooseFriendObject i : sequence) {
-            if (allFriendsUnique.add(i)) {
-                History history = new History();
-                history.setDuration(0);
-                history.setLocation("In Dawids Garage");
-                history.setParticipants("");
-                history.setSessionName("Von anfang an dabei");
-                history.setTotalShishas(numOfSwitchedCoal);
-                history.setUserId(i.getId());
-                history.setDate(dateStart);
-                histories.add(history);
+            if (i.getId()>0) {
+                if (allFriendsUnique.add(i)) {
+                    History history = new History();
+                    history.setDuration(0);
+                    history.setLocation(location);
+                    history.setParticipants("");
+                    history.setSessionName(comment);
+                    history.setTotalShishas(numOfSwitchedCoal);
+                    history.setUserId(i.getId());
+                    history.setDate(dateStart);
+                    histories.add(history);
+                }
             }
         }
     }
@@ -481,7 +492,6 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         timerNextPlayer.pause();
         timerTotal1.pause();
         timerFlash.pause();
-
         dateEnd = setDate();
         saveToStatistics();
         showNotification=false;
@@ -536,14 +546,8 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     }
 
     public String setDate() {
-        String date="";
         calendar.setTimeInMillis(System.currentTimeMillis());
-        date += calendar.get(Calendar.DAY_OF_MONTH)+".";
-        date += (calendar.get(Calendar.MONTH)+1)+".";
-        date += calendar.get(Calendar.YEAR)+"  ";
-        date += calendar.get(Calendar.HOUR_OF_DAY)+":";
-        date += calendar.get(Calendar.MINUTE);
-        return date;
+        return MyUtilities.calendarToString(calendar);
     }
 
     // Vibrate for 500 milliseconds
@@ -600,13 +604,14 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
     }
 
     private void registerNewHistory(ChooseFriendObject object) {
+        dateStart = setDate();
         if (object.getId()>0) {
             if (allFriendsUnique.add(object)) {
                 History history = new History();
                 history.setDuration(timerTotal1.getTimeAsLong());
-                history.setLocation("In Dawids Garage");
+                history.setLocation(location);
                 history.setParticipants("");
-                history.setSessionName("Kam später dazu");
+                history.setSessionName(comment);
                 history.setTotalShishas(numOfSwitchedCoal);
                 history.setUserId(object.getId());
                 history.setDate(dateStart);
@@ -619,6 +624,20 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         showNotification=false;
         stopPlaying(soundTimeUp);
         getActivity().finish();
+    }
+
+    public void myDestory() {
+        try {
+            timerTotal1.interrupt();
+            timerSingle1.interrupt();
+            timerNextPlayer.interrupt();
+            showNotification=false;
+            stopPlaying(soundTimeUp);
+            manager.cancelAll();
+        } catch (Exception e) {
+
+        }
+        callback= null; // => avoid leaking, thanks @Deepscorn
     }
 
     public interface SendFriends {
@@ -646,5 +665,4 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
             mp = null;
         }
     }
-
 }

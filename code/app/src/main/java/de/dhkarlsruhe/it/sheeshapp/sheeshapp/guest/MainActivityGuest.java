@@ -80,7 +80,6 @@ public class MainActivityGuest extends AppCompatActivity
     private ImageHelper imageHelper;
     private String actualTab;
     private Window window;
-    private final static String AD_APP_ID = "ca-app-pub-4355529827581242~4147435635";
     private final static String AD_BANNER_ID = "ca-app-pub-4355529827581242/7220321532";
     private final static String AD_BANNER_ID_TEST = "ca-app-pub-3940256099942544/1033173712";
     private InterstitialAd ad;
@@ -102,9 +101,9 @@ public class MainActivityGuest extends AppCompatActivity
         guest = new Guest(this);
         initStart();
 
-        MobileAds.initialize(this, AD_APP_ID);
+        MobileAds.initialize(this, MyUtilities.AD_APP_ID);
         ad = new InterstitialAd(this);
-        ad.setAdUnitId(AD_BANNER_ID);
+        ad.setAdUnitId(AD_BANNER_ID_TEST);
         ad.loadAd(new AdRequest.Builder().build());
         ad.setAdListener(new AdListener() {
             @Override
@@ -178,12 +177,6 @@ public class MainActivityGuest extends AppCompatActivity
         imgUser = header.findViewById(R.id.imgHeader);
         imageHelper.setRoundImageDefault(imgUser);
         // setImgUser();
-        imgUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                animateIntent(v);
-            }
-        });
     }
 
     private void initRfa() {
@@ -192,22 +185,6 @@ public class MainActivityGuest extends AppCompatActivity
 
         rfaLayout = findViewById(R.id.rfabLayoutMain);
         rfaButton = findViewById(R.id.rfabButtonMain);
-    }
-
-    public void animateIntent(View view) {
-        // Bitmap bitmap = ((BitmapDrawable)imgUser.getDrawable()).getBitmap();
-        //  ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        // bitmap.compress(Bitmap.CompressFormat.PNG, 10, stream);
-        //byte[] byteArray = stream.toByteArray();
-        Intent intent = new Intent(this, MyProfileActivity.class);
-        String transitionName = getString(R.string.transition_string);
-        ActivityOptionsCompat options =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-                        imgUser,   // Starting view
-                        transitionName    // The String
-                );
-        //intent.putExtra("image",byteArray);
-        startActivity(intent, options.toBundle());
     }
 
     public void changeFabToAddFriend() {

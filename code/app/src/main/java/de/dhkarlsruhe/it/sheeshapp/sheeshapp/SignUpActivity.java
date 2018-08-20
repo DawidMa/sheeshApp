@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputFilter;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -22,6 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.SignUp;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
 
 /**
  * Created by Informatik on 20.11.2017.
@@ -54,6 +56,11 @@ public class SignUpActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.edTPassword);
         etPasswordRepeat = findViewById(R.id.edTPasswordRepeat);
 
+        etUsername.setFilters(new InputFilter[]{MyUtilities.EMOJI_FILTER});
+        etEmail.setFilters(new InputFilter[]{MyUtilities.EMOJI_FILTER});
+        etPassword.setFilters(new InputFilter[]{MyUtilities.EMOJI_FILTER});
+        etPasswordRepeat.setFilters(new InputFilter[]{MyUtilities.EMOJI_FILTER});
+
         cbSaveLogin = findViewById(R.id.cbSaveLogin);
 
         imgBtnUsername = findViewById(R.id.imgBtnSigInfoUsername);
@@ -65,7 +72,6 @@ public class SignUpActivity extends AppCompatActivity {
         editor = pref.edit();
 
         animEtShake = AnimationUtils.loadAnimation(SignUpActivity.this, R.anim.anim_shake_et);
-
     }
 
     public void closeSignUp(View view) {

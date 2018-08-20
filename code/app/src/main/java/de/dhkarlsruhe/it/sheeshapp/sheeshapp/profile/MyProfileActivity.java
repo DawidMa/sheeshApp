@@ -335,6 +335,7 @@ public class MyProfileActivity extends AppCompatActivity{
             }
         });
         t.start();
+
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
@@ -342,6 +343,7 @@ public class MyProfileActivity extends AppCompatActivity{
             }
         });
     }
+
     private String getMimeType(String path) {
         String extension = MimeTypeMap.getFileExtensionFromUrl(path);
         return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
@@ -358,7 +360,12 @@ public class MyProfileActivity extends AppCompatActivity{
         dialog.dismiss();
        // btEdit.setVisibility(View.VISIBLE);
         editMenu.setVisible(true);
-        setTitle(getString(R.string.profile_image_text));
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                setTitle(getString(R.string.profile_image_text));
+            }
+        });
         saveLayout.setVisibility(View.GONE);
     }
 

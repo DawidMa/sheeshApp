@@ -25,9 +25,11 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.Login;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.session.UserSessionObject;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
 
 /**
  * Created by Informatik on 23.11.2017.
@@ -42,7 +44,6 @@ public class LogInActivity extends AppCompatActivity {
     private CheckBox cbSaveLogin;
     private Gson json = new Gson();
     private final String TOPIC = "JavaSampleApproach";
-    private final static String AD_APP_ID = "ca-app-pub-4355529827581242~4147435635";
     private final static String AD_BANNER_TEST = "ca-app-pub-3940256099942544/6300978111";
     private final static String AD_BANNER_ID = "ca-app-pub-4355529827581242/7588945055";
     private AdView adView;
@@ -53,7 +54,7 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        MobileAds.initialize(this, AD_APP_ID);
+        MobileAds.initialize(this, MyUtilities.AD_APP_ID);
         adView = findViewById(R.id.adLogin);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
@@ -133,7 +134,9 @@ public class LogInActivity extends AppCompatActivity {
             login.setSavedEmail();
             login.setSavedPassword();
                 FirebaseMessaging.getInstance().subscribeToTopic(TOPIC);
-                this.finish();
+            Friend friend = new Friend(this);
+            friend.dropAllFriends();
+            this.finish();
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
 

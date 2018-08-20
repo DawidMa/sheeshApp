@@ -8,20 +8,27 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ChooseFriendObject;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.FriendlistObject;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -39,7 +46,10 @@ public class TrackerSetupFragment extends Fragment{
     private TimePickerDialog.OnTimeSetListener onTimeSetListener;
     private ConstraintLayout layoutTime, layoutFriends;
     private int minutes, seconds;
-    private TextView tvTime, tvFriends;
+    private TextView tvTime, tvFriends, tvLocationLength, tvCommentLength;
+    private static EditText etLocation, etComment;
+    private static final int MAX_CHARS = 20;
+    private Button btComment, btLocation;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,9 +65,35 @@ public class TrackerSetupFragment extends Fragment{
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_tracker_setup, container, false);
 
-        init(rootView);
         tvTime = rootView.findViewById(R.id.tvSeTimeInfo);
         tvFriends = rootView.findViewById(R.id.tvSeFriendsInfo);
+        tvLocationLength = rootView.findViewById(R.id.tvSeLocationLength);
+        tvCommentLength = rootView.findViewById(R.id.tvSeCommentLength);
+
+        etLocation = rootView.findViewById(R.id.etSeLocation);
+        etComment = rootView.findViewById(R.id.etSeComment);
+
+        MyUtilities.configureEtMax(etLocation,tvLocationLength,MAX_CHARS,true);
+        MyUtilities.configureEtMax(etComment,tvCommentLength,MAX_CHARS,true);
+
+        btComment = rootView.findViewById(R.id.btnSeClearComment);
+        btLocation = rootView.findViewById(R.id.btnSeClearLocation);
+        btComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etComment.setText("");
+            }
+        });
+        btLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etLocation.setText("");
+            }
+        });
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+
         updateTvTime();
 
         onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
@@ -92,6 +128,25 @@ public class TrackerSetupFragment extends Fragment{
         return rootView;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 11 && resultCode == RESULT_OK) {
+            updateTvFriend();
+        } else {
+            tvFriends.setText(getString(R.string.no_friends_selected_click_to_select));
+        }
+    }
+
+    private void updateTvFriend() {
+        List<ChooseFriendObject> objects = friend.getAllCheckedFriends();
+        if (objects.isEmpty()) {
+            tvFriends.setText(getString(R.string.no_friends_selected_click_to_select));
+        } else {
+            tvFriends.setText(MyUtilities.getChooseFriendsAsString(objects));
+        }
+    }
+
     private void updateTvTime() {
         minutes = pref.getInt(SharedPrefConstants.MINUTES,0);
         seconds = pref.getInt(SharedPrefConstants.SECONDS,0);
@@ -112,21 +167,6 @@ public class TrackerSetupFragment extends Fragment{
         }
     }
 
-    private void init(View v) {
-        initTextViews(v);
-    }
-
-    private void initTextViews(View v) {
-       // tvTitle = (TextView)v.findViewById(R.id.seTvTitle);
-
-/*
-        tvTitle.setTypeface(slabo);
-        tvSeconds.setTypeface(slabo);
-        tvMinutes.setTypeface(slabo);
-        tvQuestionFriends.setTypeface(slabo);
-        tvQuestionTime.setTypeface(slabo); */
-    }
-
     public static boolean runShisha(Context c) {
 
         int sec = pref.getInt(SharedPrefConstants.SECONDS,0);
@@ -141,6 +181,8 @@ public class TrackerSetupFragment extends Fragment{
                 Toast.makeText(c, R.string.choose_at_least_one_friend,Toast.LENGTH_SHORT).show();
             } else {
                 editor.putInt(SharedPrefConstants.TIME_IN_SECONDS,sec);
+                editor.putString(SharedPrefConstants.COMMENT,etComment.getText().toString());
+                editor.putString(SharedPrefConstants.LOCATION,etLocation.getText().toString());
                 editor.commit();
             }
         } else {
@@ -150,22 +192,14 @@ public class TrackerSetupFragment extends Fragment{
     }
 
     private static boolean checkChoosenFriends() {
-        boolean check = false;
-        int numberFriends = friend.getNumberOfAllCheckedFriends();
-       /* int sumChoosen=0;
-        for(int i=1; i<=numberFriends; i++) {
-            boolean choosen =friend.getChecked(i+"");
-            if(choosen) {
-                sumChoosen++;
-                int numShishas = pref.getInt("FRIENDS_NUM_SHISHAS_"+i,0);
-                numShishas++;
-                editor.putInt("FRIENDS_NUM_SHISHAS_"+i,numShishas);
-            }
-        }*/
-        if(numberFriends>=1) {
-            check = true;
-            editor.commit();
+        int numberFriends = friend.getAllCheckedFriends().size();
+
+        if(numberFriends==0) {
+            List<ChooseFriendObject> objects = new ArrayList<>();
+            objects = MyUtilities.getOfflineFriends(friend);
+            Gson json = new Gson();
+            friend.setAllUncheckedFriends(json.toJson(objects));
         }
-        return check;
+        return true;
     }
 }

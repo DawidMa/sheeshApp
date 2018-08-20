@@ -88,13 +88,13 @@
         android:id="@+id/tiBtStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="50dp"
         android:clickable="true"
         android:onClick="pressedStart"
         app:backgroundTint="@android:color/holo_green_dark"
         app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/adTracker"
         app:layout_constraintLeft_toLeftOf="parent"
         app:srcCompat="@drawable/play_button_1" />
 
@@ -102,14 +102,13 @@
         android:id="@+id/tiBtPause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:clickable="true"
         android:onClick="pressedPause"
         app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintBottom_toTopOf="@id/adTracker"
         app:layout_constraintLeft_toRightOf="@+id/tiBtStart"
         app:layout_constraintRight_toLeftOf="@+id/tiBtEnd"
         app:srcCompat="@drawable/pause_1" />
@@ -118,13 +117,13 @@
         android:id="@+id/tiBtEnd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginRight="50dp"
         android:clickable="true"
         android:onClick="pressedEnd"
         app:backgroundTint="@android:color/holo_red_dark"
         app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/adTracker"
         app:layout_constraintRight_toRightOf="parent"
         app:srcCompat="@drawable/error_1" />
     <de.dhkarlsruhe.it.sheeshapp.sheeshapp.circle.MyCircle
@@ -150,6 +149,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/btnTrackChange"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:onClick="switchTab"
+        android:background="@drawable/icon_change_friends"
+        app:layout_constraintBottom_toBottomOf="@+id/tiTvTopTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tiTvTopTitle" />
 
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adTracker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
+
+    <!--ads:adUnitId="ca-app-pub-4355529827581242/8347873823" echt -->
+    <!--ads:adUnitId="ca-app-pub-3940256099942544/6300978111" test -->
 
 </android.support.constraint.ConstraintLayout>

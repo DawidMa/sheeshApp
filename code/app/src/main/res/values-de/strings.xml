@@ -94,4 +94,12 @@
     <string name="coming_soon_text">Bald verfügbar..</string>
     <string name="not_available_for_guest">Nicht verfügbar für Gäste!</string>
     <string name="no_friends_available">Keine Freunde verfügbar</string>
+    <string name="cant_remove_all_friends_text">Du kannst nicht alle Freunde entfernen!</string>
+    <string name="legal_text">Datenschutzerklärung</string>
+    <string name="license_text">Lizenz</string>
+    <string name="cant_be_your_own_friend">Du kannst nicht dein eigener Freund sein :(</string>
+    <string name="guest_login_info_text">Als Gast musst du ein Video zu Ende schauen, um dich einloggen zu können.</string>
+    <string name="clsoed_ad_text">Anzeige geschlossen</string>
+    <string name="loading_ad_text">Anzeige wird geladen..</string>
+    <string name="failed_to_load_ad">Anzeige konnte nicht geladen werden</string>
 </resources>
