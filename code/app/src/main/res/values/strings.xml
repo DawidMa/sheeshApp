@@ -98,4 +98,8 @@
     <string name="legal_text">Data protection</string>
     <string name="license_text">License</string>
     <string name="cant_be_your_own_friend">You can\'t be your own friend :(</string>
+    <string name="guest_login_info_text">As guest, you have to watch a video to the end, to log in.</string>
+    <string name="clsoed_ad_text">Closed ad</string>
+    <string name="loading_ad_text">Loading ad..</string>
+    <string name="failed_to_load_ad">Failed to load ad</string>
 </resources>
