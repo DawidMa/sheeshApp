@@ -17,8 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -83,6 +87,10 @@ public class TimeTrackerFragmentGuest extends android.support.v4.app.Fragment {
     private Gson gson = new Gson();
 
     private MediaPlayer soundTimeUp;
+    private AdView adView;
+    private final static String AD_APP_ID = "ca-app-pub-4355529827581242~4147435635";
+    private Button btnChange;
+
 
 
     public TimeTrackerFragmentGuest() {}
@@ -92,8 +100,14 @@ public class TimeTrackerFragmentGuest extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_time_tracker, container, false);
         v= rootView;
+        btnChange = v.findViewById(R.id.btnTrackChange);
+        btnChange.setVisibility(View.GONE);
         guest = new Guest(getActivity());
         init();
+        MobileAds.initialize(getContext(), AD_APP_ID);
+        adView = v.findViewById(R.id.adTracker);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
         sequence = guest.getFriends();
         sequence.add(new ChooseFriendObject(guest.getName(),-sequence.size()));
         Collections.shuffle(sequence);
