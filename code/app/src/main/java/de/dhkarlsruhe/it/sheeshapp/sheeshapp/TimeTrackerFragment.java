@@ -24,6 +24,9 @@ import android.view.animation.Animation;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
@@ -113,6 +116,10 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
 
     private MediaPlayer soundTimeUp;
     private UserSessionObject session;
+    private AdView adView;
+    private final static String AD_APP_ID = "ca-app-pub-4355529827581242~4147435635";
+
+
 
     public TimeTrackerFragment() {}
 
@@ -122,6 +129,10 @@ public class TimeTrackerFragment extends android.support.v4.app.Fragment {
         View rootView = inflater.inflate(R.layout.fragment_time_tracker, container, false);
         v= rootView;
         init();
+        MobileAds.initialize(getContext(), AD_APP_ID);
+        adView = v.findViewById(R.id.adTracker);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
         friend = new Friend(getContext());
         session = new UserSessionObject(getContext());
         sequence = friend.getAllCheckedFriends();
