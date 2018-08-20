@@ -102,4 +102,5 @@
     <string name="clsoed_ad_text">Closed ad</string>
     <string name="loading_ad_text">Loading ad..</string>
     <string name="failed_to_load_ad">Failed to load ad</string>
+    <string name="open_profile_text">Open Profile</string>
 </resources>

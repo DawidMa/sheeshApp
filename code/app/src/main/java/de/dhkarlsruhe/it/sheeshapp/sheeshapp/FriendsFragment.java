@@ -22,12 +22,15 @@ import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
 import android.util.DisplayMetrics;
+import android.view.ContextMenu;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -130,7 +133,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (numOfRequests >0) {
+                if (numOfRequests > 0) {
                     showPopup(v);
                 }
             }
@@ -139,7 +142,6 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         loadFriendInformation();
         loadRequestInformation();
         checkPermission();
-
     }
 
     private void loadRequestInformation() {
@@ -160,7 +162,8 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     }
 
     private void positiveResponseRequests(String string) {
-        Type listType = new TypeToken<List<FriendRequestObject>>() {}.getType();
+        Type listType = new TypeToken<List<FriendRequestObject>>() {
+        }.getType();
         friendRequestObjects = json.fromJson(string, listType);
         numOfRequests = friendRequestObjects.size();
         setHeaderInfo();
@@ -172,13 +175,13 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         ImageView imgNotification = header.findViewById(R.id.imgHeaderNotification);
         ImageView imgHeader = header.findViewById(R.id.imgHeader);
         String formattedTitle = String.format(getString(R.string.friend_requests_formatted_text), numOfRequests);
-        if (numOfRequests>0) {
+        if (numOfRequests > 0) {
             tvTitle.setText(Html.fromHtml(formattedTitle));
             tvInfo.setText(R.string.click_to_open);
             header.setBackgroundColor(Color.WHITE);
             imgNotification.setVisibility(View.VISIBLE);
             imgHeader.setColorFilter(Color.BLACK);
-            } else {
+        } else {
             tvTitle.setText(getString(R.string.no_friend_requests_text));
             tvInfo.setText("---");
             header.setBackgroundColor(Color.LTGRAY);
@@ -198,18 +201,18 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         popupWindow.setAnimationStyle(R.style.popupAnimation);
 
         listRequests = popupView.findViewById(R.id.lv_friend_requests);
-        adapter2 = new MyAdapter2(friendRequestObjects,context);
+        adapter2 = new MyAdapter2(friendRequestObjects, context);
         listRequests.setAdapter(adapter2);
         // If the PopupWindow should be focusable
         popupWindow.setFocusable(true);
         // If you need the PopupWindow to dismiss when when touched outside
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.LTGRAY));
-        if (friendRequestObjects.size()>5) {
+        if (friendRequestObjects.size() > 5) {
             WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
             Display display = wm.getDefaultDisplay();
             Point size = new Point();
             display.getSize(size);
-            popupWindow.setHeight(size.y/2);
+            popupWindow.setHeight(size.y / 2);
         }
         int location[] = new int[2];
         // Get the View's(the one that was clicked in the Fragment) location
@@ -253,7 +256,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
     }
 
     public void reloadListView() {
-        if (friendlistObject != null && adapter!=null) {
+        if (friendlistObject != null && adapter != null) {
             //prepareProgressDialog();
             loadRequestInformation();
             adapter.notifyDataSetChanged();
@@ -302,7 +305,8 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
 
     private void positiveResponse(String string) {
         //parse downloaded data
-        Type listType = new TypeToken<List<FriendlistObject>>() {}.getType();
+        Type listType = new TypeToken<List<FriendlistObject>>() {
+        }.getType();
         friendlistObject = json.fromJson(string, listType);
 
         Collections.sort(friendlistObject, new Comparator<FriendlistObject>() {
@@ -312,12 +316,12 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
 
                 String name1 = object1.getName().trim().toLowerCase();
                 String name2 = object2.getName().trim().toLowerCase();
-                for(int i = 0; i < name1.length(); i++){
+                for (int i = 0; i < name1.length(); i++) {
                     char char1 = name1.charAt(i);
-                    if(i <= name2.length()-1){
+                    if (i <= name2.length() - 1) {
                         char char2 = name2.charAt(i);
 
-                        if((char1 == char2)){
+                        if ((char1 == char2)) {
                             result = 0;
                         } else {
                             result = (char1 > char2) ? 1 : -1;
@@ -388,40 +392,39 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             imgFriends.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openFriendsImagePopUp(imgFriends,position,tvTitle,button);
+                    openFriendsImagePopUp(imgFriends, position, tvTitle, button);
                 }
             });
             long friendid = actualObject.getFriend_id();
             tvTitle.setText(actualObject.getName());
-            tvDescription.setText(friendid+"");
+            tvDescription.setText(friendid + "");
             decideProfileImage(imgFriends, actualObject);
-
             row.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openFriendsProfile(position,imgFriends,tvTitle,button);
+                    openFriendsProfile(position, imgFriends, tvTitle, button);
                 }
             });
             return row;
         }
-
     }
+
 
     private void decideProfileImage(ImageView imgFriends, FriendlistObject object) {
         long friendid = object.getFriend_id();
         String imageId = object.getLast_changed_icon_id();
         if (object.isHas_icon()) {
             //prepareProgressDialog();
-                if (imageHelper.getIconId(friendid).equals(imageId)) {
-                    Bitmap bitmap = imageHelper.loadImageFromStorage(friendid+"");
-                    if (bitmap!=null) {
-                        imageHelper.setRoundImageWithBitmap(imgFriends,bitmap);
-                    } else {
-                        imageHelper.loadFileFromServer(friendid,imgFriends,imageId);
-                    }
+            if (imageHelper.getIconId(friendid).equals(imageId)) {
+                Bitmap bitmap = imageHelper.loadImageFromStorage(friendid + "");
+                if (bitmap != null) {
+                    imageHelper.setRoundImageWithBitmap(imgFriends, bitmap);
                 } else {
-                    imageHelper.loadFileFromServer(friendid,imgFriends,imageId);
+                    imageHelper.loadFileFromServer(friendid, imgFriends, imageId);
                 }
+            } else {
+                imageHelper.loadFileFromServer(friendid, imgFriends, imageId);
+            }
         } else {
             imageHelper.setRoundImageDefault(imgFriends);
         }
@@ -435,7 +438,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         popupView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFriendsProfile(position,imgProfile,tvName, deleteButton);
+                openFriendsProfile(position, imgProfile, tvName, deleteButton);
             }
         });
         popupView.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -444,7 +447,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         popupWindow.setFocusable(true);
         popupWindow.setElevation(30);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.LTGRAY));
-        imageHelper.setRectImage(friendlistObject.get(position).getFriend_id()+"",imgProfile);
+        imageHelper.setRectImage(friendlistObject.get(position).getFriend_id() + "", imgProfile);
         tvName.setText(friendlistObject.get(position).getName());
         // Get the View's(the one that was clicked in the Fragment) location
         // Using location, the PopupWindow will be displayed right under anchorView
@@ -453,7 +456,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         Point size = new Point();
         display.getSize(size);
 
-        popupWindow.showAtLocation(imgFriends, Gravity.CENTER, 0,0);
+        popupWindow.showAtLocation(imgFriends, Gravity.CENTER, 0, 0);
     }
 
     public int pxToDp(int px) {
@@ -465,21 +468,21 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         //Hier wird das Profil von einem Freund geöffnet
         Intent intent = new Intent(context, ProfileActivity.class);
         profile.setProfile(friendlistObject.get(i));
-        Pair<View, String> p1 = Pair.create((View)friendImage, "profileimage");
-        Pair<View, String> p2 = Pair.create((View)friendName, "friendname");
-        Pair<View, String> p3 = Pair.create((View)friendDelete, "deletebutton");
+        Pair<View, String> p1 = Pair.create((View) friendImage, "profileimage");
+        Pair<View, String> p2 = Pair.create((View) friendName, "friendname");
+        Pair<View, String> p3 = Pair.create((View) friendDelete, "deletebutton");
 
-        intent.putExtra("FRIEND_NAME",friendName.getText().toString());
-        intent.putExtra("FRIEND_ID",friendlistObject.get(i).getFriend_id());
+        intent.putExtra("FRIEND_NAME", friendName.getText().toString());
+        intent.putExtra("FRIEND_ID", friendlistObject.get(i).getFriend_id());
 
         ActivityOptionsCompat options = ActivityOptionsCompat.
-                makeSceneTransitionAnimation(getActivity(), p1, p2,p3);
-        startActivity(intent,options.toBundle());
+                makeSceneTransitionAnimation(getActivity(), p1, p2, p3);
+        startActivity(intent, options.toBundle());
     }
 
 
     private void showLoadedFile(ImageView imageView, String s) {
-        if (s==null) {
+        if (s == null) {
             Glide.with(context).load(R.drawable.sheeshopa).apply(RequestOptions.circleCropTransform()).into(imageView);
         } else {
             File file = new File(s);
@@ -522,8 +525,8 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
         private List<FriendRequestObject> dataSet;
         Context context;
 
-        public MyAdapter2(List<FriendRequestObject> dataSet,Context c) {
-            super(c, R.layout.row_friend_request, R.id.lv_friend_requests,dataSet);
+        public MyAdapter2(List<FriendRequestObject> dataSet, Context c) {
+            super(c, R.layout.row_friend_request, R.id.lv_friend_requests, dataSet);
             this.context = c;
             this.dataSet = dataSet;
         }
@@ -546,34 +549,33 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             btnAccept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    acceptFriend(position,true);
-                    Toast.makeText(context, R.string.accepted_text,Toast.LENGTH_SHORT).show();
+                    acceptFriend(position, true);
+                    Toast.makeText(context, R.string.accepted_text, Toast.LENGTH_SHORT).show();
                 }
 
             });
             btnDenie.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    acceptFriend(position,false);
-                    Toast.makeText(context, R.string.denied_text,Toast.LENGTH_SHORT).show();
+                    acceptFriend(position, false);
+                    Toast.makeText(context, R.string.denied_text, Toast.LENGTH_SHORT).show();
                 }
             });
             return row;
         }
-
     }
 
     private void acceptFriend(final int pos, boolean accept) {
-        if (friendRequestObjects.size()>0) {
+        if (friendRequestObjects.size() > 0) {
             final FriendRequestObject object = friendRequestObjects.get(pos);
             long rel_id = object.getUnverified_relation_id();
-            StringRequest request = new StringRequest(ServerConstants.URL_FRIEND_ACCEPT + rel_id + "&accept="+accept, new Response.Listener<String>() {
+            StringRequest request = new StringRequest(ServerConstants.URL_FRIEND_ACCEPT + rel_id + "&accept=" + accept, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String string) {
                     if (string.equals("OK") || string.equals("deleted")) {
                         friendRequestObjects.remove(object);
                         adapter2.notifyDataSetChanged();
-                        if (numOfRequests==1) {
+                        if (numOfRequests == 1) {
                             popupWindow.dismiss();
                         }
                         loadRequestInformation();
@@ -585,7 +587,7 @@ public class FriendsFragment extends android.support.v4.app.Fragment {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
-                    Toast.makeText(context, R.string.some_error_occured_text,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.some_error_occured_text, Toast.LENGTH_SHORT).show();
                 }
             });
             RequestQueue rQueue = Volley.newRequestQueue(getContext());
