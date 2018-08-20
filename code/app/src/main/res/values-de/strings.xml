@@ -102,4 +102,5 @@
     <string name="clsoed_ad_text">Anzeige geschlossen</string>
     <string name="loading_ad_text">Anzeige wird geladen..</string>
     <string name="failed_to_load_ad">Anzeige konnte nicht geladen werden</string>
+    <string name="open_profile_text">Profil öffnen</string>
 </resources>
