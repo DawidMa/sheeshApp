@@ -47,7 +47,7 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LogInActivity"
+            android:name=".login.LogInActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />

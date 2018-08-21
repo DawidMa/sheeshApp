@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.guest.LoginActivityGuest;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.login.LogInActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.signup.SignUpActivity;
 
 public class WelcomeActivity extends AppCompatActivity {

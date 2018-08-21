@@ -1,11 +1,9 @@
 package de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.Rect;
-import android.support.design.widget.TabLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.Html;
@@ -15,9 +13,7 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -28,16 +24,11 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import de.dhkarlsruhe.it.sheeshapp.sheeshapp.MainActivity;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.friend.Friend;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.myAutoComplete.DelayAutoCompleteTextView;
@@ -232,7 +223,9 @@ public class MyUtilities {
         return String.format("%02d.%02d.%04d  %02d:%02d",day,month,year,hour,minute);
     }
 
-    public static void statusBarAccent(Window window, Activity activity) {
-        window.setStatusBarColor(activity.getResources().getColor(R.color.colorAccent));
+    public static Snackbar getColoredSnackbar(View view, String string, int color) {
+        Snackbar snackbar = Snackbar.make(view, string, Snackbar.LENGTH_LONG);
+        snackbar.getView().setBackgroundColor(color);
+        return snackbar;
     }
 }

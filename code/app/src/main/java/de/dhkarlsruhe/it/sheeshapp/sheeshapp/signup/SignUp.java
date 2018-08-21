@@ -26,6 +26,7 @@ import de.dhkarlsruhe.it.sheeshapp.sheeshapp.R;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.SharedPrefConstants;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.Userdata;
 import de.dhkarlsruhe.it.sheeshapp.sheeshapp.server.ServerConstants;
+import de.dhkarlsruhe.it.sheeshapp.sheeshapp.utilities.MyUtilities;
 
 /**
  * Created by d0272129 on 04.05.18.
@@ -76,7 +77,7 @@ public class SignUp {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 dialog.dismiss();
-                Snackbar.make(layout, "No internet Connection", Snackbar.LENGTH_LONG).show();
+                MyUtilities.getColoredSnackbar(layout,c.getString(R.string.no_internet_connection), c.getResources().getColor(R.color.redError)).show();
             }
         });
         RequestQueue rQueue = Volley.newRequestQueue(c);

@@ -26,4 +26,15 @@ public class Userdata {
         }
         editor.commit();
     }
+
+    public boolean isSaved() {
+        return pref.getBoolean(SharedPrefConstants.AUTOMATIC_LOGIN,false);
+    }
+
+    public String getSavedEmail() {
+        return pref.getString(SharedPrefConstants.EMAIL,"empty");
+    }
+    public String getSavedPassword() {
+        return pref.getString(SharedPrefConstants.PASSWORD,"empty");
+    }
 }

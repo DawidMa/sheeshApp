@@ -106,4 +106,5 @@
     <string name="loading_text">Laden..</string>
     <string name="error_connecting_to_server">Fehler beim Verbinden zum Server</string>
     <string name="ok_text">OK</string>
+    <string name="no_internet_connection">Keine Internetverbindung!</string>
 </resources>

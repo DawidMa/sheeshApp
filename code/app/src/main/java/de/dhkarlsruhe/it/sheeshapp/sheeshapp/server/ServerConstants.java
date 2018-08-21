@@ -19,5 +19,5 @@ public class ServerConstants {
     public static final String URL_SAVE_HISTORY = URL+"history/save";
     public static final String URL_HISTORIES = URL+"history/all?userid=";
     public static final String URL_SIGN_UP = URL+"signup?name=";
-
+    public static final String URL_LOGIN = URL+"login?email=";
 }

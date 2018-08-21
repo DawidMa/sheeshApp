@@ -74,7 +74,7 @@ public class SignUpActivity extends AppCompatActivity {
         if (success == allDataValid.length) {
             signUp.startSignup(layout,cbSaveLogin.isChecked());
         } else {
-            Snackbar.make(layout, R.string.check_your_inout, Snackbar.LENGTH_LONG).show();
+            MyUtilities.getColoredSnackbar(layout,getString(R.string.check_your_inout), getResources().getColor(R.color.redError)).show();
         }
     }
 
